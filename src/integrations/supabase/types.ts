@@ -14,16 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      employer_profiles: {
+        Row: {
+          about: string | null
+          city: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          org_name: string
+          org_type: string | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          about?: string | null
+          city?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          org_name: string
+          org_type?: string | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          about?: string | null
+          city?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          org_name?: string
+          org_type?: string | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      job_postings: {
+        Row: {
+          city: string | null
+          created_at: string
+          description: string | null
+          employer_id: string
+          employment_type: string | null
+          id: string
+          is_active: boolean
+          profession: string
+          requirements: string | null
+          specialty: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          employer_id: string
+          employment_type?: string | null
+          id?: string
+          is_active?: boolean
+          profession: string
+          requirements?: string | null
+          specialty?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          employer_id?: string
+          employment_type?: string | null
+          id?: string
+          is_active?: boolean
+          profession?: string
+          requirements?: string | null
+          specialty?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      professional_profiles: {
+        Row: {
+          available_from: string | null
+          bio: string | null
+          country_of_training: string
+          created_at: string
+          credentials_status: string | null
+          current_city: string | null
+          currently_in_canada: boolean
+          desired_employment_types: string[]
+          desired_role_types: string[]
+          id: string
+          is_searchable: boolean
+          languages: string[]
+          license_exam_status: string | null
+          preferred_cities: string[]
+          profession: string
+          specialty: string | null
+          updated_at: string
+          user_id: string
+          willing_to_relocate: boolean
+          work_authorization: string | null
+          years_experience: number
+        }
+        Insert: {
+          available_from?: string | null
+          bio?: string | null
+          country_of_training: string
+          created_at?: string
+          credentials_status?: string | null
+          current_city?: string | null
+          currently_in_canada?: boolean
+          desired_employment_types?: string[]
+          desired_role_types?: string[]
+          id?: string
+          is_searchable?: boolean
+          languages?: string[]
+          license_exam_status?: string | null
+          preferred_cities?: string[]
+          profession: string
+          specialty?: string | null
+          updated_at?: string
+          user_id: string
+          willing_to_relocate?: boolean
+          work_authorization?: string | null
+          years_experience?: number
+        }
+        Update: {
+          available_from?: string | null
+          bio?: string | null
+          country_of_training?: string
+          created_at?: string
+          credentials_status?: string | null
+          current_city?: string | null
+          currently_in_canada?: boolean
+          desired_employment_types?: string[]
+          desired_role_types?: string[]
+          id?: string
+          is_searchable?: boolean
+          languages?: string[]
+          license_exam_status?: string | null
+          preferred_cities?: string[]
+          profession?: string
+          specialty?: string | null
+          updated_at?: string
+          user_id?: string
+          willing_to_relocate?: boolean
+          work_authorization?: string | null
+          years_experience?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          account_type: Database["public"]["Enums"]["account_type"] | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          account_type?: Database["public"]["Enums"]["account_type"] | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          account_type?: Database["public"]["Enums"]["account_type"] | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      account_type: "professional" | "employer"
+      app_role: "admin" | "professional" | "employer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +363,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_type: ["professional", "employer"],
+      app_role: ["admin", "professional", "employer"],
+    },
   },
 } as const
