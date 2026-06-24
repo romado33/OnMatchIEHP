@@ -42,7 +42,7 @@ import { toast } from "sonner";
 import { Plus, X, CheckCircle2, Circle, Clock, AlertCircle, ExternalLink, Info } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My Profile — OnMatch Health" }] }),
+  head: () => ({ meta: [{ title: "My Profile — OnMatchIEHP" }] }),
   component: ProfilePage,
 });
 

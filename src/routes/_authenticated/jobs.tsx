@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/jobs")({
-  head: () => ({ meta: [{ title: "Job Postings — OnMatch Health" }] }),
+  head: () => ({ meta: [{ title: "Job Postings — OnMatchIEHP" }] }),
   component: JobsPage,
 });
 

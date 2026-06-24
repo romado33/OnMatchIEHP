@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/search")({
-  head: () => ({ meta: [{ title: "Find Candidates — OnMatch Health" }] }),
+  head: () => ({ meta: [{ title: "Find Candidates — OnMatchIEHP" }] }),
   component: SearchPage,
 });
 

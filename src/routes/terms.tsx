@@ -4,8 +4,8 @@ import { Stethoscope } from "lucide-react";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — OnMatch Health" },
-      { name: "description", content: "OnMatch Health Terms of Service." },
+      { title: "Terms of Service — OnMatchIEHP" },
+      { name: "description", content: "OnMatchIEHP Terms of Service." },
     ],
   }),
   component: TermsPage,
@@ -18,7 +18,7 @@ function TermsPage() {
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
             <Stethoscope className="h-5 w-5 text-primary" />
-            OnMatch Health
+            OnMatchIEHP
           </Link>
           <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground">
             Sign in
@@ -30,8 +30,8 @@ function TermsPage() {
         <div className="mb-2 text-sm text-muted-foreground">Last updated: June 24, 2026</div>
         <h1 className="text-4xl font-bold">Terms of Service</h1>
         <p className="mt-4 text-muted-foreground">
-          These Terms of Service ("Terms") govern your access to and use of the OnMatch Health platform
-          ("Platform"), operated by OnMatch Health ("we", "us"). By creating an account, you agree to
+          These Terms of Service ("Terms") govern your access to and use of the OnMatchIEHP platform
+          ("Platform"), operated by OnMatchIEHP ("we", "us"). By creating an account, you agree to
           these Terms. If you do not agree, do not use the Platform.
         </p>
 
@@ -52,7 +52,7 @@ function TermsPage() {
             <li>Keep your credential progress and availability status current</li>
             <li>Not misrepresent your work authorization status</li>
           </ul>
-          <p><strong>Credential disclaimer:</strong> OnMatch Health does not verify credentials, licensing status, or regulatory registration. Commencement of clinical practice in Ontario requires valid registration with the applicable regulatory college. The Platform is for employment connection purposes only.</p>
+          <p><strong>Credential disclaimer:</strong> OnMatchIEHP does not verify credentials, licensing status, or regulatory registration. Commencement of clinical practice in Ontario requires valid registration with the applicable regulatory college. The Platform is for employment connection purposes only.</p>
         </PolicySection>
 
         <PolicySection title="4. Employer accounts">
@@ -92,12 +92,12 @@ function TermsPage() {
         </PolicySection>
 
         <PolicySection title="7. Intellectual property">
-          <p>The Platform, including its design, features, and content created by OnMatch Health, is our intellectual property. You retain ownership of content you submit (your profile information). By submitting content, you grant us a license to use it to operate and improve the Platform.</p>
+          <p>The Platform, including its design, features, and content created by OnMatchIEHP, is our intellectual property. You retain ownership of content you submit (your profile information). By submitting content, you grant us a license to use it to operate and improve the Platform.</p>
         </PolicySection>
 
         <PolicySection title="8. Disclaimers and limitation of liability">
           <p>The Platform is provided "as is" without warranties of any kind. We do not guarantee: employment outcomes, accuracy of AI matching, availability of the Platform, or that all employers or professionals are who they claim to be.</p>
-          <p>To the maximum extent permitted by law, OnMatch Health's liability to you for any claim arising from use of the Platform is limited to the amount you paid us in the 12 months preceding the claim (or $100 CAD if no payment was made).</p>
+          <p>To the maximum extent permitted by law, OnMatchIEHP's liability to you for any claim arising from use of the Platform is limited to the amount you paid us in the 12 months preceding the claim (or $100 CAD if no payment was made).</p>
         </PolicySection>
 
         <PolicySection title="9. Termination">
@@ -126,7 +126,7 @@ function TermsPage() {
             <Link to="/" className="hover:text-foreground">Home</Link>
             <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
           </div>
-          <p className="mt-2">© {new Date().getFullYear()} OnMatch Health</p>
+          <p className="mt-2">© {new Date().getFullYear()} OnMatchIEHP</p>
         </div>
       </footer>
     </div>

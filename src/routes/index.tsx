@@ -18,13 +18,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "OnMatch Health — Ontario's match for internationally trained health professionals" },
+      { title: "OnMatchIEHP — Ontario's match for internationally trained health professionals" },
       {
         name: "description",
         content:
-          "OnMatch Health connects internationally trained health professionals with verified Ontario healthcare employers using AI-powered matching.",
+          "OnMatchIEHP connects internationally trained health professionals with verified Ontario healthcare employers using AI-powered matching.",
       },
-      { property: "og:title", content: "OnMatch Health" },
+      { property: "og:title", content: "OnMatchIEHP" },
       {
         property: "og:description",
         content: "AI-powered matching for foreign-trained health professionals and Ontario healthcare employers.",
@@ -42,7 +42,7 @@ function Index() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
             <Stethoscope className="h-5 w-5 text-primary" />
-            OnMatch Health
+            OnMatchIEHP
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/auth">
@@ -67,7 +67,7 @@ function Index() {
             matched with Ontario employers.
           </h1>
           <p className="mt-6 text-lg text-muted-foreground">
-            OnMatch Health turns your international training, credentials, and goals into AI-ranked
+            OnMatchIEHP turns your international training, credentials, and goals into AI-ranked
             matches for hospitals, clinics, and care organizations across Ontario. Free for health
             professionals.
           </p>
@@ -197,7 +197,7 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatch Health is
+            Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatchIEHP is
             designed around them.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -241,7 +241,7 @@ function Index() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 font-semibold text-foreground">
               <Stethoscope className="h-4 w-4 text-primary" />
-              OnMatch Health
+              OnMatchIEHP
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
@@ -252,8 +252,8 @@ function Index() {
             </div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} OnMatch Health. Designed for Ontario, Canada.
-            OnMatch Health does not verify credentials or regulatory registration. All credential information
+            © {new Date().getFullYear()} OnMatchIEHP. Designed for Ontario, Canada.
+            OnMatchIEHP does not verify credentials or regulatory registration. All credential information
             is self-reported. Employers must confirm registration with the relevant Ontario regulatory college
             before making an offer.
           </p>

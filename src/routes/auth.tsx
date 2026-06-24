@@ -13,8 +13,8 @@ import { Stethoscope } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — OnMatch Health" },
-      { name: "description", content: "Sign in or create an OnMatch Health account." },
+      { title: "Sign in — OnMatchIEHP" },
+      { name: "description", content: "Sign in or create an OnMatchIEHP account." },
     ],
   }),
   component: AuthPage,
@@ -70,7 +70,7 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <div className="w-full max-w-md">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2 font-semibold">
-          <Stethoscope className="h-5 w-5 text-primary" /> OnMatch Health
+          <Stethoscope className="h-5 w-5 text-primary" /> OnMatchIEHP
         </Link>
         <Card>
           <CardHeader>

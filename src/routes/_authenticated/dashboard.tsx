@@ -25,7 +25,7 @@ import {
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — OnMatch Health" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — OnMatchIEHP" }] }),
   component: Dashboard,
 });
 
