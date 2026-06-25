@@ -35,7 +35,7 @@ type Candidate = {
 
 export const matchCandidates = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) => Input.parse(d))
+  .validator((d: unknown) => Input.parse(d))
   .handler(async ({ data, context }) => {
     // Confirm caller is an employer with a verified account.
     const { data: roles } = await context.supabase
@@ -87,8 +87,8 @@ export const matchCandidates = createServerFn({ method: "POST" })
     const candidates = (pool ?? []) as Candidate[];
     if (candidates.length === 0) return { error: null, matches: [] };
 
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) return { error: "AI gateway not configured.", matches: [] };
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) return { error: "AI matching service not configured.", matches: [] };
 
     // Log the search session (best-effort; do not block on failure).
     context.supabase
@@ -97,7 +97,7 @@ export const matchCandidates = createServerFn({ method: "POST" })
         employer_user_id: context.userId,
         query_text: data.query,
         candidate_pool_size: candidates.length,
-        model_used: "google/gemini-2.5-flash",
+        model_used: "gpt-4o-mini",
       })
       .then(() => {});
 
@@ -121,11 +121,11 @@ Do NOT reference country of origin, ethnicity, or immigration status anywhere in
     const userMsg = `ROLE DESCRIPTION:\n${data.query}\n\nCANDIDATES (JSON):\n${JSON.stringify(candidates)}`;
 
     const start = Date.now();
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "gpt-4o-mini",
         messages: [
           { role: "system", content: sys },
           { role: "user", content: userMsg },
