@@ -46,7 +46,14 @@ export const matchCandidates = createServerFn({ method: "POST" })
     if (!isEmployer) {
       return {
         error: "Only employer accounts can run candidate searches.",
-        matches: [] as Array<{ candidate: Candidate; score: number; rationale: string }>,
+        matches: [] as Array<{
+          candidate: Candidate;
+          score: number;
+          rationale: string;
+          strengths: string[];
+          gaps: string[];
+          criteria: Array<{ label: string; score: number; note: string }>;
+        }>,
       };
     }
 
@@ -95,10 +102,21 @@ export const matchCandidates = createServerFn({ method: "POST" })
       .then(() => {});
 
     const sys = `You are a healthcare recruiting analyst for Ontario, Canada. Rank candidates against a role description.
-Return ONLY strict JSON: {"matches":[{"user_id":string,"score":number (0-100),"rationale":string}]}
-Include the top 10 best matches in descending score order. Score reflects overall fit.
-Rationale is one concise sentence citing the most relevant professional facts.
-Do NOT reference country of origin, ethnicity, or immigration status in your rationale.`;
+Return ONLY strict JSON of the form:
+{"matches":[{
+  "user_id": string,
+  "score": number (0-100),
+  "rationale": string,
+  "strengths": string[],
+  "gaps": string[],
+  "criteria": [{"label": string, "score": number (0-100), "note": string}]
+}]}
+Include the top 10 best matches in descending overall score order.
+- rationale: one concise sentence summarizing overall fit.
+- strengths: 2-4 short bullet phrases citing the most relevant qualifications.
+- gaps: 0-3 short bullet phrases on missing or weaker requirements (empty array if none).
+- criteria: 3-5 dimensions you actually evaluated (e.g. Profession & specialty, Experience, Location & relocation, Credentials & licensure, Languages, Availability). Each has a 0-100 sub-score and a brief note.
+Do NOT reference country of origin, ethnicity, or immigration status anywhere in the output.`;
 
     const userMsg = `ROLE DESCRIPTION:\n${data.query}\n\nCANDIDATES (JSON):\n${JSON.stringify(candidates)}`;
 
@@ -151,12 +169,42 @@ Do NOT reference country of origin, ethnicity, or immigration status in your rat
       parsed = {};
     }
 
-    const ranked = (parsed.matches ?? [])
+    type RawMatch = {
+      user_id: string;
+      score: number;
+      rationale: string;
+      strengths?: string[];
+      gaps?: string[];
+      criteria?: Array<{ label: string; score: number; note?: string }>;
+    };
+    const ranked = ((parsed.matches ?? []) as RawMatch[])
       .map((m) => {
         const candidate = candidates.find((c) => c.user_id === m.user_id);
-        return candidate ? { candidate, score: m.score, rationale: m.rationale } : null;
+        return candidate
+          ? {
+              candidate,
+              score: m.score,
+              rationale: m.rationale,
+              strengths: Array.isArray(m.strengths) ? m.strengths.slice(0, 4) : [],
+              gaps: Array.isArray(m.gaps) ? m.gaps.slice(0, 3) : [],
+              criteria: Array.isArray(m.criteria)
+                ? m.criteria.slice(0, 5).map((c) => ({
+                    label: String(c.label ?? ""),
+                    score: Math.max(0, Math.min(100, Number(c.score) || 0)),
+                    note: c.note ? String(c.note) : "",
+                  }))
+                : [],
+            }
+          : null;
       })
-      .filter(Boolean) as Array<{ candidate: Candidate; score: number; rationale: string }>;
+      .filter(Boolean) as Array<{
+        candidate: Candidate;
+        score: number;
+        rationale: string;
+        strengths: string[];
+        gaps: string[];
+        criteria: Array<{ label: string; score: number; note: string }>;
+      }>;
 
     return { error: null, matches: ranked };
   });
