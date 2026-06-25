@@ -265,27 +265,6 @@ function Index() {
         </div>
       </section>
 
-      {/* ── Closing CTA ─────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold">Ready to find your match?</h2>
-        <p className="mt-4 mx-auto max-w-xl text-lg text-muted-foreground">
-          Join internationally trained health professionals and Ontario healthcare employers already
-          on the platform. Free for everyone — always.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/auth">
-            <Button size="lg" className="gap-2 shadow-md shadow-primary/20">
-              Create your free profile <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Link to="/auth">
-            <Button size="lg" variant="outline" className="gap-2">
-              Start hiring for free <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
       {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-8">
