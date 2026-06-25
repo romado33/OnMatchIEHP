@@ -1552,115 +1552,6 @@ export type Database = {
       }
     }
     Views: {
-      searchable_professional_profiles: {
-        Row: {
-          available_from: string | null
-          bio: string | null
-          completeness_score: number | null
-          country_of_training: string | null
-          created_at: string | null
-          credentials_status: string | null
-          current_city: string | null
-          currently_in_canada: boolean | null
-          desired_employment_types: string[] | null
-          desired_role_types: string[] | null
-          is_searchable: boolean | null
-          languages: string[] | null
-          license_exam_status: string | null
-          linkedin_url: string | null
-          portfolio_url: string | null
-          preferred_cities: string[] | null
-          profession: string | null
-          profession_id: string | null
-          profile_view_count: number | null
-          specialty: string | null
-          specialty_id: string | null
-          updated_at: string | null
-          user_id: string | null
-          willing_to_relocate: boolean | null
-          work_authorized_without_sponsorship: boolean | null
-          years_experience: number | null
-        }
-        Insert: {
-          available_from?: string | null
-          bio?: string | null
-          completeness_score?: number | null
-          country_of_training?: string | null
-          created_at?: string | null
-          credentials_status?: string | null
-          current_city?: string | null
-          currently_in_canada?: boolean | null
-          desired_employment_types?: string[] | null
-          desired_role_types?: string[] | null
-          is_searchable?: boolean | null
-          languages?: string[] | null
-          license_exam_status?: string | null
-          linkedin_url?: string | null
-          portfolio_url?: string | null
-          preferred_cities?: string[] | null
-          profession?: string | null
-          profession_id?: string | null
-          profile_view_count?: number | null
-          specialty?: string | null
-          specialty_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          willing_to_relocate?: boolean | null
-          work_authorized_without_sponsorship?: boolean | null
-          years_experience?: number | null
-        }
-        Update: {
-          available_from?: string | null
-          bio?: string | null
-          completeness_score?: number | null
-          country_of_training?: string | null
-          created_at?: string | null
-          credentials_status?: string | null
-          current_city?: string | null
-          currently_in_canada?: boolean | null
-          desired_employment_types?: string[] | null
-          desired_role_types?: string[] | null
-          is_searchable?: boolean | null
-          languages?: string[] | null
-          license_exam_status?: string | null
-          linkedin_url?: string | null
-          portfolio_url?: string | null
-          preferred_cities?: string[] | null
-          profession?: string | null
-          profession_id?: string | null
-          profile_view_count?: number | null
-          specialty?: string | null
-          specialty_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          willing_to_relocate?: boolean | null
-          work_authorized_without_sponsorship?: boolean | null
-          years_experience?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "professional_profiles_profession_id_fkey"
-            columns: ["profession_id"]
-            isOneToOne: false
-            referencedRelation: "ref_professions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "professional_profiles_specialty_id_fkey"
-            columns: ["specialty_id"]
-            isOneToOne: false
-            referencedRelation: "ref_specialties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "professional_profiles_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_consent_status"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
       user_consent_status: {
         Row: {
           ai_processing_accepted: boolean | null
@@ -1689,6 +1580,34 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      search_professional_profiles: {
+        Args: {
+          _limit?: number
+          _min_years_experience?: number
+          _profession_id?: string
+          _work_authorized_only?: boolean
+        }
+        Returns: {
+          available_from: string
+          bio: string
+          country_of_training: string
+          credentials_status: string
+          current_city: string
+          currently_in_canada: boolean
+          desired_employment_types: string[]
+          desired_role_types: string[]
+          languages: string[]
+          license_exam_status: string
+          preferred_cities: string[]
+          profession: string
+          profession_id: string
+          specialty: string
+          user_id: string
+          willing_to_relocate: boolean
+          work_authorized_without_sponsorship: boolean
+          years_experience: number
+        }[]
       }
       set_initial_user_role: { Args: { _role: string }; Returns: undefined }
       user_has_required_consents: {
