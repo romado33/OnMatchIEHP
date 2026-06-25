@@ -1581,6 +1581,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      set_initial_user_role: { Args: { _role: string }; Returns: undefined }
       user_has_required_consents: {
         Args: { _user_id: string }
         Returns: boolean
