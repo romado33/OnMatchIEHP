@@ -82,6 +82,11 @@ function Index() {
                 I'm hiring
               </Button>
             </Link>
+            <Link to="/demo">
+              <Button size="lg" variant="ghost">
+                Try a demo account →
+              </Button>
+            </Link>
           </div>
 
           {/* Trust signals */}
