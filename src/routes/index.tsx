@@ -68,8 +68,8 @@ function Index() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground">
             OnMatchIEHP turns your international training, credentials, and goals into AI-ranked
-            matches for hospitals, clinics, and care organizations across Ontario. Free for health
-            professionals.
+            matches for hospitals, clinics, and care organizations across Ontario. Free for
+            internationally educated health professionals and for employers.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/auth">
@@ -184,7 +184,7 @@ function Index() {
         <div className="mt-8">
           <Link to="/auth">
             <Button size="lg" variant="outline" className="gap-2">
-              Start hiring <ArrowRight className="h-4 w-4" />
+              Start hiring for free <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
         </div>
