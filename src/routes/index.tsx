@@ -68,11 +68,6 @@ function Index() {
 
         <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20">
           <div className="max-w-3xl">
-            {/* Location badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <MapPin className="h-3 w-3" /> Built for Ontario, Canada
-            </div>
-
             {/* Headline */}
             <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
               Internationally trained health pros,
