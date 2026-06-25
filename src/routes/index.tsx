@@ -47,6 +47,9 @@ function Index() {
             OnMatchIEHP
           </Link>
           <div className="flex items-center gap-3">
+            <Link to="/demo" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
+              Try a demo →
+            </Link>
             <Link to="/auth">
               <Button variant="ghost">Sign in</Button>
             </Link>
