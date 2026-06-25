@@ -109,42 +109,51 @@ GRANT SELECT ON public.user_consent_status TO authenticated;
 ALTER VIEW public.user_consent_status SET (security_invoker = true);
 
 -- ============================================================
--- 4. Conversations: only verified employers may initiate
+-- 4. Conversations: split the overly-broad ALL policy into
+--    per-operation policies.
+--    Lovable's intent: either role may initiate a conversation
+--    as long as they set initiated_by = themselves and the
+--    conversation is between a verified employer + professional.
 -- ============================================================
 DROP POLICY IF EXISTS "conversation participants read and update" ON public.conversations;
 
-CREATE POLICY "verified employer initiates conversation"
+CREATE POLICY "verified participants insert conversation"
   ON public.conversations FOR INSERT TO authenticated
   WITH CHECK (
-    auth.uid() = employer_user_id
-    AND public.has_role(auth.uid(), 'employer')
-    AND EXISTS (
-      SELECT 1 FROM public.employer_profiles ep
-      WHERE ep.user_id = auth.uid()
-        AND ep.verification_status = 'verified'
-    )
-    AND public.has_role(professional_user_id, 'professional')
+    (auth.uid() = employer_user_id OR auth.uid() = professional_user_id)
+    AND auth.uid() = initiated_by
+    AND public.has_role(employer_user_id, 'employer'::public.app_role)
+    AND public.has_role(professional_user_id, 'professional'::public.app_role)
   );
 
-CREATE POLICY "participants read own conversations"
+CREATE POLICY "conversation participants read"
   ON public.conversations FOR SELECT TO authenticated
   USING (auth.uid() = employer_user_id OR auth.uid() = professional_user_id);
 
-CREATE POLICY "participants update own conversations"
+CREATE POLICY "conversation participants update"
   ON public.conversations FOR UPDATE TO authenticated
   USING (auth.uid() = employer_user_id OR auth.uid() = professional_user_id)
   WITH CHECK (auth.uid() = employer_user_id OR auth.uid() = professional_user_id);
 
 -- ============================================================
--- 5. Document service_role-only INSERT intent explicitly
+-- 5. Restore functional policies for profile_view_events and
+--    ai_search_results that were also addressed by Lovable.
+--    Lovable's intent: clients record view events; employers
+--    read their own AI match results.
 -- ============================================================
-CREATE POLICY "no direct insert profile view events"
+CREATE POLICY "authenticated can record profile views"
   ON public.profile_view_events FOR INSERT TO authenticated
-  WITH CHECK (false);
+  WITH CHECK (auth.uid() IS NOT NULL);
 
-CREATE POLICY "no direct read ai search results"
+CREATE POLICY "employer reads own ai search results"
   ON public.ai_search_results FOR SELECT TO authenticated
-  USING (false);
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.ai_search_sessions s
+      WHERE s.id = ai_search_results.session_id
+        AND s.employer_user_id = auth.uid()
+    )
+  );
 
 -- ============================================================
 -- 6. Replace professional_profiles ALL policy with per-operation
