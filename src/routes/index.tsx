@@ -27,7 +27,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "OnMatchIEHP" },
       {
         property: "og:description",
-        content: "AI-powered matching for internationally trained health professionals and Ontario healthcare employers.",
+        content:
+          "AI-powered matching for internationally trained health professionals and Ontario healthcare employers.",
       },
     ],
   }),
@@ -79,9 +80,8 @@ function Index() {
 
             {/* Subtitle — tightened */}
             <p className="mt-6 text-lg text-muted-foreground">
-              Turn your international training and credentials into AI-ranked matches with hospitals,
-              clinics, and care organizations across Ontario — free for internationally educated
-              health professionals and for employers.
+              Turn your international training and credentials into AI-ranked matches with hospitals, clinics, and care
+              organizations across Ontario — free for internationally educated health professionals and for employers.
             </p>
 
             {/* CTAs */}
@@ -137,9 +137,7 @@ function Index() {
       {/* ── How it works (tabbed) ────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="text-3xl font-bold">How it works</h2>
-        <p className="mt-2 text-muted-foreground">
-          OnMatchIEHP is built for both sides of the hiring relationship.
-        </p>
+        <p className="mt-2 text-muted-foreground">OnMatchIEHP is built for both sides of the hiring relationship.</p>
 
         {/* Tab switcher */}
         <div className="mt-8 flex border-b border-border">
@@ -234,8 +232,8 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatchIEHP is
-            designed around them.
+            Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatchIEHP is designed around
+            them.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             <ComplianceItem
@@ -266,8 +264,8 @@ function Index() {
       <section className="mx-auto max-w-6xl px-6 py-20 text-center">
         <h2 className="text-3xl font-bold">Ready to find your match?</h2>
         <p className="mt-4 mx-auto max-w-xl text-lg text-muted-foreground">
-          Join internationally trained health professionals and Ontario healthcare employers already
-          on the platform. Free for everyone — always.
+          Join internationally trained health professionals and Ontario healthcare employers already on the platform.
+          Free for everyone — always.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/auth">
@@ -292,18 +290,21 @@ function Index() {
               OnMatchIEHP
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
+              <Link to="/privacy" className="hover:text-foreground">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="hover:text-foreground">
+                Terms of Service
+              </Link>
               <a href="mailto:support@onmatchiehp.ca" className="hover:text-foreground">
                 support@onmatchiehp.ca
               </a>
             </div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} OnMatchIEHP. Designed for Ontario, Canada.
-            OnMatchIEHP does not verify credentials or regulatory registration. All credential information
-            is self-reported. Employers must confirm registration with the relevant Ontario regulatory college
-            before making an offer.
+            © {new Date().getFullYear()} OnMatchIEHP. Designed for Ontario, Canada. OnMatchIEHP does not verify
+            credentials or regulatory registration. All credential information is self-reported. Employers must confirm
+            registration with the relevant Ontario regulatory college before making an offer.
           </p>
         </div>
       </footer>
@@ -316,9 +317,7 @@ function Index() {
 function Feature({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
     <div className="rounded-xl border border-border bg-card p-6 border-t-2 border-t-primary/40">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        {icon}
-      </div>
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</div>
       <h3 className="mt-4 font-semibold text-foreground">{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground">{body}</p>
     </div>
@@ -348,20 +347,10 @@ function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
-function ComplianceItem({
-  icon,
-  title,
-  body,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-}) {
+function ComplianceItem({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
     <div className="space-y-2">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        {icon}
-      </div>
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</div>
       <h3 className="font-semibold">{title}</h3>
       <p className="text-sm text-muted-foreground">{body}</p>
     </div>
