@@ -1568,6 +1568,7 @@ export type Database = {
         Args: { _admin_user_id: string; _user_id: string }
         Returns: undefined
       }
+      assign_employer_role: { Args: never; Returns: undefined }
       calc_profile_completeness: { Args: { _user_id: string }; Returns: number }
       employer_daily_search_count: {
         Args: { _employer_user_id: string }

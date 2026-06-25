@@ -98,9 +98,7 @@ function Onboarding() {
       .update({ account_type: "employer" })
       .eq("id", user.id);
 
-    const { error: e2 } = await supabase
-      .from("user_roles")
-      .insert({ user_id: user.id, role: "employer" });
+    const { error: e2 } = await supabase.rpc("assign_employer_role");
 
     setLoading(null);
 
