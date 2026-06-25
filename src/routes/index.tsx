@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Stethoscope,
@@ -9,10 +9,10 @@ import {
   MapPin,
   CheckCircle2,
   Building2,
-  FileText,
   GraduationCap,
-  Users,
   ArrowRight,
+  EyeOff,
+  Scale,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "OnMatchIEHP" },
       {
         property: "og:description",
-        content: "AI-powered matching for foreign-trained health professionals and Ontario healthcare employers.",
+        content: "AI-powered matching for internationally trained health professionals and Ontario healthcare employers.",
       },
     ],
   }),
@@ -35,6 +35,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [activeTab, setActiveTab] = useState<"professionals" | "employers">("professionals");
+
   return (
     <div className="min-h-screen bg-background">
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
@@ -63,19 +65,26 @@ function Index() {
 
         <section className="relative mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-3xl">
+            {/* Location badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               <MapPin className="h-3 w-3" /> Built for Ontario, Canada
             </div>
+
+            {/* Headline */}
             <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Foreign-trained health pros,
+              Internationally trained health pros,
               <br />
               <span className="text-primary">matched with Ontario employers.</span>
             </h1>
+
+            {/* Subtitle — tightened */}
             <p className="mt-6 text-lg text-muted-foreground">
-              OnMatchIEHP turns your international training, credentials, and goals into AI-ranked
-              matches for hospitals, clinics, and care organizations across Ontario. Free for
-              internationally educated health professionals and for employers.
+              Turn your international training and credentials into AI-ranked matches with hospitals,
+              clinics, and care organizations across Ontario — free for internationally educated
+              health professionals and for employers.
             </p>
+
+            {/* CTAs */}
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/auth">
                 <Button size="lg" className="gap-2 shadow-md shadow-primary/20">
@@ -83,8 +92,8 @@ function Index() {
                 </Button>
               </Link>
               <Link to="/auth">
-                <Button size="lg" variant="outline">
-                  I'm hiring
+                <Button size="lg" variant="outline" className="gap-2">
+                  I'm hiring <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/demo">
@@ -94,11 +103,11 @@ function Index() {
               </Link>
             </div>
 
-            {/* Trust signals */}
+            {/* Trust signals — distinct icons, positive wording */}
             <div className="mt-8 flex flex-wrap gap-4">
               <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified employers only" />
-              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="We never share your immigration status" />
-              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
+              <TrustPill icon={<EyeOff className="h-3.5 w-3.5" />} text="Your immigration status stays private" />
+              <TrustPill icon={<Scale className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
             </div>
           </div>
 
@@ -125,85 +134,102 @@ function Index() {
 
       <Separator />
 
-      {/* ── How it works: professionals ─────────────────────────────────── */}
+      {/* ── How it works (tabbed) ────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-12 flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <h2 className="text-3xl font-bold">How it works</h2>
+        <p className="mt-2 text-muted-foreground">
+          OnMatchIEHP is built for both sides of the hiring relationship.
+        </p>
+
+        {/* Tab switcher */}
+        <div className="mt-8 flex border-b border-border">
+          <button
+            onClick={() => setActiveTab("professionals")}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${
+              activeTab === "professionals"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
             <GraduationCap className="h-4 w-4" />
-          </div>
-          <div>
-            <Badge className="mb-1 bg-primary/10 text-primary hover:bg-primary/20 border-0">For health professionals</Badge>
-            <h2 className="text-3xl font-bold">Your path to Ontario healthcare</h2>
-          </div>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-3">
-          <Step
-            number="1"
-            title="Build your profile"
-            body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your matches."
-          />
-          <Step
-            number="2"
-            title="Track your credentials"
-            body="Use our guided credential tracker to record each step of your Ontario licensing journey — from NNAS submission to your college certificate."
-          />
-          <Step
-            number="3"
-            title="Get matched"
-            body="Verified Ontario employers use AI to find candidates like you. You'll be notified when there's a match — with full control over your visibility."
-          />
-        </div>
-        <div className="mt-8">
-          <Link to="/auth">
-            <Button size="lg" className="gap-2">
-              Create your free profile <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      <Separator />
-
-      {/* ── How it works: employers ──────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-12 flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            For health professionals
+          </button>
+          <button
+            onClick={() => setActiveTab("employers")}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${
+              activeTab === "employers"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
             <Building2 className="h-4 w-4" />
+            For healthcare employers
+          </button>
+        </div>
+
+        {/* Tab content */}
+        {activeTab === "professionals" ? (
+          <div className="mt-12">
+            <h3 className="text-2xl font-semibold mb-10">Your path to Ontario healthcare</h3>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <Step
+                number="1"
+                title="Build your profile"
+                body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
+              />
+              <Step
+                number="2"
+                title="Track your credentials"
+                body="Use our guided credential tracker to record each step of your Ontario licensing journey — from initial assessment through to your Ontario college registration."
+              />
+              <Step
+                number="3"
+                title="Get matched"
+                body="Verified Ontario employers use AI to find candidates like you. You'll be notified when there's a match — with full control over your visibility."
+              />
+            </div>
+            <div className="mt-8">
+              <Link to="/auth">
+                <Button size="lg" className="gap-2">
+                  Create your free profile <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
-          <div>
-            <Badge className="mb-1 bg-primary/10 text-primary hover:bg-primary/20 border-0">For healthcare employers</Badge>
-            <h2 className="text-3xl font-bold">Find qualified candidates faster</h2>
+        ) : (
+          <div className="mt-12">
+            <h3 className="text-2xl font-semibold mb-10">Find qualified candidates faster</h3>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <Step
+                number="1"
+                title="Verify your organization"
+                body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
+              />
+              <Step
+                number="2"
+                title="Post jobs or search directly"
+                body="Post job listings visible to all professionals, or use AI candidate search — describe a role in plain English and get ranked matches instantly."
+              />
+              <Step
+                number="3"
+                title="Connect and hire"
+                body="Save candidates to shortlists, send direct messages, and manage your applicant pipeline. Compliance-conscious at every step."
+              />
+            </div>
+            <div className="mt-8">
+              <Link to="/auth">
+                <Button size="lg" variant="outline" className="gap-2">
+                  Start hiring for free <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-3">
-          <Step
-            number="1"
-            title="Verify your organization"
-            body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
-          />
-          <Step
-            number="2"
-            title="Post roles or search directly"
-            body="Post job listings visible to all professionals, or use AI candidate search — describe a role in plain English and get ranked matches instantly."
-          />
-          <Step
-            number="3"
-            title="Connect and hire"
-            body="Save candidates to shortlists, send direct messages, and manage your applicant pipeline. Compliance-conscious at every step."
-          />
-        </div>
-        <div className="mt-8">
-          <Link to="/auth">
-            <Button size="lg" variant="outline" className="gap-2">
-              Start hiring for free <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
+        )}
       </section>
 
       <Separator />
 
-      {/* ── Compliance & trust section ───────────────────────────────────── */}
+      {/* ── Compliance & trust (trimmed to 3) ───────────────────────────── */}
       <section className="bg-gradient-to-br from-primary/[0.04] to-muted/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
@@ -211,7 +237,7 @@ function Index() {
             Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatchIEHP is
             designed around them.
           </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
             <ComplianceItem
               icon={<ShieldCheck className="h-5 w-5" />}
               title="Privacy-first by design"
@@ -223,26 +249,37 @@ function Index() {
               body="Every employer account is manually reviewed before gaining search access. Professionals are only visible to verified Ontario healthcare organizations."
             />
             <ComplianceItem
-              icon={<FileText className="h-5 w-5" />}
-              title="PIPEDA & Ontario privacy law"
-              body="Data handling follows PIPEDA requirements. Users can access, correct, and delete their data at any time."
-            />
-            <ComplianceItem
-              icon={<GraduationCap className="h-5 w-5" />}
-              title="Regulatory body aware"
-              body="Credential pathways are mapped to Ontario's actual regulatory colleges — CNO, CPSO, OCP, and 10+ others."
-            />
-            <ComplianceItem
-              icon={<Users className="h-5 w-5" />}
-              title="Human Rights Code aligned"
-              body="The platform is designed to support, not circumvent, Ontario Human Rights Code obligations in the hiring process."
-            />
-            <ComplianceItem
               icon={<Search className="h-5 w-5" />}
               title="AI bias monitoring"
               body="All AI search sessions are logged and periodically audited for patterns that could indicate systemic bias in matching scores."
             />
           </div>
+          <div className="mt-8">
+            <Link to="/privacy" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+              See our full privacy and compliance approach <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Closing CTA ─────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-6 py-20 text-center">
+        <h2 className="text-3xl font-bold">Ready to find your match?</h2>
+        <p className="mt-4 mx-auto max-w-xl text-lg text-muted-foreground">
+          Join internationally trained health professionals and Ontario healthcare employers already
+          on the platform. Free for everyone — always.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link to="/auth">
+            <Button size="lg" className="gap-2 shadow-md shadow-primary/20">
+              Create your free profile <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link to="/auth">
+            <Button size="lg" variant="outline" className="gap-2">
+              Start hiring for free <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -257,8 +294,8 @@ function Index() {
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
-              <a href="mailto:support@onmatchhealth.ca" className="hover:text-foreground">
-                support@onmatchhealth.ca
+              <a href="mailto:support@onmatchiehp.ca" className="hover:text-foreground">
+                support@onmatchiehp.ca
               </a>
             </div>
           </div>
