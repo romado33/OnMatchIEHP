@@ -24,31 +24,47 @@ function DemoPage() {
 
   async function setupAndSignIn(role: "iehp" | "hr") {
     setSigningIn(role);
-    try {
-      // Seed accounts if not already done
-      if (!ready) {
-        setSeeding(true);
-        await seed();
-        setReady(true);
-        setSeeding(false);
-      }
+    const creds = DEMO_CREDENTIALS[role];
+    const label = role === "iehp" ? "Priya (IEHP candidate)" : "Alex (HR employer)";
 
-      const creds = DEMO_CREDENTIALS[role];
-      const { error } = await supabase.auth.signInWithPassword({
+    try {
+      // Step 1: try signing in directly (accounts may already exist)
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: creds.email,
         password: creds.password,
       });
 
-      if (error) {
-        toast.error("Sign-in failed. Try clicking the button again.");
-        console.error(error);
+      if (!signInError) {
+        toast.success(`Signed in as ${label}`);
+        navigate({ to: "/dashboard" });
         return;
       }
 
-      toast.success(`Signed in as ${role === "iehp" ? "Priya (IEHP candidate)" : "Alex (HR employer)"}`);
+      // Step 2: sign-in failed — try seeding first, then sign in again
+      setSeeding(true);
+      await seed();
+      setReady(true);
+      setSeeding(false);
+
+      const { error: retryError } = await supabase.auth.signInWithPassword({
+        email: creds.email,
+        password: creds.password,
+      });
+
+      if (retryError) {
+        toast.error("Demo accounts created but sign-in failed. Check that email confirmations are disabled in Supabase Auth settings.");
+        return;
+      }
+
+      toast.success(`Signed in as ${label}`);
       navigate({ to: "/dashboard" });
-    } catch (e) {
-      toast.error("Something went wrong. Try again.");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg.includes("SERVICE_ROLE") || msg.includes("service_role") || msg.includes("environment variable")) {
+        toast.error("Demo setup needs the SUPABASE_SERVICE_ROLE_KEY added to Vercel environment variables.", { duration: 8000 });
+      } else {
+        toast.error(`Sign-in failed: ${msg}`);
+      }
       console.error(e);
     } finally {
       setSigningIn(null);
