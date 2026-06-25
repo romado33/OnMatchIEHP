@@ -22,6 +22,8 @@ import {
   XCircle,
   ChevronDown,
   ChevronUp,
+  Check,
+  Minus,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -370,6 +372,70 @@ function MatchCard({
           <span className="font-medium">Why this candidate: </span>
           {m.rationale}
         </p>
+        {(m.strengths.length > 0 || m.gaps.length > 0) && (
+          <div className="grid gap-3 sm:grid-cols-2">
+            {m.strengths.length > 0 && (
+              <div className="rounded-md border border-emerald-200 bg-emerald-50/50 p-3">
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                  Strengths
+                </p>
+                <ul className="space-y-1">
+                  {m.strengths.map((s, i) => (
+                    <li key={i} className="flex gap-1.5 text-sm text-emerald-900">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {m.gaps.length > 0 && (
+              <div className="rounded-md border border-amber-200 bg-amber-50/50 p-3">
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-amber-700">
+                  Potential gaps
+                </p>
+                <ul className="space-y-1">
+                  {m.gaps.map((g, i) => (
+                    <li key={i} className="flex gap-1.5 text-sm text-amber-900">
+                      <Minus className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                      <span>{g}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+        {m.criteria.length > 0 && (
+          <div className="rounded-md border border-border bg-muted/30 p-3">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Score breakdown
+            </p>
+            <div className="space-y-2">
+              {m.criteria.map((c, i) => (
+                <div key={i}>
+                  <div className="flex items-baseline justify-between gap-2 text-sm">
+                    <span className="font-medium">{c.label}</span>
+                    <span className="tabular-nums text-muted-foreground">{Math.round(c.score)}</span>
+                  </div>
+                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={`h-full ${
+                        c.score >= 80
+                          ? "bg-emerald-500"
+                          : c.score >= 50
+                          ? "bg-amber-500"
+                          : "bg-muted-foreground/40"
+                      }`}
+                      style={{ width: `${Math.max(0, Math.min(100, c.score))}%` }}
+                    />
+                  </div>
+                  {c.note && <p className="mt-1 text-xs text-muted-foreground">{c.note}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex flex-wrap gap-1.5">
           {m.candidate.languages.map((l) => (
             <Badge key={l} variant="outline">
