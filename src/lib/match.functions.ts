@@ -69,9 +69,9 @@ export const matchCandidates = createServerFn({ method: "POST" })
     const { data: pool, error } = await context.supabase.rpc(
       "search_professional_profiles",
       {
-        _profession_id: data.profession_id ?? null,
+        _profession_id: data.profession_id ?? undefined,
         _work_authorized_only: data.work_authorized_only ?? false,
-        _min_years_experience: data.min_years_experience ?? null,
+        _min_years_experience: data.min_years_experience ?? undefined,
         _limit: 80,
       },
     );
