@@ -56,59 +56,30 @@ function Onboarding() {
 
   async function pickProfessional() {
     setLoading("professional");
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setLoading(null);
-      return;
-    }
-
-    const { error: e1 } = await supabase
-      .from("profiles")
-      .update({ account_type: "professional" })
-      .eq("id", user.id);
-
-    const { error: e2 } = await supabase
-      .from("user_roles")
-      .insert({ user_id: user.id, role: "professional" });
-
+    // set_initial_user_role atomically inserts into user_roles AND updates
+    // profiles.account_type in a single SECURITY DEFINER function.
+    // Direct inserts to user_roles are no longer allowed from the client.
+    const { error } = await supabase.rpc("set_initial_user_role", {
+      _role: "professional",
+    });
     setLoading(null);
-
-    if (e1 || (e2 && !`${e2.message}`.includes("duplicate"))) {
-      toast.error(e1?.message || e2?.message || "Failed to save");
+    if (error && !error.message.includes("already assigned")) {
+      toast.error(error.message || "Failed to save");
       return;
     }
-
     navigate({ to: "/profile" });
   }
 
   async function pickEmployer() {
     setLoading("employer");
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setLoading(null);
-      return;
-    }
-
-    const { error: e1 } = await supabase
-      .from("profiles")
-      .update({ account_type: "employer" })
-      .eq("id", user.id);
-
-    const { error: e2 } = await supabase
-      .from("user_roles")
-      .insert({ user_id: user.id, role: "employer" });
-
+    const { error } = await supabase.rpc("set_initial_user_role", {
+      _role: "employer",
+    });
     setLoading(null);
-
-    if (e1 || (e2 && !`${e2.message}`.includes("duplicate"))) {
-      toast.error(e1?.message || e2?.message || "Failed to save");
+    if (error && !error.message.includes("already assigned")) {
+      toast.error(error.message || "Failed to save");
       return;
     }
-
     // Move to employer detail step
     setStep("employer_details");
   }
