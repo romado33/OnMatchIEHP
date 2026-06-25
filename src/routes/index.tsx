@@ -38,7 +38,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="border-b border-border">
+      <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
             <Stethoscope className="h-5 w-5 text-primary" />
@@ -56,66 +56,72 @@ function Index() {
       </header>
 
       {/* ── Hero ────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-            <MapPin className="h-3 w-3" /> Built for Ontario, Canada
-          </div>
-          <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Foreign-trained health pros,
-            <br />
-            matched with Ontario employers.
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground">
-            OnMatchIEHP turns your international training, credentials, and goals into AI-ranked
-            matches for hospitals, clinics, and care organizations across Ontario. Free for
-            internationally educated health professionals and for employers.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/auth">
-              <Button size="lg" className="gap-2">
-                I'm a health professional <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/auth">
-              <Button size="lg" variant="outline">
-                I'm hiring
-              </Button>
-            </Link>
-            <Link to="/demo">
-              <Button size="lg" variant="ghost">
-                Try a demo account →
-              </Button>
-            </Link>
+      <div className="relative overflow-hidden bg-gradient-to-b from-primary/[0.06] via-primary/[0.02] to-background">
+        {/* Decorative soft-glow blobs */}
+        <div className="pointer-events-none absolute -top-32 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute top-32 right-1/4 h-64 w-64 rounded-full bg-emerald-300/10 blur-3xl" />
+
+        <section className="relative mx-auto max-w-6xl px-6 py-20">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+              <MapPin className="h-3 w-3" /> Built for Ontario, Canada
+            </div>
+            <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+              Foreign-trained health pros,
+              <br />
+              <span className="text-primary">matched with Ontario employers.</span>
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground">
+              OnMatchIEHP turns your international training, credentials, and goals into AI-ranked
+              matches for hospitals, clinics, and care organizations across Ontario. Free for
+              internationally educated health professionals and for employers.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/auth">
+                <Button size="lg" className="gap-2 shadow-md shadow-primary/20">
+                  I'm a health professional <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button size="lg" variant="outline">
+                  I'm hiring
+                </Button>
+              </Link>
+              <Link to="/demo">
+                <Button size="lg" variant="ghost">
+                  Try a demo account →
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust signals */}
+            <div className="mt-8 flex flex-wrap gap-4">
+              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified employers only" />
+              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="We never share your immigration status" />
+              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
+            </div>
           </div>
 
-          {/* Trust signals */}
-          <div className="mt-8 flex flex-wrap gap-4">
-            <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified employers only" />
-            <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="We never share your immigration status" />
-            <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
+          {/* Feature cards */}
+          <div className="mt-20 grid gap-6 sm:grid-cols-3">
+            <Feature
+              icon={<Stethoscope className="h-5 w-5" />}
+              title="Built for your journey"
+              body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
+            />
+            <Feature
+              icon={<Search className="h-5 w-5" />}
+              title="AI candidate matching"
+              body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
+            />
+            <Feature
+              icon={<ShieldCheck className="h-5 w-5" />}
+              title="You control visibility"
+              body="Toggle searchability anytime. Your profile is only shared with verified Ontario employers — never your immigration status."
+            />
           </div>
-        </div>
-
-        {/* Feature cards */}
-        <div className="mt-20 grid gap-6 sm:grid-cols-3">
-          <Feature
-            icon={<Stethoscope className="h-5 w-5" />}
-            title="Built for your journey"
-            body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
-          />
-          <Feature
-            icon={<Search className="h-5 w-5" />}
-            title="AI candidate matching"
-            body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
-          />
-          <Feature
-            icon={<ShieldCheck className="h-5 w-5" />}
-            title="You control visibility"
-            body="Toggle searchability anytime. Your profile is only shared with verified Ontario employers — never your immigration status."
-          />
-        </div>
-      </section>
+        </section>
+      </div>
 
       <Separator />
 
@@ -126,7 +132,7 @@ function Index() {
             <GraduationCap className="h-4 w-4" />
           </div>
           <div>
-            <Badge variant="secondary" className="mb-1">For health professionals</Badge>
+            <Badge className="mb-1 bg-primary/10 text-primary hover:bg-primary/20 border-0">For health professionals</Badge>
             <h2 className="text-3xl font-bold">Your path to Ontario healthcare</h2>
           </div>
         </div>
@@ -165,7 +171,7 @@ function Index() {
             <Building2 className="h-4 w-4" />
           </div>
           <div>
-            <Badge variant="secondary" className="mb-1">For healthcare employers</Badge>
+            <Badge className="mb-1 bg-primary/10 text-primary hover:bg-primary/20 border-0">For healthcare employers</Badge>
             <h2 className="text-3xl font-bold">Find qualified candidates faster</h2>
           </div>
         </div>
@@ -198,7 +204,7 @@ function Index() {
       <Separator />
 
       {/* ── Compliance & trust section ───────────────────────────────────── */}
-      <section className="bg-muted/40">
+      <section className="bg-gradient-to-br from-primary/[0.04] to-muted/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
@@ -272,7 +278,7 @@ function Index() {
 
 function Feature({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div className="rounded-xl border border-border bg-card p-6 border-t-2 border-t-primary/40">
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </div>
@@ -316,7 +322,9 @@ function ComplianceItem({
 }) {
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2 text-primary">{icon}</div>
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        {icon}
+      </div>
       <h3 className="font-semibold">{title}</h3>
       <p className="text-sm text-muted-foreground">{body}</p>
     </div>
