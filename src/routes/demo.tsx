@@ -1,12 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { seedDemoAccounts, DEMO_CREDENTIALS } from "@/lib/seed-demo.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Sparkles, Stethoscope, Building2 } from "lucide-react";
+import { Sparkles, Stethoscope, Building2, LogIn } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/demo")({
@@ -16,26 +17,43 @@ export const Route = createFileRoute("/demo")({
 
 function DemoPage() {
   const seed = useServerFn(seedDemoAccounts);
+  const navigate = useNavigate();
   const [seeding, setSeeding] = useState(false);
   const [ready, setReady] = useState(false);
+  const [signingIn, setSigningIn] = useState<"iehp" | "hr" | null>(null);
 
-  async function setupDemo() {
-    setSeeding(true);
+  async function setupAndSignIn(role: "iehp" | "hr") {
+    setSigningIn(role);
     try {
-      await seed();
-      setReady(true);
-      toast.success("Demo accounts are ready — sign in with either set of credentials below.");
+      // Seed accounts if not already done
+      if (!ready) {
+        setSeeding(true);
+        await seed();
+        setReady(true);
+        setSeeding(false);
+      }
+
+      const creds = DEMO_CREDENTIALS[role];
+      const { error } = await supabase.auth.signInWithPassword({
+        email: creds.email,
+        password: creds.password,
+      });
+
+      if (error) {
+        toast.error("Sign-in failed. Try clicking the button again.");
+        console.error(error);
+        return;
+      }
+
+      toast.success(`Signed in as ${role === "iehp" ? "Priya (IEHP candidate)" : "Alex (HR employer)"}`);
+      navigate({ to: "/dashboard" });
     } catch (e) {
-      toast.error("Failed to set up demo data. Try again.");
+      toast.error("Something went wrong. Try again.");
       console.error(e);
     } finally {
+      setSigningIn(null);
       setSeeding(false);
     }
-  }
-
-  function copy(text: string, label: string) {
-    navigator.clipboard.writeText(text);
-    toast.success(`${label} copied`);
   }
 
   return (
@@ -47,37 +65,32 @@ function DemoPage() {
         </Badge>
         <h1 className="mt-3 text-3xl font-bold">Try both sides of OnMatchIEHP</h1>
         <p className="mt-2 text-muted-foreground">
-          Spin up two ready-made accounts — one IEHP (job seeker) and one HR / employer — pre-loaded with sample
-          profile and job data. Everything is clearly marked <span className="font-mono text-xs">[DEMO]</span> so
-          it's easy to tell apart from real users.
+          One click to sign in as either a health professional or an employer. Accounts are
+          pre-loaded with sample data — everything is marked{" "}
+          <span className="font-mono text-xs">[DEMO]</span> so it's easy to tell apart from real
+          users.
         </p>
 
-        <div className="mt-6">
-          <Button onClick={setupDemo} disabled={seeding} size="lg">
-            <Sparkles className="mr-2 h-4 w-4" />
-            {seeding ? "Setting up…" : ready ? "Re-run demo setup" : "Set up demo accounts"}
-          </Button>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Safe to run multiple times — it only creates what's missing.
-          </p>
-        </div>
-
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          <AccountCard
+          <DemoCard
             icon={<Stethoscope className="h-5 w-5 text-emerald-600" />}
-            title="IEHP candidate"
+            title="IEHP Candidate"
             subtitle="Priya Sharma — ICU nurse trained in India"
-            email={DEMO_CREDENTIALS.iehp.email}
-            password={DEMO_CREDENTIALS.iehp.password}
-            onCopy={copy}
+            description="See the professional experience: build a profile, track credential steps, browse job postings, and get AI-matched."
+            buttonLabel="Sign in as Priya"
+            loading={signingIn === "iehp"}
+            disabled={signingIn !== null}
+            onSignIn={() => setupAndSignIn("iehp")}
           />
-          <AccountCard
+          <DemoCard
             icon={<Building2 className="h-5 w-5 text-sky-600" />}
             title="HR / Employer"
             subtitle="Lakeshore Regional Health (verified)"
-            email={DEMO_CREDENTIALS.hr.email}
-            password={DEMO_CREDENTIALS.hr.password}
-            onCopy={copy}
+            description="See the employer experience: run AI candidate searches, post jobs, shortlist candidates, and send messages."
+            buttonLabel="Sign in as Alex (HR)"
+            loading={signingIn === "hr"}
+            disabled={signingIn !== null}
+            onSignIn={() => setupAndSignIn("hr")}
           />
         </div>
 
@@ -93,31 +106,59 @@ function DemoPage() {
           </CardContent>
         </Card>
 
-        <p className="mt-6 text-xs text-muted-foreground">
+        <p className="mt-4 text-xs text-muted-foreground">
           Sign out from the header to switch between the two demo accounts.
         </p>
+
+        {/* Re-seed option */}
+        <div className="mt-6 border-t border-border pt-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              setSeeding(true);
+              try {
+                await seed();
+                setReady(true);
+                toast.success("Demo data refreshed.");
+              } catch {
+                toast.error("Failed to refresh demo data.");
+              } finally {
+                setSeeding(false);
+              }
+            }}
+            disabled={seeding || signingIn !== null}
+          >
+            <Sparkles className="mr-2 h-3.5 w-3.5" />
+            {seeding ? "Refreshing…" : "Refresh demo data"}
+          </Button>
+        </div>
       </main>
     </div>
   );
 }
 
-function AccountCard({
+function DemoCard({
   icon,
   title,
   subtitle,
-  email,
-  password,
-  onCopy,
+  description,
+  buttonLabel,
+  loading,
+  disabled,
+  onSignIn,
 }: {
   icon: React.ReactNode;
   title: string;
   subtitle: string;
-  email: string;
-  password: string;
-  onCopy: (text: string, label: string) => void;
+  description: string;
+  buttonLabel: string;
+  loading: boolean;
+  disabled: boolean;
+  onSignIn: () => void;
 }) {
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <div className="flex items-center gap-2">
           {icon}
@@ -125,24 +166,13 @@ function AccountCard({
         </div>
         <CardDescription>{subtitle}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <CredRow label="Email" value={email} onCopy={() => onCopy(email, "Email")} />
-        <CredRow label="Password" value={password} onCopy={() => onCopy(password, "Password")} />
+      <CardContent className="flex flex-1 flex-col justify-between gap-4">
+        <p className="text-sm text-muted-foreground">{description}</p>
+        <Button onClick={onSignIn} disabled={disabled} className="w-full gap-2">
+          <LogIn className="h-4 w-4" />
+          {loading ? "Signing in…" : buttonLabel}
+        </Button>
       </CardContent>
     </Card>
-  );
-}
-
-function CredRow({ label, value, onCopy }: { label: string; value: string; onCopy: () => void }) {
-  return (
-    <div className="flex items-center justify-between gap-2 rounded-md border border-border bg-muted/30 px-3 py-2">
-      <div className="min-w-0">
-        <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</p>
-        <p className="truncate font-mono text-sm">{value}</p>
-      </div>
-      <Button variant="ghost" size="icon" onClick={onCopy} className="h-7 w-7 shrink-0">
-        <Copy className="h-3.5 w-3.5" />
-      </Button>
-    </div>
   );
 }
