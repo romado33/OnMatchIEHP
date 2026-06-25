@@ -64,32 +64,17 @@ export const matchCandidates = createServerFn({ method: "POST" })
       };
     }
 
-    // Build the query with optional pre-filters.
-    // NOTE: work_authorization is deliberately excluded from the SELECT to prevent
-    // raw immigration status from being sent to the AI or returned to the frontend.
-    let query = context.supabase
-      .from("professional_profiles")
-      .select(
-        `user_id, profession, specialty, country_of_training, years_experience,
-         languages, credentials_status, license_exam_status,
-         work_authorized_without_sponsorship,
-         currently_in_canada, current_city, preferred_cities,
-         willing_to_relocate, desired_role_types, desired_employment_types,
-         available_from, bio`,
-      )
-      .eq("is_searchable", true);
-
-    if (data.profession_id) {
-      query = query.eq("profession_id", data.profession_id);
-    }
-    if (data.work_authorized_only) {
-      query = query.eq("work_authorized_without_sponsorship", true);
-    }
-    if (data.min_years_experience !== undefined) {
-      query = query.gte("years_experience", data.min_years_experience);
-    }
-
-    const { data: pool, error } = await query.limit(80);
+    // Privileged RPC excludes raw work_authorization / work_auth_type_id
+    // and enforces employer-role + verification checks server-side.
+    const { data: pool, error } = await context.supabase.rpc(
+      "search_professional_profiles",
+      {
+        _profession_id: data.profession_id ?? undefined,
+        _work_authorized_only: data.work_authorized_only ?? false,
+        _min_years_experience: data.min_years_experience ?? undefined,
+        _limit: 80,
+      },
+    );
     if (error) return { error: error.message, matches: [] };
 
     const candidates = (pool ?? []) as Candidate[];

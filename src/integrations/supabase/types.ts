@@ -1581,6 +1581,35 @@ export type Database = {
         }
         Returns: boolean
       }
+      search_professional_profiles: {
+        Args: {
+          _limit?: number
+          _min_years_experience?: number
+          _profession_id?: string
+          _work_authorized_only?: boolean
+        }
+        Returns: {
+          available_from: string
+          bio: string
+          country_of_training: string
+          credentials_status: string
+          current_city: string
+          currently_in_canada: boolean
+          desired_employment_types: string[]
+          desired_role_types: string[]
+          languages: string[]
+          license_exam_status: string
+          preferred_cities: string[]
+          profession: string
+          profession_id: string
+          specialty: string
+          user_id: string
+          willing_to_relocate: boolean
+          work_authorized_without_sponsorship: boolean
+          years_experience: number
+        }[]
+      }
+      set_initial_user_role: { Args: { _role: string }; Returns: undefined }
       user_has_required_consents: {
         Args: { _user_id: string }
         Returns: boolean
