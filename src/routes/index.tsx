@@ -66,7 +66,7 @@ function Index() {
         <div className="pointer-events-none absolute -top-32 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
         <div className="pointer-events-none absolute top-32 right-1/4 h-64 w-64 rounded-full bg-emerald-300/10 blur-3xl" />
 
-        <section className="relative mx-auto max-w-6xl px-6 py-20">
+        <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20">
           <div className="max-w-3xl">
             {/* Location badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
