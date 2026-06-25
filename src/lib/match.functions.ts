@@ -46,7 +46,14 @@ export const matchCandidates = createServerFn({ method: "POST" })
     if (!isEmployer) {
       return {
         error: "Only employer accounts can run candidate searches.",
-        matches: [] as Array<{ candidate: Candidate; score: number; rationale: string }>,
+        matches: [] as Array<{
+          candidate: Candidate;
+          score: number;
+          rationale: string;
+          strengths: string[];
+          gaps: string[];
+          criteria: Array<{ label: string; score: number; note: string }>;
+        }>,
       };
     }
 
