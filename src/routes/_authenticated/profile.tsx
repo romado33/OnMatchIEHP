@@ -1098,17 +1098,17 @@ function EmployerForm({ userId }: { userId: string }) {
         setE({
           org_name: d.org_name ?? "",
           org_type: d.org_type ?? "",
-          org_type_id: (d as Record<string, string>).org_type_id ?? "",
+          org_type_id: (d as unknown as Record<string, string>).org_type_id ?? "",
           city: d.city ?? "",
           website: d.website ?? "",
           contact_name: d.contact_name ?? "",
           contact_phone: d.contact_phone ?? "",
           about: d.about ?? "",
-          linkedin_url: (d as Record<string, string>).linkedin_url ?? "",
-          ontario_business_number: (d as Record<string, string>).ontario_business_number ?? "",
-          accepts_sponsored_workers: (d as Record<string, boolean>).accepts_sponsored_workers ?? false,
-          lmia_capable: (d as Record<string, boolean>).lmia_capable ?? false,
-          verification_status: (d as Record<string, string>).verification_status ?? "pending",
+          linkedin_url: (d as unknown as Record<string, string>).linkedin_url ?? "",
+          ontario_business_number: (d as unknown as Record<string, string>).ontario_business_number ?? "",
+          accepts_sponsored_workers: (d as unknown as Record<string, boolean>).accepts_sponsored_workers ?? false,
+          lmia_capable: (d as unknown as Record<string, boolean>).lmia_capable ?? false,
+          verification_status: (d as unknown as Record<string, string>).verification_status ?? "pending",
         });
       }
       setLoading(false);
