@@ -35,7 +35,7 @@ type Candidate = {
 
 export const matchCandidates = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .validator((d: unknown) => Input.parse(d))
+  .inputValidator((d: unknown) => Input.parse(d))
   .handler(async ({ data, context }) => {
     // Confirm caller is an employer with a verified account.
     const { data: roles } = await context.supabase
