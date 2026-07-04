@@ -118,8 +118,8 @@ function Index() {
               body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
             />
             <Feature
-              image="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=240&fit=crop&crop=center"
-              imageAlt="Man and woman in a professional greeting handshake"
+              image="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&h=240&fit=crop&crop=center"
+              imageAlt="Man and woman shaking hands professionally"
               title="AI candidate matching"
               body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
             />
@@ -175,8 +175,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=240&fit=crop&crop=top"
-                imageAlt="Health professional reviewing patient information"
+                image="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=240&fit=crop&crop=top"
+                imageAlt="Diverse healthcare professionals including doctor and colleague with hijab"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
@@ -189,7 +189,7 @@ function Index() {
               />
               <Step
                 number="3"
-                image="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=240&fit=crop"
+                image="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=300&fit=crop&crop=top"
                 imageAlt="Professional receiving a job match notification"
                 title="Get matched"
                 body="Verified Ontario employers use AI to find candidates like you. You'll be notified when there's a match — with full control over your visibility."
@@ -209,8 +209,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&h=240&fit=crop"
-                imageAlt="Healthcare team in a hospital setting"
+                image="https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600&h=240&fit=crop&crop=center"
+                imageAlt="Healthcare team meeting in a hospital setting"
                 title="Verify your organization"
                 body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
               />
@@ -321,7 +321,7 @@ function Feature({ image, imageAlt, title, body }: { image: string; imageAlt: st
 function Step({ number, image, imageAlt, title, body }: { number: string; image: string; imageAlt: string; title: string; body: string }) {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
-      <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
+      <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-top" />
       <div className="p-6 flex flex-col flex-1 border-t-2 border-t-primary/40">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
           {number}
