@@ -13,6 +13,9 @@ import {
   ArrowRight,
   EyeOff,
   Scale,
+  CalendarClock,
+  Users,
+  HeartHandshake,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -75,11 +78,18 @@ function Index() {
               <span className="text-primary">matched with Ontario employers.</span>
             </h1>
 
-            {/* Subtitle — tightened */}
+            {/* Subtitle */}
             <p className="mt-6 text-lg text-muted-foreground">
-              Turn your international training and credentials into AI-ranked matches with hospitals,
-              clinics, and care organizations across Ontario — free for internationally educated
-              health professionals and for employers.
+              Ontario's workforce integration registry connects internationally educated health
+              professionals with verified healthcare employers — giving both sides what they need
+              to plan ahead, not just fill vacancies.
+            </p>
+
+            {/* Problem context */}
+            <p className="mt-3 text-sm text-muted-foreground max-w-2xl">
+              Over 4.6 million Canadians lack a regular primary care provider, yet thousands of
+              internationally educated health professionals are already here, working through
+              Ontario's licensing process. This platform closes that gap.
             </p>
 
             {/* CTAs */}
@@ -106,6 +116,7 @@ function Index() {
               <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified employers only" />
               <TrustPill icon={<EyeOff className="h-3.5 w-3.5" />} text="Your immigration status stays private" />
               <TrustPill icon={<Scale className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
+              <TrustPill icon={<CalendarClock className="h-3.5 w-3.5" />} text="Visible to employers mid-licensing" />
             </div>
           </div>
 
@@ -115,13 +126,13 @@ function Index() {
               image="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=240&fit=crop&crop=faces"
               imageAlt="Healthcare professional reviewing documents"
               title="Built for your journey"
-              body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
+              body="Capture your specialty, country of education, licensing pathway progress, and language strengths — creating a complete workforce profile that employers and regulators can act on."
             />
             <Feature
               image="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=280&fit=crop&crop=center"
               imageAlt="Man and woman shaking hands professionally"
-              title="AI candidate matching"
-              body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
+              title="Workforce planning, not just hiring"
+              body="HR teams identify IEHPs mid-licensing, build relationships early, and plan staffing months ahead — shifting integration from reactive vacancy-filling to strategic workforce investment."
             />
             <Feature
               image="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=240&fit=crop"
@@ -172,13 +183,13 @@ function Index() {
         {activeTab === "professionals" ? (
           <div className="mt-12">
             <h3 className="text-2xl font-semibold mb-10">Your path to Ontario healthcare</h3>
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <Step
                 number="1"
                 image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=240&fit=crop&crop=center"
                 imageAlt="Person typing on a laptop building a profile"
                 title="Build your profile"
-                body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
+                body="Enter your profession, country of education, credential progress, languages, and location preferences. The more you add, the better your match score."
               />
               <Step
                 number="2"
@@ -192,7 +203,14 @@ function Index() {
                 image="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=300&fit=crop&crop=top"
                 imageAlt="Professional receiving a job match notification"
                 title="Get matched"
-                body="Verified Ontario employers use AI to find candidates like you. You'll be notified when there's a match — with full control over your visibility."
+                body="Verified Ontario employers use AI to find candidates like you — even while you're still in the licensing process. You control your visibility at every stage."
+              />
+              <Step
+                number="4"
+                image="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=240&fit=crop&crop=faces"
+                imageAlt="Two healthcare professionals in a mentorship conversation"
+                title="Access mentorship"
+                body="Connect with mentors who've navigated Canadian healthcare before you — learn workplace norms, professional culture, and career pathways from those who've been there."
               />
             </div>
             <div className="mt-8">
@@ -205,8 +223,8 @@ function Index() {
           </div>
         ) : (
           <div className="mt-12">
-            <h3 className="text-2xl font-semibold mb-10">Find qualified candidates faster</h3>
-            <div className="grid gap-6 sm:grid-cols-3">
+            <h3 className="text-2xl font-semibold mb-10">Plan your workforce, not just your vacancies</h3>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <Step
                 number="1"
                 image="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&h=240&fit=crop&crop=center"
@@ -218,21 +236,28 @@ function Index() {
                 number="2"
                 image="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=240&fit=crop"
                 imageAlt="HR team searching and reviewing candidates"
-                title="Post jobs or search directly"
-                body="Post job listings visible to all professionals, or use AI candidate search — describe a role in plain English and get ranked matches instantly."
+                title="Identify candidates early"
+                body="Search and shortlist IEHPs who are still mid-licensing — not just those with full registration. Build your pipeline months before a vacancy opens."
               />
               <Step
                 number="3"
                 image="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&h=240&fit=crop"
                 imageAlt="Healthcare team welcoming a new hire"
-                title="Connect and hire"
-                body="Save candidates to shortlists, send direct messages, and manage your applicant pipeline. Compliance-conscious at every step."
+                title="Invest and hire"
+                body="Support promising candidates through licensing costs, mentorship, or return-of-service agreements. Turn IEHP integration into a long-term workforce investment, not a one-off hire."
+              />
+              <Step
+                number="4"
+                image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=240&fit=crop&crop=top"
+                imageAlt="Team reviewing workforce planning data"
+                title="Plan alternative pathways"
+                body="For candidates who take a different route, consider roles in public health, quality improvement, or health administration — structured pathways that keep valuable expertise in your organization."
               />
             </div>
             <div className="mt-8">
               <Link to="/auth">
                 <Button size="lg" variant="outline" className="gap-2">
-                  Start hiring for free <ArrowRight className="h-4 w-4" />
+                  Start building your pipeline <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
             </div>
@@ -287,8 +312,8 @@ function Index() {
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
-              <a href="mailto:support@Ontario IEHP Workforce Integration Registry.ca" className="hover:text-foreground">
-                support@Ontario IEHP Workforce Integration Registry.ca
+              <a href="mailto:support@oiwir.ca" className="hover:text-foreground">
+                support@oiwir.ca
               </a>
             </div>
           </div>
