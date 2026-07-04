@@ -72,7 +72,7 @@ export function AppHeader() {
   return (
     <header className="border-b border-border bg-card">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        <Link to="/dashboard" className="flex items-center gap-2 font-semibold text-foreground">
+        <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
           <Stethoscope className="h-5 w-5 text-primary" />
           <span className="hidden lg:inline">Ontario IEHP Workforce Integration Registry</span>
           <span className="lg:hidden">OIWIR</span>
