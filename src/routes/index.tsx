@@ -112,21 +112,18 @@ function Index() {
           {/* Feature cards */}
           <div className="mt-20 grid gap-6 sm:grid-cols-3">
             <Feature
-              icon={<Stethoscope className="h-5 w-5" />}
               image="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=240&fit=crop&crop=faces"
               imageAlt="Healthcare professional reviewing documents"
               title="Built for your journey"
               body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
             />
             <Feature
-              icon={<Search className="h-5 w-5" />}
               image="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=240&fit=crop&crop=center"
               imageAlt="Man and woman in a professional greeting handshake"
               title="AI candidate matching"
               body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
             />
             <Feature
-              icon={<ShieldCheck className="h-5 w-5" />}
               image="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=240&fit=crop"
               imageAlt="Medical professional in a secure setting"
               title="You control visibility"
@@ -309,15 +306,12 @@ function Index() {
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
-function Feature({ icon, image, imageAlt, title, body }: { icon: React.ReactNode; image: string; imageAlt: string; title: string; body: string }) {
+function Feature({ image, imageAlt, title, body }: { image: string; imageAlt: string; title: string; body: string }) {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
       <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
       <div className="p-6 flex flex-col flex-1 border-t-2 border-t-primary/40">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-          {icon}
-        </div>
-        <h3 className="mt-4 font-semibold text-foreground">{title}</h3>
+        <h3 className="font-semibold text-foreground">{title}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{body}</p>
       </div>
     </div>
