@@ -64,7 +64,7 @@ function Index() {
       <div className="relative overflow-hidden bg-gradient-to-b from-primary/[0.06] via-primary/[0.02] to-background">
         {/* Decorative soft-glow blobs */}
         <div className="pointer-events-none absolute -top-32 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
-        <div className="pointer-events-none absolute top-32 right-1/4 h-64 w-64 rounded-full bg-emerald-300/10 blur-3xl" />
+        <div className="pointer-events-none absolute top-32 right-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
 
         <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20">
           <div className="max-w-3xl">
@@ -319,7 +319,7 @@ function Step({ number, title, body }: { number: string; title: string; body: st
 function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs text-muted-foreground">
-      <span className="text-emerald-600">{icon}</span>
+      <span className="text-primary">{icon}</span>
       {text}
     </div>
   );
