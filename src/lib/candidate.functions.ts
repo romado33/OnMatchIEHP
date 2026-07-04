@@ -71,6 +71,77 @@ export type EmployerProfileResult = {
   }[];
 };
 
+export type MyProStatsResult = {
+  profession: string | null;
+  country_of_training: string | null;
+  years_experience: number | null;
+  bio: string | null;
+  current_city: string | null;
+  available_from: string | null;
+  desired_employment_types: string[] | null;
+  completeness_score: number;
+  profile_view_count: number;
+  is_searchable: boolean;
+  credentials_done: number;
+};
+
+/** Fetches a professional's own KPI stats using supabaseAdmin to bypass RLS. */
+export const getMyProStats = createServerFn({ method: "GET" })
+  .validator(z.object({ userId: z.string().uuid() }))
+  .handler(async ({ data }): Promise<MyProStatsResult> => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { userId } = data;
+
+    const [proRes, credsDoneRes] = await Promise.all([
+      supabaseAdmin
+        .from("professional_profiles")
+        .select(
+          "profession, country_of_training, years_experience, bio, current_city, " +
+            "available_from, desired_employment_types, completeness_score, " +
+            "profile_view_count, is_searchable",
+        )
+        .eq("user_id", userId)
+        .maybeSingle(),
+      supabaseAdmin
+        .from("professional_credentials")
+        .select("id", { count: "exact" })
+        .eq("user_id", userId)
+        .in("status", ["completed", "waived"]),
+    ]);
+
+    const p = proRes.data;
+    const credsDone = credsDoneRes.count ?? 0;
+
+    // Compute completeness from actual data rather than cached DB value
+    const fields = [
+      p?.profession,
+      p?.country_of_training,
+      p?.years_experience != null && p.years_experience > 0,
+      p?.bio,
+      p?.current_city,
+      p?.available_from,
+      p?.desired_employment_types?.length,
+    ];
+    const filled = fields.filter(Boolean).length;
+    const fieldScore = Math.round((filled / fields.length) * 60);
+    const credScore = Math.min(Math.round((credsDone / 9) * 40), 40);
+    const computedScore = Math.min(fieldScore + credScore, 100);
+
+    return {
+      profession: p?.profession ?? null,
+      country_of_training: p?.country_of_training ?? null,
+      years_experience: p?.years_experience ?? null,
+      bio: p?.bio ?? null,
+      current_city: p?.current_city ?? null,
+      available_from: p?.available_from ?? null,
+      desired_employment_types: p?.desired_employment_types ?? null,
+      completeness_score: computedScore || (p?.completeness_score ?? 0),
+      profile_view_count: p?.profile_view_count ?? 0,
+      is_searchable: p?.is_searchable ?? false,
+      credentials_done: credsDone,
+    };
+  });
+
 /** Returns a candidate's full profile data for the employer view.
  *  Uses supabaseAdmin to bypass RLS — only call from server-side contexts.
  */

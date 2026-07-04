@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getCandidateProfile, getEmployerProfile } from "@/lib/candidate.functions";
+import { getCandidateProfile, getEmployerProfile, getMyProStats } from "@/lib/candidate.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -158,23 +158,16 @@ function ProDashboard({ userId }: { userId: string }) {
   const [applications, setApplications] = useState<ApplicationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const getEmployerProfileFn = useServerFn(getEmployerProfile);
+  const getMyProStatsFn = useServerFn(getMyProStats);
   const [togglingSearch, setTogglingSearch] = useState(false);
 
   useEffect(() => {
     async function load() {
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-      const [proRes, viewsRes, totalViewsRes, credRes, credListRes, refStepsRes, appRes] =
+      const [proStatsResult, viewsRes, totalViewsRes, credListRes, refStepsRes, appRes] =
         await Promise.all([
-          supabase
-            .from("professional_profiles")
-            .select(
-              "completeness_score, profile_view_count, is_searchable, " +
-                "profession, country_of_training, years_experience, bio, current_city, " +
-                "available_from, desired_employment_types",
-            )
-            .eq("user_id", userId)
-            .maybeSingle(),
+          getMyProStatsFn({ data: { userId } }),
           supabase
             .from("profile_view_events")
             .select("id", { count: "exact" })
@@ -184,11 +177,6 @@ function ProDashboard({ userId }: { userId: string }) {
             .from("profile_view_events")
             .select("id", { count: "exact" })
             .eq("professional_user_id", userId),
-          supabase
-            .from("professional_credentials")
-            .select("status", { count: "exact" })
-            .eq("user_id", userId)
-            .in("status", ["completed", "waived"]),
           supabase
             .from("professional_credentials")
             .select("id, step_id, custom_step_name, status, started_at, completed_at, notes")
@@ -257,33 +245,12 @@ function ProDashboard({ userId }: { userId: string }) {
       }
       setApplications(apps);
 
-      // Compute completeness score live from actual profile data
-      const p = proRes.data;
-      let filled = 0;
-      const fields = [
-        p?.profession,
-        p?.country_of_training,
-        p?.years_experience != null && p.years_experience > 0,
-        p?.bio,
-        p?.current_city,
-        p?.available_from,
-        p?.desired_employment_types?.length,
-      ];
-      fields.forEach((f) => {
-        if (f) filled++;
-      });
-      const credsDone = credRes.count ?? 0;
-      const totalSteps = Object.keys(stepMap).length || 9;
-      const credScore = Math.min(Math.round((credsDone / totalSteps) * 40), 40);
-      const fieldScore = Math.round((filled / fields.length) * 60);
-      const computedScore = Math.min(fieldScore + credScore, 100);
-
       setStats({
-        completeness_score: computedScore || (p?.completeness_score ?? 0),
-        profile_view_count: totalViewsRes.count ?? (p?.profile_view_count ?? 0),
-        is_searchable: p?.is_searchable ?? false,
+        completeness_score: proStatsResult.completeness_score,
+        profile_view_count: totalViewsRes.count ?? proStatsResult.profile_view_count,
+        is_searchable: proStatsResult.is_searchable,
         views_this_week: viewsRes.count ?? 0,
-        credential_steps_done: credsDone,
+        credential_steps_done: proStatsResult.credentials_done,
       });
       setLoading(false);
     }
