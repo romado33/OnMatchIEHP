@@ -89,7 +89,7 @@ function DemoPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <DemoCard
-            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=240&fit=crop&crop=faces"
+            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=260&fit=crop&crop=center"
             imageAlt="Indian woman healthcare professional"
             icon={<Stethoscope className="h-5 w-5 text-primary" />}
             title="IEHP Candidate"
@@ -101,8 +101,8 @@ function DemoPage() {
             onSignIn={() => setupAndSignIn("iehp")}
           />
           <DemoCard
-            image="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=240&fit=crop&crop=top"
-            imageAlt="Healthcare HR manager at their desk"
+            image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=240&fit=crop&crop=top"
+            imageAlt="Diverse HR team including women in a meeting"
             icon={<Building2 className="h-5 w-5 text-primary" />}
             title="HR / Employer"
             subtitle="Lakeshore Regional Health (verified)"

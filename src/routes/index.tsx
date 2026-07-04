@@ -175,8 +175,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&h=240&fit=crop&crop=top"
-                imageAlt="Male and female healthcare professionals reviewing a profile"
+                image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=240&fit=crop&crop=top"
+                imageAlt="Healthcare professional completing an online profile"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
@@ -209,8 +209,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&h=240&fit=crop&crop=center"
-                imageAlt="Medical team in a hospital hallway"
+                image="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&h=240&fit=crop&crop=center"
+                imageAlt="Hospital building exterior — healthcare organization"
                 title="Verify your organization"
                 body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
               />
