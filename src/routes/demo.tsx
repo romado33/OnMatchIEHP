@@ -24,11 +24,16 @@ function DemoPage() {
 
   async function setupAndSignIn(role: "iehp" | "hr") {
     setSigningIn(role);
+    setSeeding(true);
     const creds = DEMO_CREDENTIALS[role];
     const label = role === "iehp" ? "Priya (IEHP candidate)" : "Alex (HR employer)";
 
     try {
-      // Step 1: try signing in directly (accounts may already exist)
+      // Always seed first so dashboard KPIs are fully populated
+      await seed();
+      setSeeding(false);
+      setReady(true);
+
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: creds.email,
         password: creds.password,
@@ -40,24 +45,7 @@ function DemoPage() {
         return;
       }
 
-      // Step 2: sign-in failed — try seeding first, then sign in again
-      setSeeding(true);
-      await seed();
-      setReady(true);
-      setSeeding(false);
-
-      const { error: retryError } = await supabase.auth.signInWithPassword({
-        email: creds.email,
-        password: creds.password,
-      });
-
-      if (retryError) {
-        toast.error("Demo accounts created but sign-in failed. Check that email confirmations are disabled in Supabase Auth settings.");
-        return;
-      }
-
-      toast.success(`Signed in as ${label}`);
-      navigate({ to: "/dashboard" });
+      toast.error("Demo accounts created but sign-in failed. Check that email confirmations are disabled in Supabase Auth settings.");
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.includes("SERVICE_ROLE") || msg.includes("service_role") || msg.includes("environment variable")) {
@@ -97,6 +85,7 @@ function DemoPage() {
             description="See the professional experience: build a profile, track credential steps, browse job postings, and get AI-matched."
             buttonLabel="Sign in as Priya"
             loading={signingIn === "iehp"}
+            seeding={signingIn === "iehp" && seeding}
             disabled={signingIn !== null}
             onSignIn={() => setupAndSignIn("iehp")}
           />
@@ -109,6 +98,7 @@ function DemoPage() {
             description="See the employer experience: run AI candidate searches, post jobs, shortlist candidates, and send messages."
             buttonLabel="Sign in as Alex (HR)"
             loading={signingIn === "hr"}
+            seeding={signingIn === "hr" && seeding}
             disabled={signingIn !== null}
             onSignIn={() => setupAndSignIn("hr")}
           />
@@ -167,6 +157,7 @@ function DemoCard({
   description,
   buttonLabel,
   loading,
+  seeding,
   disabled,
   onSignIn,
 }: {
@@ -178,6 +169,7 @@ function DemoCard({
   description: string;
   buttonLabel: string;
   loading: boolean;
+  seeding: boolean;
   disabled: boolean;
   onSignIn: () => void;
 }) {
@@ -195,7 +187,7 @@ function DemoCard({
         <p className="text-sm text-muted-foreground">{description}</p>
         <Button onClick={onSignIn} disabled={disabled} className="w-full gap-2">
           <LogIn className="h-4 w-4" />
-          {loading ? "Signing in…" : buttonLabel}
+          {loading ? (seeding ? "Preparing demo…" : "Signing in…") : buttonLabel}
         </Button>
       </CardContent>
     </Card>
