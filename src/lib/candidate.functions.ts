@@ -27,18 +27,17 @@ export type CandidateProfileResult = {
   } | null;
   credentials: {
     id: string;
-    step_id: string;
+    step_id: string | null;
     status: string;
     started_at: string | null;
     completed_at: string | null;
     notes: string | null;
     ref_credential_steps: {
-      step_number: number;
-      title: string;
+      step_order: number;
+      step_name: string;
       description: string | null;
       governing_body: string | null;
       typical_duration_weeks: number | null;
-      is_required: boolean;
     } | null;
   }[];
   languages: {
@@ -97,7 +96,7 @@ export const getCandidateProfile = createServerFn({ method: "GET" })
       supabaseAdmin
         .from("professional_credentials")
         .select(
-          "id, step_id, status, started_at, completed_at, notes, ref_credential_steps(step_number, title, description, governing_body, typical_duration_weeks, is_required)",
+          "id, step_id, status, started_at, completed_at, notes, ref_credential_steps(step_order, step_name, description, governing_body, typical_duration_weeks)",
         )
         .eq("user_id", userId)
         .order("step_id"),

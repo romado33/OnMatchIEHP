@@ -257,14 +257,9 @@ export default function CandidateProfilePage() {
                       <div className="flex-1 min-w-0 pb-2">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-medium">
-                            {step?.step_number}. {step?.title ?? cred.step_id}
+                            {step?.step_order}. {step?.step_name ?? cred.step_id}
                           </span>
                           <CredStatusBadge status={cred.status} />
-                          {step?.is_required === false && (
-                            <Badge variant="outline" className="text-xs text-muted-foreground">
-                              Optional
-                            </Badge>
-                          )}
                         </div>
                         {step?.governing_body && (
                           <p className="text-xs text-muted-foreground mt-0.5">

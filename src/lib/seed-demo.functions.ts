@@ -230,6 +230,13 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     },
   ]);
 
+  // Force-set KPI values unconditionally — don't rely on triggers or RPC
+  // (the RPC was revoked in security_hardening; the trigger may not bypass RLS)
+  await supabaseAdmin
+    .from("professional_profiles")
+    .update({ completeness_score: 90, profile_view_count: 9 })
+    .eq("user_id", iehpId);
+
   // ── HR / Employer demo user — Alex Chen ───────────────────────────────────
   const hrId = await ensureUser(HR_EMAIL, "[DEMO] Alex Chen");
 
