@@ -62,11 +62,18 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
       bio: "[DEMO DATA] ICU-trained RN from Mumbai with 7 years on a busy tertiary-care unit (ventilators, CRRT, post-cardiac surgery). NNAS advisory report received; CNO approved me to write NCLEX-RN. Exam booked August 2026. IELTS 8.0. Looking for a Toronto/GTA ICU with a strong preceptor program for IEHPs.",
       work_authorized_without_sponsorship: true,
       is_searchable: true,
-      completeness_score: 82,
-      profile_view_count: 9,
+      // completeness_score and profile_view_count are computed below after all related data is inserted
     },
     { onConflict: "user_id" },
   );
+
+  // Language proficiencies (15 pts toward completeness: +8 first lang, +7 second)
+  await supabaseAdmin.from("professional_language_proficiencies").delete().eq("user_id", iehpId);
+  await supabaseAdmin.from("professional_language_proficiencies").insert([
+    { user_id: iehpId, language_code: "en", proficiency_level: "native", test_id: "IELTS", test_score: "8.0 overall" },
+    { user_id: iehpId, language_code: "hi", proficiency_level: "native" },
+    { user_id: iehpId, language_code: "pa", proficiency_level: "professional" },
+  ]);
 
   // Consent
   await supabaseAdmin.from("consent_records").delete().eq("user_id", iehpId);
@@ -90,7 +97,13 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     { user_id: iehpId, step_id: "rn_cno_registered",       status: "not_started", started_at: null,         completed_at: null,         notes: null },
   ]);
 
-  // Profile view events (5 this week, 4 older)
+  // Recompute completeness score now that all profile fields, languages, and credentials are in place
+  await supabaseAdmin.rpc("calc_profile_completeness", { _user_id: iehpId });
+
+  // Reset profile_view_count to 0 before re-inserting events so triggers give exact count
+  await supabaseAdmin.from("professional_profiles").update({ profile_view_count: 0 }).eq("user_id", iehpId);
+
+  // Profile view events (5 this week, 4 older) — trigger increments profile_view_count on each INSERT
   await supabaseAdmin.from("profile_view_events").delete().eq("professional_user_id", iehpId);
   await supabaseAdmin.from("profile_view_events").insert([
     { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 0.5 * 86400000).toISOString() },
