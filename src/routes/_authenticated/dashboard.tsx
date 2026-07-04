@@ -164,33 +164,42 @@ function ProDashboard({ userId }: { userId: string }) {
     async function load() {
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-      const [proRes, viewsRes, credRes, credListRes, refStepsRes, appRes] = await Promise.all([
-        supabase
-          .from("professional_profiles")
-          .select("completeness_score, profile_view_count, is_searchable")
-          .eq("user_id", userId)
-          .maybeSingle(),
-        supabase
-          .from("profile_view_events")
-          .select("id", { count: "exact" })
-          .eq("professional_user_id", userId)
-          .gte("viewed_at", weekAgo),
-        supabase
-          .from("professional_credentials")
-          .select("status", { count: "exact" })
-          .eq("user_id", userId)
-          .in("status", ["completed", "waived"]),
-        supabase
-          .from("professional_credentials")
-          .select("id, step_id, custom_step_name, status, started_at, completed_at, notes")
-          .eq("user_id", userId),
-        supabase.from("ref_credential_steps").select("id, step_name, step_order, governing_body"),
-        supabase
-          .from("applications")
-          .select("id, status, submitted_at, job_posting_id")
-          .eq("applicant_user_id", userId)
-          .order("submitted_at", { ascending: false }),
-      ]);
+      const [proRes, viewsRes, totalViewsRes, credRes, credListRes, refStepsRes, appRes] =
+        await Promise.all([
+          supabase
+            .from("professional_profiles")
+            .select(
+              "completeness_score, profile_view_count, is_searchable, " +
+                "profession, country_of_training, years_experience, bio, current_city, " +
+                "available_from, desired_employment_types",
+            )
+            .eq("user_id", userId)
+            .maybeSingle(),
+          supabase
+            .from("profile_view_events")
+            .select("id", { count: "exact" })
+            .eq("professional_user_id", userId)
+            .gte("viewed_at", weekAgo),
+          supabase
+            .from("profile_view_events")
+            .select("id", { count: "exact" })
+            .eq("professional_user_id", userId),
+          supabase
+            .from("professional_credentials")
+            .select("status", { count: "exact" })
+            .eq("user_id", userId)
+            .in("status", ["completed", "waived"]),
+          supabase
+            .from("professional_credentials")
+            .select("id, step_id, custom_step_name, status, started_at, completed_at, notes")
+            .eq("user_id", userId),
+          supabase.from("ref_credential_steps").select("id, step_name, step_order, governing_body"),
+          supabase
+            .from("applications")
+            .select("id, status, submitted_at, job_posting_id")
+            .eq("applicant_user_id", userId)
+            .order("submitted_at", { ascending: false }),
+        ]);
 
       const stepMap: Record<string, RefStep> = {};
       (refStepsRes.data ?? []).forEach((s) => {
@@ -248,12 +257,33 @@ function ProDashboard({ userId }: { userId: string }) {
       }
       setApplications(apps);
 
+      // Compute completeness score live from actual profile data
+      const p = proRes.data;
+      let filled = 0;
+      const fields = [
+        p?.profession,
+        p?.country_of_training,
+        p?.years_experience != null && p.years_experience > 0,
+        p?.bio,
+        p?.current_city,
+        p?.available_from,
+        p?.desired_employment_types?.length,
+      ];
+      fields.forEach((f) => {
+        if (f) filled++;
+      });
+      const credsDone = credRes.count ?? 0;
+      const totalSteps = Object.keys(stepMap).length || 9;
+      const credScore = Math.min(Math.round((credsDone / totalSteps) * 40), 40);
+      const fieldScore = Math.round((filled / fields.length) * 60);
+      const computedScore = Math.min(fieldScore + credScore, 100);
+
       setStats({
-        completeness_score: proRes.data?.completeness_score ?? 0,
-        profile_view_count: proRes.data?.profile_view_count ?? 0,
-        is_searchable: proRes.data?.is_searchable ?? false,
+        completeness_score: computedScore || (p?.completeness_score ?? 0),
+        profile_view_count: totalViewsRes.count ?? (p?.profile_view_count ?? 0),
+        is_searchable: p?.is_searchable ?? false,
         views_this_week: viewsRes.count ?? 0,
-        credential_steps_done: credRes.count ?? 0,
+        credential_steps_done: credsDone,
       });
       setLoading(false);
     }
