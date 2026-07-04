@@ -89,7 +89,9 @@ function DemoPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <DemoCard
-            icon={<Stethoscope className="h-5 w-5 text-emerald-600" />}
+            image="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=240&fit=crop&crop=faces"
+            imageAlt="ICU nurse professional"
+            icon={<Stethoscope className="h-5 w-5 text-primary" />}
             title="IEHP Candidate"
             subtitle="Priya Sharma — ICU nurse trained in India"
             description="See the professional experience: build a profile, track credential steps, browse job postings, and get AI-matched."
@@ -99,7 +101,9 @@ function DemoPage() {
             onSignIn={() => setupAndSignIn("iehp")}
           />
           <DemoCard
-            icon={<Building2 className="h-5 w-5 text-sky-600" />}
+            image="https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600&h=240&fit=crop&crop=center"
+            imageAlt="Healthcare employer HR team"
+            icon={<Building2 className="h-5 w-5 text-primary" />}
             title="HR / Employer"
             subtitle="Lakeshore Regional Health (verified)"
             description="See the employer experience: run AI candidate searches, post jobs, shortlist candidates, and send messages."
@@ -155,6 +159,8 @@ function DemoPage() {
 }
 
 function DemoCard({
+  image,
+  imageAlt,
   icon,
   title,
   subtitle,
@@ -164,6 +170,8 @@ function DemoCard({
   disabled,
   onSignIn,
 }: {
+  image: string;
+  imageAlt: string;
   icon: React.ReactNode;
   title: string;
   subtitle: string;
@@ -174,8 +182,9 @@ function DemoCard({
   onSignIn: () => void;
 }) {
   return (
-    <Card className="flex flex-col">
-      <CardHeader>
+    <Card className="flex flex-col overflow-hidden p-0">
+      <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
+      <CardHeader className="pt-5">
         <div className="flex items-center gap-2">
           {icon}
           <CardTitle className="text-base">{title}</CardTitle>
