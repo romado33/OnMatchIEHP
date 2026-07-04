@@ -31,7 +31,7 @@ function PrivacyPage() {
         <h1 className="text-4xl font-bold">Privacy Policy</h1>
         <p className="mt-4 text-muted-foreground">
           OnMatchIEHP ("we", "us", "our") operates the OnMatchIEHP platform, which connects
-          internationally trained health professionals with Ontario healthcare employers. This Privacy
+          internationally educated health professionals with Ontario healthcare employers. This Privacy
           Policy explains how we collect, use, disclose, and safeguard your personal information in
           compliance with the{" "}
           <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA) and applicable

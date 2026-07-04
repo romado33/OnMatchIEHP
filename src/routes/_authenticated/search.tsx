@@ -195,7 +195,7 @@ export default function SearchPage() {
           <CardHeader>
             <CardTitle>Role description</CardTitle>
             <CardDescription>
-              Example: "Full-time ICU nurse in Mississauga. Open to internationally trained candidates with NCLEX
+              Example: "Full-time ICU nurse in Mississauga. Open to internationally educated candidates with NCLEX
               in progress. Punjabi or Tagalog a bonus."
             </CardDescription>
           </CardHeader>

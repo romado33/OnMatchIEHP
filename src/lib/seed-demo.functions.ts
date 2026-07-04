@@ -56,7 +56,7 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
       desired_role_types: ["Acute care", "ICU"],
       desired_employment_types: ["full_time"],
       available_from: new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10),
-      bio: "[DEMO DATA] Internationally trained ICU nurse with 7 years at a tertiary hospital in Mumbai. NNAS application in progress; NCLEX-RN booked. Comfortable on vents, CRRT, and post-op cardiac care.",
+      bio: "[DEMO DATA] Internationally educated ICU nurse with 7 years at a tertiary hospital in Mumbai. NNAS application in progress; NCLEX-RN booked. Comfortable on vents, CRRT, and post-op cardiac care.",
       work_authorized_without_sponsorship: true,
       is_searchable: true,
     },
@@ -105,7 +105,7 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
       city: "Toronto",
       employment_type: "full_time",
       description:
-        "[DEMO DATA] Join our 24-bed ICU at a fictional Toronto-area teaching hospital. Mix of medical, surgical, and post-cardiac patients. Strong preceptor program for internationally trained nurses.",
+        "[DEMO DATA] Join our 24-bed ICU at a fictional Toronto-area teaching hospital. Mix of medical, surgical, and post-cardiac patients. Strong preceptor program for internationally educated nurses.",
       requirements:
         "[DEMO] CNO registration or NCLEX-RN in progress. 2+ years ICU experience. Open to IEHPs completing NNAS.",
       is_active: true,

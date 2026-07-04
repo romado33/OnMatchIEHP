@@ -18,16 +18,16 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "OnMatchIEHP — Ontario's match for internationally trained health professionals" },
+      { title: "OnMatchIEHP — Ontario's match for internationally educated health professionals" },
       {
         name: "description",
         content:
-          "OnMatchIEHP connects internationally trained health professionals with verified Ontario healthcare employers using AI-powered matching.",
+          "OnMatchIEHP connects internationally educated health professionals with verified Ontario healthcare employers using AI-powered matching.",
       },
       { property: "og:title", content: "OnMatchIEHP" },
       {
         property: "og:description",
-        content: "AI-powered matching for internationally trained health professionals and Ontario healthcare employers.",
+        content: "AI-powered matching for internationally educated health professionals and Ontario healthcare employers.",
       },
     ],
   }),
@@ -70,7 +70,7 @@ function Index() {
           <div className="max-w-3xl">
             {/* Headline */}
             <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Internationally trained health pros,
+              Internationally educated health pros,
               <br />
               <span className="text-primary">matched with Ontario employers.</span>
             </h1>

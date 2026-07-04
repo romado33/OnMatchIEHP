@@ -362,7 +362,7 @@ function EmployerDashboard({ userId }: { userId: string }) {
         <ActionCard
           icon={<Search className="h-5 w-5" />}
           title="Find candidates"
-          body="Describe a role and let AI rank the best-matching internationally trained professionals."
+          body="Describe a role and let AI rank the best-matching internationally educated professionals."
           to="/search"
           cta="Start a search"
           disabled={verStatus !== "verified"}

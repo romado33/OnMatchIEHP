@@ -143,7 +143,7 @@ function Onboarding() {
                 </div>
                 <CardTitle className="mt-3">Health professional</CardTitle>
                 <CardDescription>
-                  I'm internationally trained and looking for opportunities in Ontario.
+                  I'm internationally educated and looking for opportunities in Ontario.
                 </CardDescription>
               </CardHeader>
               <CardContent>
