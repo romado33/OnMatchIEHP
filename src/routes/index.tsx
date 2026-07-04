@@ -120,8 +120,8 @@ function Index() {
             />
             <Feature
               icon={<Search className="h-5 w-5" />}
-              image="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=240&fit=crop&crop=top"
-              imageAlt="Man and woman greeting with a professional handshake"
+              image="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=240&fit=crop&crop=center"
+              imageAlt="Man and woman in a professional greeting handshake"
               title="AI candidate matching"
               body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
             />
@@ -178,8 +178,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1606206591513-adbfbdd4e636?w=600&h=240&fit=crop"
-                imageAlt="Health professional filling in a profile form"
+                image="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=240&fit=crop&crop=top"
+                imageAlt="Health professional reviewing patient information"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
@@ -212,8 +212,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=240&fit=crop"
-                imageAlt="Hospital administration office"
+                image="https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&h=240&fit=crop"
+                imageAlt="Healthcare team in a hospital setting"
                 title="Verify your organization"
                 body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
               />
