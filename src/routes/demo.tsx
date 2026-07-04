@@ -89,7 +89,7 @@ function DemoPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <DemoCard
-            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=280&fit=crop&crop=top"
+            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=320&fit=crop&crop=faces"
             imageAlt="Indian woman healthcare professional"
             icon={<Stethoscope className="h-5 w-5 text-primary" />}
             title="IEHP Candidate"
@@ -183,7 +183,7 @@ function DemoCard({
 }) {
   return (
     <Card className="flex flex-col overflow-hidden p-0">
-      <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-top" />
+      <img src={image} alt={imageAlt} className="w-full h-64 object-cover object-center" />
       <CardHeader className="pt-5">
         <div className="flex items-center gap-2">
           {icon}
