@@ -118,7 +118,7 @@ function Index() {
               body="Capture your specialty, country of training, licensing pathway progress, and language strengths in one profile."
             />
             <Feature
-              image="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&h=240&fit=crop&crop=center"
+              image="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=280&fit=crop&crop=center"
               imageAlt="Man and woman shaking hands professionally"
               title="AI candidate matching"
               body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
@@ -175,8 +175,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=240&fit=crop&crop=top"
-                imageAlt="Diverse healthcare professionals including doctor and colleague with hijab"
+                image="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&h=240&fit=crop&crop=top"
+                imageAlt="Male and female healthcare professionals reviewing a profile"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
@@ -209,8 +209,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600&h=240&fit=crop&crop=center"
-                imageAlt="Healthcare team meeting in a hospital setting"
+                image="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&h=240&fit=crop&crop=center"
+                imageAlt="Medical team in a hospital hallway"
                 title="Verify your organization"
                 body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
               />
@@ -309,7 +309,7 @@ function Index() {
 function Feature({ image, imageAlt, title, body }: { image: string; imageAlt: string; title: string; body: string }) {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
-      <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
+      <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-center" />
       <div className="p-6 flex flex-col flex-1 border-t-2 border-t-primary/40">
         <h3 className="font-semibold text-foreground">{title}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{body}</p>
