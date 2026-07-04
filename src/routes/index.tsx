@@ -178,16 +178,22 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
+                image="https://images.unsplash.com/photo-1606206591513-adbfbdd4e636?w=600&h=240&fit=crop"
+                imageAlt="Health professional filling in a profile form"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
               <Step
                 number="2"
+                image="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=600&h=240&fit=crop"
+                imageAlt="Healthcare credentials and documents"
                 title="Track your credentials"
                 body="Use our guided credential tracker to record each step of your Ontario licensing journey — from initial assessment through to your Ontario college registration."
               />
               <Step
                 number="3"
+                image="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=240&fit=crop"
+                imageAlt="Professional receiving a job match notification"
                 title="Get matched"
                 body="Verified Ontario employers use AI to find candidates like you. You'll be notified when there's a match — with full control over your visibility."
               />
@@ -206,16 +212,22 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
+                image="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=240&fit=crop"
+                imageAlt="Hospital administration office"
                 title="Verify your organization"
                 body="Create an account, complete your organization profile, and submit for verification. Typically approved within 1 business day."
               />
               <Step
                 number="2"
+                image="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=240&fit=crop"
+                imageAlt="HR team searching and reviewing candidates"
                 title="Post jobs or search directly"
                 body="Post job listings visible to all professionals, or use AI candidate search — describe a role in plain English and get ranked matches instantly."
               />
               <Step
                 number="3"
+                image="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&h=240&fit=crop"
+                imageAlt="Healthcare team welcoming a new hire"
                 title="Connect and hire"
                 body="Save candidates to shortlists, send direct messages, and manage your applicant pipeline. Compliance-conscious at every step."
               />
@@ -312,14 +324,15 @@ function Feature({ icon, image, imageAlt, title, body }: { icon: React.ReactNode
   );
 }
 
-function Step({ number, title, body }: { number: string; title: string; body: string }) {
+function Step({ number, image, imageAlt, title, body }: { number: string; image: string; imageAlt: string; title: string; body: string }) {
   return (
-    <div className="flex gap-4">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-        {number}
-      </div>
-      <div>
-        <h3 className="font-semibold text-foreground">{title}</h3>
+    <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+      <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
+      <div className="p-6 flex flex-col flex-1 border-t-2 border-t-primary/40">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+          {number}
+        </div>
+        <h3 className="mt-4 font-semibold text-foreground">{title}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{body}</p>
       </div>
     </div>
