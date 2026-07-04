@@ -68,7 +68,7 @@ function Index() {
         <div className="pointer-events-none absolute top-32 right-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
 
         <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20">
-          <div className="max-w-4xl">
+          <div>
             {/* Headline */}
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
               Internationally Educated Health Professionals,{" "}
