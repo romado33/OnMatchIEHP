@@ -4,8 +4,8 @@ import { Stethoscope } from "lucide-react";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — OnMatchIEHP" },
-      { name: "description", content: "OnMatchIEHP Privacy Policy — how we collect, use, and protect your personal information under PIPEDA and Ontario privacy law." },
+      { title: "Privacy Policy — Ontario IEHP Workforce Integration Registry" },
+      { name: "description", content: "Ontario IEHP Workforce Integration Registry Privacy Policy — how we collect, use, and protect your personal information under PIPEDA and Ontario privacy law." },
     ],
   }),
   component: PrivacyPage,
@@ -18,7 +18,7 @@ function PrivacyPage() {
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
             <Stethoscope className="h-5 w-5 text-primary" />
-            OnMatchIEHP
+            Ontario IEHP Workforce Integration Registry
           </Link>
           <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground">
             Sign in
@@ -30,7 +30,7 @@ function PrivacyPage() {
         <div className="mb-2 text-sm text-muted-foreground">Last updated: June 24, 2026</div>
         <h1 className="text-4xl font-bold">Privacy Policy</h1>
         <p className="mt-4 text-muted-foreground">
-          OnMatchIEHP ("we", "us", "our") operates the OnMatchIEHP platform, which connects
+          Ontario IEHP Workforce Integration Registry ("we", "us", "our") operates the Ontario IEHP Workforce Integration Registry platform, which connects
           internationally educated health professionals with Ontario healthcare employers. This Privacy
           Policy explains how we collect, use, disclose, and safeguard your personal information in
           compliance with the{" "}
@@ -54,7 +54,7 @@ function PrivacyPage() {
         <PolicySection title="2. How we use your information">
           <p>We use your personal information to:</p>
           <ul>
-            <li>Operate and improve the OnMatchIEHP platform</li>
+            <li>Operate and improve the Ontario IEHP Workforce Integration Registry platform</li>
             <li>Match professional profiles with relevant employer searches using AI (with your consent)</li>
             <li>Send transactional emails (account confirmation, notifications, verification updates)</li>
             <li>Monitor for bias in AI matching outcomes to ensure fair treatment</li>
@@ -123,7 +123,7 @@ function PrivacyPage() {
             <Link to="/" className="hover:text-foreground">Home</Link>
             <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
           </div>
-          <p className="mt-2">© {new Date().getFullYear()} OnMatchIEHP</p>
+          <p className="mt-2">© {new Date().getFullYear()} Ontario IEHP Workforce Integration Registry</p>
         </div>
       </footer>
     </div>

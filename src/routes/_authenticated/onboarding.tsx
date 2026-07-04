@@ -16,7 +16,7 @@ import { Stethoscope, Building2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
-  head: () => ({ meta: [{ title: "Getting started — OnMatchIEHP" }] }),
+  head: () => ({ meta: [{ title: "Getting started — Ontario IEHP Workforce Integration Registry" }] }),
   component: Onboarding,
 });
 

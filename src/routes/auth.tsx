@@ -12,8 +12,8 @@ import { Stethoscope } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — OnMatchIEHP" },
-      { name: "description", content: "Sign in or create an OnMatchIEHP account." },
+      { title: "Sign in — Ontario IEHP Workforce Integration Registry" },
+      { name: "description", content: "Sign in or create an Ontario IEHP Workforce Integration Registry account." },
     ],
   }),
   component: AuthPage,
@@ -71,7 +71,7 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <div className="w-full max-w-md">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2 font-semibold">
-          <Stethoscope className="h-5 w-5 text-primary" /> OnMatchIEHP
+          <Stethoscope className="h-5 w-5 text-primary" /> Ontario IEHP Workforce Integration Registry
         </Link>
         <Card>
           <CardHeader>

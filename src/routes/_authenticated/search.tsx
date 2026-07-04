@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/search")({
-  head: () => ({ meta: [{ title: "Find Candidates — OnMatchIEHP" }] }),
+  head: () => ({ meta: [{ title: "Find Candidates — Ontario IEHP Workforce Integration Registry" }] }),
   component: SearchPage,
 });
 

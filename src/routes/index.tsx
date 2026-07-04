@@ -18,13 +18,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "OnMatchIEHP — Ontario's match for internationally educated health professionals" },
+      { title: "Ontario IEHP Workforce Integration Registry — Ontario's match for internationally educated health professionals" },
       {
         name: "description",
         content:
-          "OnMatchIEHP connects internationally educated health professionals with verified Ontario healthcare employers using AI-powered matching.",
+          "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with verified Ontario healthcare employers using AI-powered matching.",
       },
-      { property: "og:title", content: "OnMatchIEHP" },
+      { property: "og:title", content: "Ontario IEHP Workforce Integration Registry" },
       {
         property: "og:description",
         content: "AI-powered matching for internationally educated health professionals and Ontario healthcare employers.",
@@ -44,7 +44,8 @@ function Index() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
             <Stethoscope className="h-5 w-5 text-primary" />
-            OnMatchIEHP
+            <span className="hidden lg:inline">Ontario IEHP Workforce Integration Registry</span>
+            <span className="lg:hidden">OIWIR</span>
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/demo" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
@@ -69,9 +70,8 @@ function Index() {
         <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20">
           <div className="max-w-4xl">
             {/* Headline */}
-            <h1 className="mt-6 text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Internationally educated health pros,
-              <br />
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              Internationally educated Health Professionals,{" "}
               <span className="text-primary">matched with Ontario employers.</span>
             </h1>
 
@@ -136,7 +136,7 @@ function Index() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="text-3xl font-bold">How it works</h2>
         <p className="mt-2 text-muted-foreground">
-          OnMatchIEHP is built for both sides of the hiring relationship.
+          Ontario IEHP Workforce Integration Registry is built for both sides of the hiring relationship.
         </p>
 
         {/* Tab switcher */}
@@ -232,7 +232,7 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Healthcare hiring in Ontario involves real legal and ethical obligations. OnMatchIEHP is
+            Healthcare hiring in Ontario involves real legal and ethical obligations. Ontario IEHP Workforce Integration Registry is
             designed around them.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
@@ -266,19 +266,20 @@ function Index() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 font-semibold text-foreground">
               <Stethoscope className="h-4 w-4 text-primary" />
-              OnMatchIEHP
+              <span className="hidden sm:inline">Ontario IEHP Workforce Integration Registry</span>
+              <span className="sm:hidden">OIWIR</span>
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
-              <a href="mailto:support@onmatchiehp.ca" className="hover:text-foreground">
-                support@onmatchiehp.ca
+              <a href="mailto:support@Ontario IEHP Workforce Integration Registry.ca" className="hover:text-foreground">
+                support@Ontario IEHP Workforce Integration Registry.ca
               </a>
             </div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} OnMatchIEHP. Designed for Ontario, Canada.
-            OnMatchIEHP does not verify credentials or regulatory registration. All credential information
+            © {new Date().getFullYear()} Ontario IEHP Workforce Integration Registry. Designed for Ontario, Canada.
+            Ontario IEHP Workforce Integration Registry does not verify credentials or regulatory registration. All credential information
             is self-reported. Employers must confirm registration with the relevant Ontario regulatory college
             before making an offer.
           </p>

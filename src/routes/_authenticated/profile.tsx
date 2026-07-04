@@ -42,7 +42,7 @@ import { toast } from "sonner";
 import { Plus, X, CheckCircle2, Circle, Clock, AlertCircle, ExternalLink, Info } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My Profile — OnMatchIEHP" }] }),
+  head: () => ({ meta: [{ title: "My Profile — Ontario IEHP Workforce Integration Registry" }] }),
   component: ProfilePage,
 });
 

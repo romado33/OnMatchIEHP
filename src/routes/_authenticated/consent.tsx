@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/consent")({
   head: () => ({
-    meta: [{ title: "Privacy & Terms — OnMatchIEHP" }],
+    meta: [{ title: "Privacy & Terms — Ontario IEHP Workforce Integration Registry" }],
   }),
   component: ConsentPage,
 });
@@ -66,7 +66,7 @@ function ConsentPage() {
       <div className="w-full max-w-lg">
         <div className="mb-8 flex items-center justify-center gap-2 font-semibold text-foreground">
           <Stethoscope className="h-5 w-5 text-primary" />
-          OnMatchIEHP
+          Ontario IEHP Workforce Integration Registry
         </div>
 
         <Card>
@@ -93,7 +93,7 @@ function ConsentPage() {
                   </Link>
                 </>
               }
-              description="Governs your use of OnMatchIEHP, including account responsibilities and acceptable conduct on the platform."
+              description="Governs your use of Ontario IEHP Workforce Integration Registry, including account responsibilities and acceptable conduct on the platform."
             />
 
             <ConsentItem
@@ -120,13 +120,13 @@ function ConsentPage() {
             />
 
             <div className="rounded-lg border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-              OnMatchIEHP is designed for use by healthcare professionals and employers in Ontario, Canada. By
+              Ontario IEHP Workforce Integration Registry is designed for use by healthcare professionals and employers in Ontario, Canada. By
               continuing, you confirm that your use of this platform complies with applicable employment and
               privacy laws.
             </div>
 
             <Button onClick={handleSubmit} disabled={!allChecked || loading} className="w-full">
-              {loading ? "Saving…" : "Continue to OnMatchIEHP"}
+              {loading ? "Saving…" : "Continue to Ontario IEHP Workforce Integration Registry"}
             </Button>
           </CardContent>
         </Card>

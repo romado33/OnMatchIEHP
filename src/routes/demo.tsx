@@ -11,7 +11,7 @@ import { Sparkles, Stethoscope, Building2, LogIn } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/demo")({
-  head: () => ({ meta: [{ title: "Demo accounts — OnMatchIEHP" }] }),
+  head: () => ({ meta: [{ title: "Demo accounts — Ontario IEHP Workforce Integration Registry" }] }),
   component: DemoPage,
 });
 
@@ -79,7 +79,7 @@ function DemoPage() {
         <Badge variant="outline" className="border-amber-300 bg-amber-50 text-amber-800">
           Demo mode
         </Badge>
-        <h1 className="mt-3 text-3xl font-bold">Try both sides of OnMatchIEHP</h1>
+        <h1 className="mt-3 text-3xl font-bold">Try both sides of Ontario IEHP Workforce Integration Registry</h1>
         <p className="mt-2 text-muted-foreground">
           One click to sign in as either a health professional or an employer. Accounts are
           pre-loaded with sample data — everything is marked{" "}
