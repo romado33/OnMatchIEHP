@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { getCandidateProfile, getEmployerProfile } from "@/lib/candidate.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import {
@@ -114,6 +116,8 @@ type ApplicationRow = {
   job_posting_id: string;
   jobTitle?: string;
   jobCity?: string;
+  employerUserId?: string;
+  orgName?: string;
 };
 
 type JobPosting = {
@@ -159,6 +163,7 @@ function ProDashboard({ userId }: { userId: string }) {
   const [refSteps, setRefSteps] = useState<Record<string, RefStep>>({});
   const [applications, setApplications] = useState<ApplicationRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const getEmployerProfileFn = useServerFn(getEmployerProfile);
   const [togglingSearch, setTogglingSearch] = useState(false);
 
   useEffect(() => {
@@ -208,19 +213,37 @@ function ProDashboard({ userId }: { userId: string }) {
       });
       setCredentials(credList);
 
-      // Enrich applications with job titles
+      // Enrich applications with job titles and employer info
       const apps = (appRes.data ?? []) as ApplicationRow[];
       if (apps.length > 0) {
         const jobIds = apps.map((a) => a.job_posting_id);
         const { data: jobs } = await supabase
           .from("job_postings")
-          .select("id, title, city")
+          .select("id, title, city, employer_id")
           .in("id", jobIds);
-        const jobMap: Record<string, { title: string; city: string }> = {};
-        (jobs ?? []).forEach((j) => { jobMap[j.id] = { title: j.title, city: j.city }; });
+        const jobMap: Record<string, { title: string; city: string; employer_id: string }> = {};
+        (jobs ?? []).forEach((j) => { jobMap[j.id] = { title: j.title, city: j.city, employer_id: j.employer_id }; });
+
+        // Look up org names via server function (bypasses RLS)
+        const uniqueEmployerIds = [...new Set((jobs ?? []).map((j) => j.employer_id).filter(Boolean))];
+        const orgMap: Record<string, string> = {};
+        await Promise.all(
+          uniqueEmployerIds.map(async (eid) => {
+            try {
+              const result = await getEmployerProfileFn({ data: { userId: eid } });
+              orgMap[eid] = result.empProfile?.org_name ?? "Healthcare Employer";
+            } catch {
+              orgMap[eid] = "Healthcare Employer";
+            }
+          }),
+        );
+
         apps.forEach((a) => {
-          a.jobTitle = jobMap[a.job_posting_id]?.title ?? "Unknown role";
-          a.jobCity = jobMap[a.job_posting_id]?.city ?? "";
+          const job = jobMap[a.job_posting_id];
+          a.jobTitle = job?.title ?? "Unknown role";
+          a.jobCity = job?.city ?? "";
+          a.employerUserId = job?.employer_id;
+          a.orgName = job?.employer_id ? (orgMap[job.employer_id] ?? "Healthcare Employer") : undefined;
         });
       }
       setApplications(apps);
@@ -413,9 +436,17 @@ function ProDashboard({ userId }: { userId: string }) {
           <CardContent>
             <div className="divide-y divide-border">
               {applications.map((app) => (
-                <div key={app.id} className="py-3 flex items-start justify-between gap-4">
+                <Link
+                  key={app.id}
+                  to={app.employerUserId ? "/employers/$userId" : "/dashboard"}
+                  params={{ userId: app.employerUserId ?? "" }}
+                  className="py-3 flex items-start justify-between gap-4 hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors"
+                >
                   <div>
                     <p className="text-sm font-medium text-foreground leading-snug">{app.jobTitle}</p>
+                    {app.orgName && (
+                      <p className="text-xs text-primary font-medium mt-0.5">{app.orgName}</p>
+                    )}
                     {app.jobCity && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                         <MapPin className="h-3 w-3" /> {app.jobCity}
@@ -425,8 +456,11 @@ function ProDashboard({ userId }: { userId: string }) {
                       Applied {formatDate(app.submitted_at)}
                     </p>
                   </div>
-                  <AppStatusBadge status={app.status} />
-                </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <AppStatusBadge status={app.status} />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </Link>
               ))}
             </div>
           </CardContent>
@@ -472,6 +506,7 @@ function EmployerDashboard({ userId }: { userId: string }) {
   const [recentSearches, setRecentSearches] = useState<SearchSession[]>([]);
   const [shortlist, setShortlist] = useState<ShortlistEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const getProfile = useServerFn(getCandidateProfile);
 
   useEffect(() => {
     async function load() {
@@ -533,17 +568,19 @@ function EmployerDashboard({ userId }: { userId: string }) {
 
       setRecentSearches((recentSearchRes.data ?? []) as SearchSession[]);
 
-      // Enrich shortlist with candidate names
+      // Enrich shortlist with candidate names via server function (bypasses RLS)
       const sl = (shortlistRes.data ?? []) as ShortlistEntry[];
       if (sl.length > 0) {
-        const profIds = sl.map((s) => s.professional_user_id);
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("id, full_name")
-          .in("id", profIds);
-        const nameMap: Record<string, string> = {};
-        (profiles ?? []).forEach((p) => { nameMap[p.id] = p.full_name; });
-        sl.forEach((s) => { s.name = nameMap[s.professional_user_id] ?? "Unknown candidate"; });
+        await Promise.all(
+          sl.map(async (s) => {
+            try {
+              const result = await getProfile({ data: { userId: s.professional_user_id } });
+              s.name = result.profile?.full_name ?? "Unknown candidate";
+            } catch {
+              s.name = "Unknown candidate";
+            }
+          }),
+        );
       }
       setShortlist(sl);
 
@@ -685,9 +722,14 @@ function EmployerDashboard({ userId }: { userId: string }) {
           <CardContent>
             <div className="divide-y divide-border">
               {shortlist.map((entry) => (
-                <div key={entry.id} className="py-3 flex items-start gap-3">
+                <Link
+                  key={entry.id}
+                  to="/candidates/$userId"
+                  params={{ userId: entry.professional_user_id }}
+                  className="py-3 flex items-start gap-3 hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors cursor-pointer"
+                >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-bold">
-                    {(entry.name ?? "?")[0].replace("[", "").replace("D", "P")}
+                    {(entry.name ?? "?")[0].toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium">{entry.name}</p>
@@ -696,7 +738,8 @@ function EmployerDashboard({ userId }: { userId: string }) {
                       <p className="mt-0.5 text-xs text-muted-foreground italic truncate">{entry.notes}</p>
                     )}
                   </div>
-                </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 self-center" />
+                </Link>
               ))}
             </div>
           </CardContent>

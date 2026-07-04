@@ -21,6 +21,8 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated/jobs'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConsentRouteImport } from './routes/_authenticated/consent'
+import { Route as AuthenticatedEmployersUserIdRouteImport } from './routes/_authenticated/employers.$userId'
+import { Route as AuthenticatedCandidatesUserIdRouteImport } from './routes/_authenticated/candidates.$userId'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -81,6 +83,18 @@ const AuthenticatedConsentRoute = AuthenticatedConsentRouteImport.update({
   path: '/consent',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEmployersUserIdRoute =
+  AuthenticatedEmployersUserIdRouteImport.update({
+    id: '/employers/$userId',
+    path: '/employers/$userId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCandidatesUserIdRoute =
+  AuthenticatedCandidatesUserIdRouteImport.update({
+    id: '/candidates/$userId',
+    path: '/candidates/$userId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +108,8 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/candidates/$userId': typeof AuthenticatedCandidatesUserIdRoute
+  '/employers/$userId': typeof AuthenticatedEmployersUserIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,6 +123,8 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/candidates/$userId': typeof AuthenticatedCandidatesUserIdRoute
+  '/employers/$userId': typeof AuthenticatedEmployersUserIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,6 +140,8 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/candidates/$userId': typeof AuthenticatedCandidatesUserIdRoute
+  '/_authenticated/employers/$userId': typeof AuthenticatedEmployersUserIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,6 +157,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/profile'
     | '/search'
+    | '/candidates/$userId'
+    | '/employers/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,6 +172,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/profile'
     | '/search'
+    | '/candidates/$userId'
+    | '/employers/$userId'
   id:
     | '__root__'
     | '/'
@@ -164,6 +188,8 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/_authenticated/profile'
     | '/_authenticated/search'
+    | '/_authenticated/candidates/$userId'
+    | '/_authenticated/employers/$userId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,6 +287,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConsentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/employers/$userId': {
+      id: '/_authenticated/employers/$userId'
+      path: '/employers/$userId'
+      fullPath: '/employers/$userId'
+      preLoaderRoute: typeof AuthenticatedEmployersUserIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/candidates/$userId': {
+      id: '/_authenticated/candidates/$userId'
+      path: '/candidates/$userId'
+      fullPath: '/candidates/$userId'
+      preLoaderRoute: typeof AuthenticatedCandidatesUserIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -271,6 +311,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedCandidatesUserIdRoute: typeof AuthenticatedCandidatesUserIdRoute
+  AuthenticatedEmployersUserIdRoute: typeof AuthenticatedEmployersUserIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -280,6 +322,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedCandidatesUserIdRoute: AuthenticatedCandidatesUserIdRoute,
+  AuthenticatedEmployersUserIdRoute: AuthenticatedEmployersUserIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
