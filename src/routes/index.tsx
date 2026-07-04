@@ -71,7 +71,7 @@ function Index() {
           <div className="max-w-4xl">
             {/* Headline */}
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Internationally educated Health Professionals,{" "}
+              Internationally Educated Health Professionals,{" "}
               <span className="text-primary">matched with Ontario employers.</span>
             </h1>
 
