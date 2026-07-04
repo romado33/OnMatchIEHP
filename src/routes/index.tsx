@@ -120,8 +120,8 @@ function Index() {
             />
             <Feature
               icon={<Search className="h-5 w-5" />}
-              image="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=240&fit=crop"
-              imageAlt="HR team reviewing candidates"
+              image="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=240&fit=crop&crop=top"
+              imageAlt="Man and woman greeting with a professional handshake"
               title="AI candidate matching"
               body="HR teams describe a role in plain English. We rank the most relevant candidates with transparent AI rationale."
             />
