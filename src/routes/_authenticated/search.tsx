@@ -7,7 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -29,7 +35,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/search")({
-  head: () => ({ meta: [{ title: "Find Candidates — Ontario IEHP Workforce Integration Registry" }] }),
+  head: () => ({
+    meta: [{ title: "Find Candidates — Ontario IEHP Workforce Integration Registry" }],
+  }),
   component: SearchPage,
 });
 
@@ -38,7 +46,13 @@ type Match = Awaited<ReturnType<typeof matchCandidates>>["matches"][number];
 type RefProfession = { id: string; display_name: string };
 type RefRegion = { id: string; display_name: string };
 
-type VerificationStatus = "loading" | "pending" | "under_review" | "verified" | "rejected" | "no_profile";
+type VerificationStatus =
+  | "loading"
+  | "pending"
+  | "under_review"
+  | "verified"
+  | "rejected"
+  | "no_profile";
 
 export default function SearchPage() {
   const run = useServerFn(matchCandidates);
@@ -95,7 +109,9 @@ export default function SearchPage() {
         .from("shortlists")
         .select("professional_user_id")
         .eq("employer_user_id", user.id);
-      setShortlisted(new Set((sl ?? []).map((s: { professional_user_id: string }) => s.professional_user_id)));
+      setShortlisted(
+        new Set((sl ?? []).map((s: { professional_user_id: string }) => s.professional_user_id)),
+      );
     }
     load();
   }, []);
@@ -166,15 +182,38 @@ export default function SearchPage() {
   }
 
   if (verificationStatus === "no_profile" || verificationStatus === "pending") {
-    return <GateState icon={<Clock className="h-8 w-8 text-muted-foreground" />} title="Complete your organization profile" body="Fill in your organization details to submit your account for verification. Once verified, you'll have full access to candidate search." action={<Link to="/profile"><Button>Complete org profile</Button></Link>} />;
+    return (
+      <GateState
+        icon={<Clock className="h-8 w-8 text-muted-foreground" />}
+        title="Complete your organization profile"
+        body="Fill in your organization details to submit your account for verification. Once verified, you'll have full access to candidate search."
+        action={
+          <Link to="/profile">
+            <Button>Complete org profile</Button>
+          </Link>
+        }
+      />
+    );
   }
 
   if (verificationStatus === "under_review") {
-    return <GateState icon={<AlertCircle className="h-8 w-8 text-amber-500" />} title="Verification in progress" body="Your organization account is currently under review. We'll notify you by email once verified — typically within 1 business day." />;
+    return (
+      <GateState
+        icon={<AlertCircle className="h-8 w-8 text-amber-500" />}
+        title="Verification in progress"
+        body="Your organization account is currently under review. We'll notify you by email once verified — typically within 1 business day."
+      />
+    );
   }
 
   if (verificationStatus === "rejected") {
-    return <GateState icon={<XCircle className="h-8 w-8 text-destructive" />} title="Verification unsuccessful" body="We were unable to verify your organization. Please contact support@onmatchhealth.ca to resolve this." />;
+    return (
+      <GateState
+        icon={<XCircle className="h-8 w-8 text-destructive" />}
+        title="Verification unsuccessful"
+        body="We were unable to verify your organization. Please contact support@onmatchhealth.ca to resolve this."
+      />
+    );
   }
 
   // ── Verified employer: full search UI ────────────────────────────────────
@@ -195,8 +234,8 @@ export default function SearchPage() {
           <CardHeader>
             <CardTitle>Role description</CardTitle>
             <CardDescription>
-              Example: "Full-time ICU nurse in Mississauga. Open to internationally educated candidates with NCLEX
-              in progress. Punjabi or Tagalog a bonus."
+              Example: "Full-time ICU nurse in Mississauga. Open to internationally educated
+              candidates with NCLEX in progress. Punjabi or Tagalog a bonus."
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -214,11 +253,18 @@ export default function SearchPage() {
                 onClick={() => setFiltersOpen((v) => !v)}
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
               >
-                {filtersOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                {filtersOpen ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
                 {filtersOpen ? "Hide filters" : "Add filters"}
                 {(filterProfessionId || filterWorkAuthOnly || filterMinYears) && (
                   <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
-                    {[filterProfessionId, filterWorkAuthOnly, filterMinYears].filter(Boolean).length}
+                    {
+                      [filterProfessionId, filterWorkAuthOnly, filterMinYears].filter(Boolean)
+                        .length
+                    }
                   </Badge>
                 )}
               </button>
@@ -319,9 +365,11 @@ function MatchCard({
 }) {
   const score = Math.round(m.score);
   const scoreColor =
-    score >= 80 ? "text-emerald-600 bg-emerald-50 border-emerald-200" :
-    score >= 50 ? "text-amber-600 bg-amber-50 border-amber-200" :
-                  "text-muted-foreground bg-muted border-border";
+    score >= 80
+      ? "text-emerald-600 bg-emerald-50 border-emerald-200"
+      : score >= 50
+        ? "text-amber-600 bg-amber-50 border-amber-200"
+        : "text-muted-foreground bg-muted border-border";
 
   return (
     <Card>
@@ -332,7 +380,9 @@ function MatchCard({
               <span className="text-muted-foreground">#{rank}</span>
               {m.candidate.profession}
               {m.candidate.specialty && (
-                <span className="text-sm font-normal text-muted-foreground">· {m.candidate.specialty}</span>
+                <span className="text-sm font-normal text-muted-foreground">
+                  · {m.candidate.specialty}
+                </span>
               )}
             </CardTitle>
             <CardDescription className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
@@ -416,7 +466,9 @@ function MatchCard({
                 <div key={i}>
                   <div className="flex items-baseline justify-between gap-2 text-sm">
                     <span className="font-medium">{c.label}</span>
-                    <span className="tabular-nums text-muted-foreground">{Math.round(c.score)}</span>
+                    <span className="tabular-nums text-muted-foreground">
+                      {Math.round(c.score)}
+                    </span>
                   </div>
                   <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
                     <div
@@ -424,8 +476,8 @@ function MatchCard({
                         c.score >= 80
                           ? "bg-emerald-500"
                           : c.score >= 50
-                          ? "bg-amber-500"
-                          : "bg-muted-foreground/40"
+                            ? "bg-amber-500"
+                            : "bg-muted-foreground/40"
                       }`}
                       style={{ width: `${Math.max(0, Math.min(100, c.score))}%` }}
                     />

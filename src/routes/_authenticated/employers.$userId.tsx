@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getEmployerProfile } from "@/lib/candidate.functions";
+import { getEmployerProfile, type EmployerProfileResult } from "@/lib/candidate.functions";
 import { AppHeader } from "@/components/AppHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,23 +18,28 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/employers/$userId")({
-  head: () => ({ meta: [{ title: "Employer Profile — Ontario IEHP Workforce Integration Registry" }] }),
+  head: () => ({
+    meta: [{ title: "Employer Profile — Ontario IEHP Workforce Integration Registry" }],
+  }),
   component: EmployerProfilePage,
 });
 
-type ProfileData = Awaited<ReturnType<ReturnType<typeof getEmployerProfile>>>;
-type Job = ProfileData["jobs"][number];
+type Job = EmployerProfileResult["jobs"][number];
 
 function formatDate(iso: string | null | undefined) {
   if (!iso) return null;
-  return new Date(iso).toLocaleDateString("en-CA", { year: "numeric", month: "short", day: "numeric" });
+  return new Date(iso).toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export default function EmployerProfilePage() {
   const { userId } = Route.useParams();
   const load = useServerFn(getEmployerProfile);
 
-  const [data, setData] = useState<ProfileData | null>(null);
+  const [data, setData] = useState<EmployerProfileResult | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,6 +47,7 @@ export default function EmployerProfilePage() {
       setData(d);
       setLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   if (loading) {
@@ -77,7 +83,6 @@ export default function EmployerProfilePage() {
     <>
       <AppHeader />
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-
         {/* Back */}
         <Link to="/dashboard">
           <Button variant="ghost" size="sm" className="text-muted-foreground -ml-2">
@@ -95,7 +100,10 @@ export default function EmployerProfilePage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-xl font-semibold">{ep.org_name}</h1>
-                  <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
+                  <Badge
+                    variant="outline"
+                    className="bg-blue-50 text-blue-700 border-blue-200 text-xs"
+                  >
                     <CheckCircle2 className="h-3 w-3 mr-1" /> Verified Employer
                   </Badge>
                 </div>
@@ -153,7 +161,7 @@ export default function EmployerProfilePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {jobs.map((job: Job) => (
+                {jobs.map((job) => (
                   <div key={job.id} className="rounded-lg border p-4 space-y-2">
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-sm font-medium">{job.title}</p>
@@ -169,7 +177,9 @@ export default function EmployerProfilePage() {
                       </p>
                     )}
                     {job.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-3">{job.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-3">
+                        {job.description}
+                      </p>
                     )}
                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                       <Calendar className="h-3 w-3" /> Posted {formatDate(job.created_at)}

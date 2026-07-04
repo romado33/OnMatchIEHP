@@ -2,13 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,11 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -39,7 +29,16 @@ import {
 } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Plus, X, CheckCircle2, Circle, Clock, AlertCircle, ExternalLink, Info } from "lucide-react";
+import {
+  Plus,
+  X,
+  CheckCircle2,
+  Circle,
+  Clock,
+  AlertCircle,
+  ExternalLink,
+  Info,
+} from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "My Profile — Ontario IEHP Workforce Integration Registry" }] }),
@@ -164,9 +163,7 @@ function MultiSelectChips({
   );
 
   const toggle = (value: string) => {
-    onChange(
-      selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value],
-    );
+    onChange(selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value]);
   };
 
   const selectedOptions = options.filter((o) => selected.includes(o.value));
@@ -182,11 +179,7 @@ function MultiSelectChips({
         </PopoverTrigger>
         <PopoverContent className="w-64 p-0" align="start">
           <Command>
-            <CommandInput
-              placeholder="Search…"
-              value={search}
-              onValueChange={setSearch}
-            />
+            <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
             <CommandList className="max-h-52">
               <CommandEmpty>No options found.</CommandEmpty>
               <CommandGroup>
@@ -293,7 +286,12 @@ const CRED_STATUSES = [
   { value: "submitted", label: "Submitted", icon: Clock, color: "text-amber-600" },
   { value: "completed", label: "Completed", icon: CheckCircle2, color: "text-emerald-600" },
   { value: "failed", label: "Failed / Did not pass", icon: AlertCircle, color: "text-destructive" },
-  { value: "waived", label: "Waived / Not required", icon: CheckCircle2, color: "text-muted-foreground" },
+  {
+    value: "waived",
+    label: "Waived / Not required",
+    icon: CheckCircle2,
+    color: "text-muted-foreground",
+  },
 ];
 
 function CredentialTracker({
@@ -318,7 +316,9 @@ function CredentialTracker({
     setLoadingSteps(true);
     supabase
       .from("ref_credential_steps")
-      .select("id, step_order, step_name, description, governing_body, typical_duration_weeks, cost_cad, info_url")
+      .select(
+        "id, step_order, step_name, description, governing_body, typical_duration_weeks, cost_cad, info_url",
+      )
       .eq("profession_id", professionId)
       .order("step_order")
       .then(({ data }) => {
@@ -328,13 +328,15 @@ function CredentialTracker({
   }, [professionId]);
 
   if (!professionId) return null;
-  if (loadingSteps) return <p className="text-sm text-muted-foreground">Loading credential pathway…</p>;
-  if (steps.length === 0) return (
-    <p className="text-sm text-muted-foreground">
-      No structured pathway available for this profession yet. Use the fields above to describe your
-      credentials manually.
-    </p>
-  );
+  if (loadingSteps)
+    return <p className="text-sm text-muted-foreground">Loading credential pathway…</p>;
+  if (steps.length === 0)
+    return (
+      <p className="text-sm text-muted-foreground">
+        No structured pathway available for this profession yet. Use the fields above to describe
+        your credentials manually.
+      </p>
+    );
 
   const completedCount = credRecords.filter(
     (r) => r.status === "completed" || r.status === "waived",
@@ -406,12 +408,12 @@ function CredentialTracker({
                   </Select>
                 </div>
                 {step.description && (
-                  <p className="text-xs leading-relaxed text-muted-foreground">{step.description}</p>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {step.description}
+                  </p>
                 )}
                 <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                  {step.typical_duration_weeks && (
-                    <span>~{step.typical_duration_weeks} weeks</span>
-                  )}
+                  {step.typical_duration_weeks && <span>~{step.typical_duration_weeks} weeks</span>}
                   {step.cost_cad && <span>${step.cost_cad.toLocaleString()} CAD</span>}
                   {step.info_url && (
                     <a
@@ -467,14 +469,32 @@ type ProState = {
 };
 
 const emptyPro: ProState = {
-  profession: "", specialty: "", country_of_training: "", years_experience: 0,
-  languages: [], credentials_status: "", license_exam_status: "",
-  work_authorization: "", currently_in_canada: false, current_city: "",
-  preferred_cities: [], willing_to_relocate: false, desired_role_types: [],
-  desired_employment_types: [], available_from: "", bio: "", is_searchable: true,
-  profession_id: "", specialty_id: "", country_of_training_code: "",
-  work_auth_type_id: "", work_authorized_without_sponsorship: null,
-  consent_work_auth_visible: false, preferred_region_ids: [], linkedin_url: "", portfolio_url: "",
+  profession: "",
+  specialty: "",
+  country_of_training: "",
+  years_experience: 0,
+  languages: [],
+  credentials_status: "",
+  license_exam_status: "",
+  work_authorization: "",
+  currently_in_canada: false,
+  current_city: "",
+  preferred_cities: [],
+  willing_to_relocate: false,
+  desired_role_types: [],
+  desired_employment_types: [],
+  available_from: "",
+  bio: "",
+  is_searchable: true,
+  profession_id: "",
+  specialty_id: "",
+  country_of_training_code: "",
+  work_auth_type_id: "",
+  work_authorized_without_sponsorship: null,
+  consent_work_auth_visible: false,
+  preferred_region_ids: [],
+  linkedin_url: "",
+  portfolio_url: "",
 };
 
 const EMPLOYMENT_TYPES = [
@@ -503,14 +523,25 @@ function ProForm({ userId }: { userId: string }) {
     async function load() {
       // Fetch profile + credential records + all reference data concurrently
       const [
-        profileRes, credRes,
-        profsRes, specsRes, countriesRes,
-        workAuthRes, langsRes, regionsRes,
+        profileRes,
+        credRes,
+        profsRes,
+        specsRes,
+        countriesRes,
+        workAuthRes,
+        langsRes,
+        regionsRes,
       ] = await Promise.all([
         supabase.from("professional_profiles").select("*").eq("user_id", userId).maybeSingle(),
-        supabase.from("professional_credentials").select("step_id, status, started_at, completed_at").eq("user_id", userId),
+        supabase
+          .from("professional_credentials")
+          .select("step_id, status, started_at, completed_at")
+          .eq("user_id", userId),
         supabase.from("ref_professions").select("id, display_name, sort_order").order("sort_order"),
-        supabase.from("ref_specialties").select("id, profession_id, display_name").order("sort_order"),
+        supabase
+          .from("ref_specialties")
+          .select("id, profession_id, display_name")
+          .order("sort_order"),
         supabase.from("ref_countries").select("code, name").order("name"),
         supabase.from("ref_work_auth_types").select("id, display_name, requires_sponsorship"),
         supabase.from("ref_languages").select("code, name, native_name").order("sort_order"),
@@ -580,10 +611,13 @@ function ProForm({ userId }: { userId: string }) {
   }, [p, credRecords]);
 
   const completenessLabel =
-    completeness < 40 ? "Add more details to appear in employer searches"
-    : completeness < 70 ? "Good start — add credentials to improve your ranking"
-    : completeness < 90 ? "Strong profile — add a bio and availability to finish"
-    : "Excellent profile!";
+    completeness < 40
+      ? "Add more details to appear in employer searches"
+      : completeness < 70
+        ? "Good start — add credentials to improve your ranking"
+        : completeness < 90
+          ? "Strong profile — add a bio and availability to finish"
+          : "Excellent profile!";
 
   async function save() {
     if (!p.profession && !p.profession_id) {
@@ -690,9 +724,11 @@ function ProForm({ userId }: { userId: string }) {
             <span className="font-medium">Profile completeness</span>
             <span
               className={
-                completeness >= 70 ? "text-emerald-600 font-semibold"
-                : completeness >= 40 ? "text-amber-600 font-semibold"
-                : "text-destructive font-semibold"
+                completeness >= 70
+                  ? "text-emerald-600 font-semibold"
+                  : completeness >= 40
+                    ? "text-amber-600 font-semibold"
+                    : "text-destructive font-semibold"
               }
             >
               {completeness}%
@@ -760,7 +796,7 @@ function ProForm({ userId }: { userId: string }) {
                 )}
               </FormField>
 
-              {(p.profession_id && filteredSpecialties.length > 0) && (
+              {p.profession_id && filteredSpecialties.length > 0 && (
                 <FormField label="Specialty / area of practice">
                   <Select
                     value={p.specialty_id}
@@ -836,7 +872,13 @@ function ProForm({ userId }: { userId: string }) {
                   <Input
                     value={p.languages.join(", ")}
                     onChange={(e) =>
-                      set("languages", e.target.value.split(",").map((x) => x.trim()).filter(Boolean))
+                      set(
+                        "languages",
+                        e.target.value
+                          .split(",")
+                          .map((x) => x.trim())
+                          .filter(Boolean),
+                      )
                     }
                     placeholder="English, Tagalog, Hindi…"
                   />
@@ -901,7 +943,8 @@ function ProForm({ userId }: { userId: string }) {
                 <div className="space-y-0.5">
                   <Label className="text-sm">Share work authorization status with employers</Label>
                   <p className="text-xs text-muted-foreground">
-                    Only shows whether you require sponsorship — your specific status is never disclosed.
+                    Only shows whether you require sponsorship — your specific status is never
+                    disclosed.
                   </p>
                 </div>
                 <Switch
@@ -985,7 +1028,13 @@ function ProForm({ userId }: { userId: string }) {
                   <Input
                     value={p.preferred_cities.join(", ")}
                     onChange={(e) =>
-                      set("preferred_cities", e.target.value.split(",").map((x) => x.trim()).filter(Boolean))
+                      set(
+                        "preferred_cities",
+                        e.target.value
+                          .split(",")
+                          .map((x) => x.trim())
+                          .filter(Boolean),
+                      )
                     }
                     placeholder="Toronto, Hamilton, Ottawa…"
                   />
@@ -1023,10 +1072,12 @@ function ProForm({ userId }: { userId: string }) {
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-0.5">
-                    <Label className="text-sm font-semibold">Visible to employers (searchable)</Label>
+                    <Label className="text-sm font-semibold">
+                      Visible to employers (searchable)
+                    </Label>
                     <p className="text-xs text-muted-foreground">
-                      When on, verified Ontario employers can find your profile in AI searches. You can
-                      toggle this off at any time.
+                      When on, verified Ontario employers can find your profile in AI searches. You
+                      can toggle this off at any time.
                     </p>
                     {!p.is_searchable && (
                       <p className="text-xs text-amber-600 font-medium">
@@ -1072,10 +1123,19 @@ type EmpState = {
 };
 
 const emptyEmp: EmpState = {
-  org_name: "", org_type: "", org_type_id: "", city: "", website: "",
-  contact_name: "", contact_phone: "", about: "", linkedin_url: "",
-  ontario_business_number: "", accepts_sponsored_workers: false,
-  lmia_capable: false, verification_status: "pending",
+  org_name: "",
+  org_type: "",
+  org_type_id: "",
+  city: "",
+  website: "",
+  contact_name: "",
+  contact_phone: "",
+  about: "",
+  linkedin_url: "",
+  ontario_business_number: "",
+  accepts_sponsored_workers: false,
+  lmia_capable: false,
+  verification_status: "pending",
 };
 
 function EmployerForm({ userId }: { userId: string }) {
@@ -1105,10 +1165,13 @@ function EmployerForm({ userId }: { userId: string }) {
           contact_phone: d.contact_phone ?? "",
           about: d.about ?? "",
           linkedin_url: (d as unknown as Record<string, string>).linkedin_url ?? "",
-          ontario_business_number: (d as unknown as Record<string, string>).ontario_business_number ?? "",
-          accepts_sponsored_workers: (d as unknown as Record<string, boolean>).accepts_sponsored_workers ?? false,
+          ontario_business_number:
+            (d as unknown as Record<string, string>).ontario_business_number ?? "",
+          accepts_sponsored_workers:
+            (d as unknown as Record<string, boolean>).accepts_sponsored_workers ?? false,
           lmia_capable: (d as unknown as Record<string, boolean>).lmia_capable ?? false,
-          verification_status: (d as unknown as Record<string, string>).verification_status ?? "pending",
+          verification_status:
+            (d as unknown as Record<string, string>).verification_status ?? "pending",
         });
       }
       setLoading(false);
@@ -1179,7 +1242,9 @@ function EmployerForm({ userId }: { userId: string }) {
     e.verification_status === "verified" ? (
       <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">Verified</Badge>
     ) : e.verification_status === "under_review" ? (
-      <Badge variant="outline" className="border-amber-200 text-amber-700">Under review</Badge>
+      <Badge variant="outline" className="border-amber-200 text-amber-700">
+        Under review
+      </Badge>
     ) : e.verification_status === "rejected" ? (
       <Badge variant="destructive">Rejected</Badge>
     ) : (
@@ -1201,8 +1266,8 @@ function EmployerForm({ userId }: { userId: string }) {
         </div>
         {e.verification_status === "under_review" && (
           <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            Your account is under review. We'll notify you by email once verified — typically within 1
-            business day.
+            Your account is under review. We'll notify you by email once verified — typically within
+            1 business day.
           </div>
         )}
       </CardHeader>
@@ -1273,10 +1338,7 @@ function EmployerForm({ userId }: { userId: string }) {
         <Separator />
 
         <FormField label="HR contact name">
-          <Input
-            value={e.contact_name}
-            onChange={(ev) => set("contact_name", ev.target.value)}
-          />
+          <Input value={e.contact_name} onChange={(ev) => set("contact_name", ev.target.value)} />
         </FormField>
 
         <FormField label="HR contact phone">
@@ -1294,7 +1356,8 @@ function EmployerForm({ userId }: { userId: string }) {
             <div className="space-y-0.5">
               <Label className="text-sm">Open to sponsoring work permits</Label>
               <p className="text-xs text-muted-foreground">
-                Indicates your organization can consider candidates who require employer sponsorship.
+                Indicates your organization can consider candidates who require employer
+                sponsorship.
               </p>
             </div>
             <Switch
@@ -1310,10 +1373,7 @@ function EmployerForm({ userId }: { userId: string }) {
                 Your organization has the capacity to obtain a Labour Market Impact Assessment.
               </p>
             </div>
-            <Switch
-              checked={e.lmia_capable}
-              onCheckedChange={(v) => set("lmia_capable", v)}
-            />
+            <Switch checked={e.lmia_capable} onCheckedChange={(v) => set("lmia_capable", v)} />
           </div>
         </div>
 

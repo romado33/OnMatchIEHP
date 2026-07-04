@@ -78,17 +78,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Ontario IEHP Workforce Integration Registry" },
-      { name: "description", content: "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations." },
+      {
+        name: "description",
+        content:
+          "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations.",
+      },
       { name: "author", content: "Ontario IEHP Workforce Integration Registry" },
       { property: "og:title", content: "Ontario IEHP Workforce Integration Registry" },
-      { property: "og:description", content: "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations." },
+      {
+        property: "og:description",
+        content:
+          "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Ontario IEHP Workforce Integration Registry" },
       { name: "twitter:title", content: "Ontario IEHP Workforce Integration Registry" },
-      { name: "twitter:description", content: "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e045367-d5cb-4f59-b978-ad2c3f28f5a5" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e045367-d5cb-4f59-b978-ad2c3f28f5a5" },
+      {
+        name: "twitter:description",
+        content:
+          "Ontario IEHP Workforce Integration Registry connects internationally educated health professionals with Ontario healthcare organizations.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e045367-d5cb-4f59-b978-ad2c3f28f5a5",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e045367-d5cb-4f59-b978-ad2c3f28f5a5",
+      },
     ],
     links: [
       {

@@ -1,14 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import {
-  Bell,
-  Briefcase,
-  LayoutDashboard,
-  LogOut,
-  Search,
-  Stethoscope,
-  User,
-} from "lucide-react";
+import { Bell, Briefcase, LayoutDashboard, LogOut, Search, Stethoscope, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -153,7 +145,9 @@ export function AppHeader() {
               <Separator />
               <ScrollArea className="h-72">
                 {notifications.length === 0 ? (
-                  <p className="px-4 py-8 text-center text-sm text-muted-foreground">No notifications yet.</p>
+                  <p className="px-4 py-8 text-center text-sm text-muted-foreground">
+                    No notifications yet.
+                  </p>
                 ) : (
                   notifications.map((n) => (
                     <NotifRow key={n.id} n={n} onNavigate={() => setNotifOpen(false)} />
@@ -196,7 +190,9 @@ function NotifRow({ n, onNavigate }: { n: Notification; onNavigate: () => void }
     >
       <div className="flex items-start justify-between gap-2">
         <p className={`text-sm ${!n.is_read ? "font-medium" : "font-normal"}`}>{n.title}</p>
-        {!n.is_read && <Badge variant="default" className="h-1.5 w-1.5 shrink-0 rounded-full p-0" />}
+        {!n.is_read && (
+          <Badge variant="default" className="h-1.5 w-1.5 shrink-0 rounded-full p-0" />
+        )}
       </div>
       {n.body && <p className="line-clamp-2 text-xs text-muted-foreground">{n.body}</p>}
       <p className="text-[11px] text-muted-foreground/70">{timeAgo}</p>

@@ -11,7 +11,9 @@ import { Sparkles, Stethoscope, Building2, LogIn } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/demo")({
-  head: () => ({ meta: [{ title: "Demo accounts — Ontario IEHP Workforce Integration Registry" }] }),
+  head: () => ({
+    meta: [{ title: "Demo accounts — Ontario IEHP Workforce Integration Registry" }],
+  }),
   component: DemoPage,
 });
 
@@ -45,11 +47,20 @@ function DemoPage() {
         return;
       }
 
-      toast.error("Demo accounts created but sign-in failed. Check that email confirmations are disabled in Supabase Auth settings.");
+      toast.error(
+        "Demo accounts created but sign-in failed. Check that email confirmations are disabled in Supabase Auth settings.",
+      );
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
-      if (msg.includes("SERVICE_ROLE") || msg.includes("service_role") || msg.includes("environment variable")) {
-        toast.error("Demo setup needs the SUPABASE_SERVICE_ROLE_KEY added to Vercel environment variables.", { duration: 8000 });
+      if (
+        msg.includes("SERVICE_ROLE") ||
+        msg.includes("service_role") ||
+        msg.includes("environment variable")
+      ) {
+        toast.error(
+          "Demo setup needs the SUPABASE_SERVICE_ROLE_KEY added to Vercel environment variables.",
+          { duration: 8000 },
+        );
       } else {
         toast.error(`Sign-in failed: ${msg}`);
       }
@@ -67,7 +78,9 @@ function DemoPage() {
         <Badge variant="outline" className="border-amber-300 bg-amber-50 text-amber-800">
           Demo mode
         </Badge>
-        <h1 className="mt-3 text-3xl font-bold">Try both sides of Ontario IEHP Workforce Integration Registry</h1>
+        <h1 className="mt-3 text-3xl font-bold">
+          Try both sides of Ontario IEHP Workforce Integration Registry
+        </h1>
         <p className="mt-2 text-muted-foreground">
           One click to sign in as either a health professional or an employer. Accounts are
           pre-loaded with sample data — everything is marked{" "}
@@ -107,11 +120,18 @@ function DemoPage() {
         <Card className="mt-6">
           <CardHeader>
             <CardTitle className="text-base">What's pre-loaded</CardTitle>
-            <CardDescription>All marked [DEMO] so it never gets confused with real data.</CardDescription>
+            <CardDescription>
+              All marked [DEMO] so it never gets confused with real data.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
-            <p>• IEHP profile with profession, specialty, languages, credentials status, and availability.</p>
-            <p>• Verified employer organization profile, so candidate search is immediately usable.</p>
+            <p>
+              • IEHP profile with profession, specialty, languages, credentials status, and
+              availability.
+            </p>
+            <p>
+              • Verified employer organization profile, so candidate search is immediately usable.
+            </p>
             <p>• One active ICU RN job posting you can run AI matching against.</p>
           </CardContent>
         </Card>

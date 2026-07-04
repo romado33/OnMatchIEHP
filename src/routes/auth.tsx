@@ -13,7 +13,10 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Ontario IEHP Workforce Integration Registry" },
-      { name: "description", content: "Sign in or create an Ontario IEHP Workforce Integration Registry account." },
+      {
+        name: "description",
+        content: "Sign in or create an Ontario IEHP Workforce Integration Registry account.",
+      },
     ],
   }),
   component: AuthPage,
@@ -54,7 +57,9 @@ function AuthPage() {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Check your email to confirm your account, or sign in if confirmation is disabled.");
+    toast.success(
+      "Check your email to confirm your account, or sign in if confirmation is disabled.",
+    );
   }
 
   async function googleSignIn() {
@@ -71,7 +76,8 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <div className="w-full max-w-md">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2 font-semibold">
-          <Stethoscope className="h-5 w-5 text-primary" /> Ontario IEHP Workforce Integration Registry
+          <Stethoscope className="h-5 w-5 text-primary" /> Ontario IEHP Workforce Integration
+          Registry
         </Link>
         <Card>
           <CardHeader>
@@ -92,7 +98,9 @@ function AuthPage() {
                 <form onSubmit={signIn} className="space-y-3">
                   <Field label="Email" type="email" value={email} onChange={setEmail} />
                   <Field label="Password" type="password" value={password} onChange={setPassword} />
-                  <Button type="submit" disabled={loading} className="w-full">Sign in</Button>
+                  <Button type="submit" disabled={loading} className="w-full">
+                    Sign in
+                  </Button>
                 </form>
               </TabsContent>
               <TabsContent value="signup">
@@ -100,7 +108,9 @@ function AuthPage() {
                   <Field label="Full name" type="text" value={fullName} onChange={setFullName} />
                   <Field label="Email" type="email" value={email} onChange={setEmail} />
                   <Field label="Password" type="password" value={password} onChange={setPassword} />
-                  <Button type="submit" disabled={loading} className="w-full">Create account</Button>
+                  <Button type="submit" disabled={loading} className="w-full">
+                    Create account
+                  </Button>
                 </form>
               </TabsContent>
             </Tabs>
@@ -111,7 +121,17 @@ function AuthPage() {
   );
 }
 
-function Field({ label, type, value, onChange }: { label: string; type: string; value: string; onChange: (v: string) => void }) {
+function Field({
+  label,
+  type,
+  value,
+  onChange,
+}: {
+  label: string;
+  type: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>

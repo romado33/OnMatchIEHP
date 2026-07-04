@@ -73,15 +73,12 @@ export const matchCandidates = createServerFn({ method: "POST" })
 
     // Privileged RPC excludes raw work_authorization / work_auth_type_id
     // and enforces employer-role + verification checks server-side.
-    const { data: pool, error } = await context.supabase.rpc(
-      "search_professional_profiles",
-      {
-        _profession_id: data.profession_id ?? undefined,
-        _work_authorized_only: data.work_authorized_only ?? false,
-        _min_years_experience: data.min_years_experience ?? undefined,
-        _limit: 80,
-      },
-    );
+    const { data: pool, error } = await context.supabase.rpc("search_professional_profiles", {
+      _profession_id: data.profession_id ?? undefined,
+      _work_authorized_only: data.work_authorized_only ?? false,
+      _min_years_experience: data.min_years_experience ?? undefined,
+      _limit: 80,
+    });
     if (error) return { error: error.message, matches: [] };
 
     const candidates = (pool ?? []) as Candidate[];
@@ -198,13 +195,13 @@ Do NOT reference country of origin, ethnicity, or immigration status anywhere in
           : null;
       })
       .filter(Boolean) as Array<{
-        candidate: Candidate;
-        score: number;
-        rationale: string;
-        strengths: string[];
-        gaps: string[];
-        criteria: Array<{ label: string; score: number; note: string }>;
-      }>;
+      candidate: Candidate;
+      score: number;
+      rationale: string;
+      strengths: string[];
+      gaps: string[];
+      criteria: Array<{ label: string; score: number; note: string }>;
+    }>;
 
     return { error: null, matches: ranked };
   });

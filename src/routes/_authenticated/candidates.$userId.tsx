@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getCandidateProfile } from "@/lib/candidate.functions";
+import { getCandidateProfile, type CandidateProfileResult } from "@/lib/candidate.functions";
 import { AppHeader } from "@/components/AppHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,21 +23,27 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/candidates/$userId")({
-  head: () => ({ meta: [{ title: "Candidate Profile — Ontario IEHP Workforce Integration Registry" }] }),
+  head: () => ({
+    meta: [{ title: "Candidate Profile — Ontario IEHP Workforce Integration Registry" }],
+  }),
   component: CandidateProfilePage,
 });
 
-type ProfileData = Awaited<ReturnType<ReturnType<typeof getCandidateProfile>>>;
-type Cred = ProfileData["credentials"][number];
+type Cred = CandidateProfileResult["credentials"][number];
 
 function formatDate(iso: string | null | undefined) {
   if (!iso) return null;
-  return new Date(iso).toLocaleDateString("en-CA", { year: "numeric", month: "short", day: "numeric" });
+  return new Date(iso).toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function CredStatusIcon({ status }: { status: string }) {
   if (status === "completed") return <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />;
-  if (status === "in_progress" || status === "submitted") return <Clock className="h-4 w-4 text-amber-500 shrink-0" />;
+  if (status === "in_progress" || status === "submitted")
+    return <Clock className="h-4 w-4 text-amber-500 shrink-0" />;
   return <Circle className="h-4 w-4 text-muted-foreground shrink-0" />;
 }
 
@@ -67,7 +73,7 @@ export default function CandidateProfilePage() {
   const { userId } = Route.useParams();
   const load = useServerFn(getCandidateProfile);
 
-  const [data, setData] = useState<ProfileData | null>(null);
+  const [data, setData] = useState<CandidateProfileResult | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,6 +81,7 @@ export default function CandidateProfilePage() {
       setData(d);
       setLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   if (loading) {
@@ -94,7 +101,11 @@ export default function CandidateProfilePage() {
         <AppHeader />
         <main className="max-w-3xl mx-auto px-4 py-10">
           <p className="text-muted-foreground">Candidate profile not found or not yet visible.</p>
-          <Link to="/dashboard"><Button variant="outline" className="mt-4"><ArrowLeft className="h-4 w-4 mr-1" /> Back to dashboard</Button></Link>
+          <Link to="/dashboard">
+            <Button variant="outline" className="mt-4">
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back to dashboard
+            </Button>
+          </Link>
         </main>
       </>
     );
@@ -102,16 +113,22 @@ export default function CandidateProfilePage() {
 
   const { profile, proProfile: pp, credentials, languages } = data;
   const name = profile?.full_name ?? "Candidate";
-  const initials = name.split(" ").map((w: string) => w[0]).slice(0, 2).join("").toUpperCase();
+  const initials = name
+    .split(" ")
+    .map((w: string) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
-  const completedSteps = credentials.filter((c: Cred) => c.status === "completed" || c.status === "waived").length;
+  const completedSteps = credentials.filter(
+    (c: Cred) => c.status === "completed" || c.status === "waived",
+  ).length;
   const totalSteps = credentials.length;
 
   return (
     <>
       <AppHeader />
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-
         {/* Back */}
         <Link to="/dashboard">
           <Button variant="ghost" size="sm" className="text-muted-foreground -ml-2">
@@ -130,13 +147,17 @@ export default function CandidateProfilePage() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-xl font-semibold">{name}</h1>
                   {pp.is_searchable && (
-                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs">
+                    <Badge
+                      variant="outline"
+                      className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs"
+                    >
                       Open to opportunities
                     </Badge>
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {pp.profession}{pp.specialty ? ` · ${pp.specialty}` : ""}
+                  {pp.profession}
+                  {pp.specialty ? ` · ${pp.specialty}` : ""}
                 </p>
 
                 <div className="mt-3 flex flex-wrap gap-3 text-sm text-muted-foreground">
@@ -177,10 +198,14 @@ export default function CandidateProfilePage() {
             {(pp.desired_employment_types?.length || pp.desired_role_types?.length) && (
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {(pp.desired_employment_types ?? []).map((t: string) => (
-                  <Badge key={t} variant="secondary" className="text-xs capitalize">{t.replace("_", " ")}</Badge>
+                  <Badge key={t} variant="secondary" className="text-xs capitalize">
+                    {t.replace("_", " ")}
+                  </Badge>
                 ))}
                 {(pp.desired_role_types ?? []).map((t: string) => (
-                  <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+                  <Badge key={t} variant="outline" className="text-xs">
+                    {t}
+                  </Badge>
                 ))}
               </div>
             )}
@@ -209,7 +234,9 @@ export default function CandidateProfilePage() {
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Star className="h-4 w-4 text-primary" /> Ontario Licensing Journey
                 </CardTitle>
-                <span className="text-xs text-muted-foreground">{completedSteps} / {totalSteps} steps done</span>
+                <span className="text-xs text-muted-foreground">
+                  {completedSteps} / {totalSteps} steps done
+                </span>
               </div>
               {pp.license_exam_status && (
                 <p className="text-xs text-muted-foreground mt-1">{pp.license_exam_status}</p>
@@ -218,10 +245,7 @@ export default function CandidateProfilePage() {
             <CardContent>
               <ol className="space-y-4">
                 {credentials.map((cred: Cred, i: number) => {
-                  const step = (cred as any).ref_credential_steps as {
-                    step_number: number; title: string; description: string;
-                    governing_body: string; typical_duration_weeks: number; is_required: boolean;
-                  } | null;
+                  const step = cred.ref_credential_steps;
                   return (
                     <li key={cred.id} className="flex gap-3">
                       <div className="flex flex-col items-center">
@@ -237,18 +261,28 @@ export default function CandidateProfilePage() {
                           </span>
                           <CredStatusBadge status={cred.status} />
                           {step?.is_required === false && (
-                            <Badge variant="outline" className="text-xs text-muted-foreground">Optional</Badge>
+                            <Badge variant="outline" className="text-xs text-muted-foreground">
+                              Optional
+                            </Badge>
                           )}
                         </div>
                         {step?.governing_body && (
-                          <p className="text-xs text-muted-foreground mt-0.5">{step.governing_body}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {step.governing_body}
+                          </p>
                         )}
                         {cred.notes && (
-                          <p className="text-xs text-muted-foreground italic mt-0.5">{cred.notes}</p>
+                          <p className="text-xs text-muted-foreground italic mt-0.5">
+                            {cred.notes}
+                          </p>
                         )}
                         {(cred.started_at || cred.completed_at) && (
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            {cred.completed_at ? `Completed ${formatDate(cred.completed_at)}` : cred.started_at ? `Started ${formatDate(cred.started_at)}` : ""}
+                            {cred.completed_at
+                              ? `Completed ${formatDate(cred.completed_at)}`
+                              : cred.started_at
+                                ? `Started ${formatDate(cred.started_at)}`
+                                : ""}
                           </p>
                         )}
                       </div>
@@ -270,14 +304,23 @@ export default function CandidateProfilePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {languages.map((lang: any) => (
-                  <div key={lang.language_code} className="flex items-center justify-between text-sm">
-                    <span className="font-medium capitalize">{lang.language_code.toUpperCase()}</span>
+                {languages.map((lang) => (
+                  <div
+                    key={lang.language_code}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="font-medium capitalize">
+                      {lang.language_code.toUpperCase()}
+                    </span>
                     <div className="flex items-center gap-2">
                       {lang.test_id && lang.test_score && (
-                        <span className="text-xs text-muted-foreground">{lang.test_id}: {lang.test_score}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {lang.test_id}: {lang.test_score}
+                        </span>
                       )}
-                      <Badge variant="outline" className="text-xs capitalize">{lang.proficiency_level}</Badge>
+                      <Badge variant="outline" className="text-xs capitalize">
+                        {lang.proficiency_level}
+                      </Badge>
                     </div>
                   </div>
                 ))}
@@ -296,20 +339,25 @@ export default function CandidateProfilePage() {
           <CardContent>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
-                {pp.currently_in_canada
-                  ? <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                  : <Circle className="h-4 w-4 text-muted-foreground" />}
+                {pp.currently_in_canada ? (
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                ) : (
+                  <Circle className="h-4 w-4 text-muted-foreground" />
+                )}
                 Currently in Canada
               </div>
               <div className="flex items-center gap-2">
-                {pp.work_authorized_without_sponsorship
-                  ? <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                  : <Circle className="h-4 w-4 text-muted-foreground" />}
+                {pp.work_authorized_without_sponsorship ? (
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                ) : (
+                  <Circle className="h-4 w-4 text-muted-foreground" />
+                )}
                 Work authorized without sponsorship
               </div>
               {pp.credentials_status && (
                 <div className="mt-3 p-3 rounded-lg bg-muted/50 text-xs text-muted-foreground">
-                  <span className="font-medium">Credential status: </span>{pp.credentials_status}
+                  <span className="font-medium">Credential status: </span>
+                  {pp.credentials_status}
                 </div>
               )}
             </div>
@@ -318,7 +366,8 @@ export default function CandidateProfilePage() {
 
         <Separator />
         <p className="text-xs text-muted-foreground text-center pb-4">
-          This profile is shared in confidence. Contact the candidate through verified channels only.
+          This profile is shared in confidence. Contact the candidate through verified channels
+          only.
         </p>
       </main>
     </>

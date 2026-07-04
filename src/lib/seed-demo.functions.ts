@@ -70,7 +70,13 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
   // Language proficiencies (15 pts toward completeness: +8 first lang, +7 second)
   await supabaseAdmin.from("professional_language_proficiencies").delete().eq("user_id", iehpId);
   await supabaseAdmin.from("professional_language_proficiencies").insert([
-    { user_id: iehpId, language_code: "en", proficiency_level: "native", test_id: "IELTS", test_score: "8.0 overall" },
+    {
+      user_id: iehpId,
+      language_code: "en",
+      proficiency_level: "native",
+      test_id: "IELTS",
+      test_score: "8.0 overall",
+    },
     { user_id: iehpId, language_code: "hi", proficiency_level: "native" },
     { user_id: iehpId, language_code: "pa", proficiency_level: "professional" },
   ]);
@@ -78,43 +84,150 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
   // Consent
   await supabaseAdmin.from("consent_records").delete().eq("user_id", iehpId);
   await supabaseAdmin.from("consent_records").insert([
-    { user_id: iehpId, consent_type: "terms_of_service", version: CONSENT_VERSION, consented: true },
-    { user_id: iehpId, consent_type: "privacy_policy",   version: CONSENT_VERSION, consented: true },
-    { user_id: iehpId, consent_type: "ai_processing",    version: CONSENT_VERSION, consented: true },
+    {
+      user_id: iehpId,
+      consent_type: "terms_of_service",
+      version: CONSENT_VERSION,
+      consented: true,
+    },
+    { user_id: iehpId, consent_type: "privacy_policy", version: CONSENT_VERSION, consented: true },
+    { user_id: iehpId, consent_type: "ai_processing", version: CONSENT_VERSION, consented: true },
   ]);
 
   // Credential steps — full RN pathway (6 done, 1 in-progress, 2 pending)
   await supabaseAdmin.from("professional_credentials").delete().eq("user_id", iehpId);
   await supabaseAdmin.from("professional_credentials").insert([
-    { user_id: iehpId, step_id: "rn_nnas_application",    status: "completed",   started_at: "2024-11-10", completed_at: "2024-11-18", notes: "Application submitted online with all supporting documents." },
-    { user_id: iehpId, step_id: "rn_nnas_documents",       status: "completed",   started_at: "2024-11-18", completed_at: "2025-02-12", notes: "Uploaded degree, transcripts, IELTS (8.0), home-country RN registration." },
-    { user_id: iehpId, step_id: "rn_nnas_assessment",      status: "completed",   started_at: "2025-02-12", completed_at: "2025-09-08", notes: "Credentials assessed as substantially equivalent to Canadian RN education." },
-    { user_id: iehpId, step_id: "rn_nnas_advisory_report", status: "completed",   started_at: "2025-09-08", completed_at: "2025-09-22", notes: "Advisory Report received and forwarded to CNO." },
-    { user_id: iehpId, step_id: "rn_cno_application",      status: "completed",   started_at: "2025-09-25", completed_at: "2026-01-20", notes: "CNO reviewed application and approved eligibility for NCLEX-RN." },
-    { user_id: iehpId, step_id: "rn_nclex_rn_eligible",    status: "completed",   started_at: "2026-01-20", completed_at: "2026-01-28", notes: "Received CNO eligibility notification." },
-    { user_id: iehpId, step_id: "rn_nclex_rn_registered",  status: "in_progress", started_at: "2026-05-02", completed_at: null,         notes: "Exam booked at Pearson VUE Mississauga — August 15, 2026. Studying with UWorld." },
-    { user_id: iehpId, step_id: "rn_nclex_rn_passed",      status: "not_started", started_at: null,         completed_at: null,         notes: null },
-    { user_id: iehpId, step_id: "rn_cno_registered",       status: "not_started", started_at: null,         completed_at: null,         notes: null },
+    {
+      user_id: iehpId,
+      step_id: "rn_nnas_application",
+      status: "completed",
+      started_at: "2024-11-10",
+      completed_at: "2024-11-18",
+      notes: "Application submitted online with all supporting documents.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nnas_documents",
+      status: "completed",
+      started_at: "2024-11-18",
+      completed_at: "2025-02-12",
+      notes: "Uploaded degree, transcripts, IELTS (8.0), home-country RN registration.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nnas_assessment",
+      status: "completed",
+      started_at: "2025-02-12",
+      completed_at: "2025-09-08",
+      notes: "Credentials assessed as substantially equivalent to Canadian RN education.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nnas_advisory_report",
+      status: "completed",
+      started_at: "2025-09-08",
+      completed_at: "2025-09-22",
+      notes: "Advisory Report received and forwarded to CNO.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_cno_application",
+      status: "completed",
+      started_at: "2025-09-25",
+      completed_at: "2026-01-20",
+      notes: "CNO reviewed application and approved eligibility for NCLEX-RN.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nclex_rn_eligible",
+      status: "completed",
+      started_at: "2026-01-20",
+      completed_at: "2026-01-28",
+      notes: "Received CNO eligibility notification.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nclex_rn_registered",
+      status: "in_progress",
+      started_at: "2026-05-02",
+      completed_at: null,
+      notes: "Exam booked at Pearson VUE Mississauga — August 15, 2026. Studying with UWorld.",
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_nclex_rn_passed",
+      status: "not_started",
+      started_at: null,
+      completed_at: null,
+      notes: null,
+    },
+    {
+      user_id: iehpId,
+      step_id: "rn_cno_registered",
+      status: "not_started",
+      started_at: null,
+      completed_at: null,
+      notes: null,
+    },
   ]);
 
   // Recompute completeness score now that all profile fields, languages, and credentials are in place
   await supabaseAdmin.rpc("calc_profile_completeness", { _user_id: iehpId });
 
   // Reset profile_view_count to 0 before re-inserting events so triggers give exact count
-  await supabaseAdmin.from("professional_profiles").update({ profile_view_count: 0 }).eq("user_id", iehpId);
+  await supabaseAdmin
+    .from("professional_profiles")
+    .update({ profile_view_count: 0 })
+    .eq("user_id", iehpId);
 
   // Profile view events (5 this week, 4 older) — trigger increments profile_view_count on each INSERT
   await supabaseAdmin.from("profile_view_events").delete().eq("professional_user_id", iehpId);
   await supabaseAdmin.from("profile_view_events").insert([
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 0.5 * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 1   * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "job_application", viewed_at: new Date(now - 2   * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 4   * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "shortlist",       viewed_at: new Date(now - 6   * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 14  * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "direct_link",     viewed_at: new Date(now - 21  * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 25  * 86400000).toISOString() },
-    { professional_user_id: iehpId, view_source: "ai_search",       viewed_at: new Date(now - 28  * 86400000).toISOString() },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 0.5 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 1 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "job_application",
+      viewed_at: new Date(now - 2 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 4 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "shortlist",
+      viewed_at: new Date(now - 6 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 14 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "direct_link",
+      viewed_at: new Date(now - 21 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 25 * 86400000).toISOString(),
+    },
+    {
+      professional_user_id: iehpId,
+      view_source: "ai_search",
+      viewed_at: new Date(now - 28 * 86400000).toISOString(),
+    },
   ]);
 
   // ── HR / Employer demo user — Alex Chen ───────────────────────────────────
@@ -138,7 +251,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
       city: "Toronto",
       contact_name: "[DEMO] Alex Chen — Talent Acquisition Manager",
       website: "https://example.com",
-      about: "[DEMO DATA] A fictional 420-bed community teaching hospital in west Toronto with a 24-bed MSICU, a 32-bed ED, and three medical-surgical floors. Actively recruiting internationally educated nurses and allied health professionals.",
+      about:
+        "[DEMO DATA] A fictional 420-bed community teaching hospital in west Toronto with a 24-bed MSICU, a 32-bed ED, and three medical-surgical floors. Actively recruiting internationally educated nurses and allied health professionals.",
       verification_status: "verified",
       verified_at: new Date().toISOString(),
       accepts_sponsored_workers: true,
@@ -150,59 +264,73 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
   await supabaseAdmin.from("consent_records").delete().eq("user_id", hrId);
   await supabaseAdmin.from("consent_records").insert([
     { user_id: hrId, consent_type: "terms_of_service", version: CONSENT_VERSION, consented: true },
-    { user_id: hrId, consent_type: "privacy_policy",   version: CONSENT_VERSION, consented: true },
-    { user_id: hrId, consent_type: "ai_processing",    version: CONSENT_VERSION, consented: true },
+    { user_id: hrId, consent_type: "privacy_policy", version: CONSENT_VERSION, consented: true },
+    { user_id: hrId, consent_type: "ai_processing", version: CONSENT_VERSION, consented: true },
   ]);
 
   // Job postings — wipe and re-create 3 roles
   await supabaseAdmin.from("job_postings").delete().eq("employer_id", hrId);
-  const { data: jobData } = await supabaseAdmin.from("job_postings").insert([
-    {
-      employer_id: hrId,
-      title: "[DEMO] ICU Registered Nurse — Full Time",
-      profession: "Registered Nurse",
-      specialty: "Intensive Care",
-      city: "Toronto",
-      employment_type: "full_time",
-      description: "[DEMO DATA] Join our 24-bed MSICU at Lakeshore Regional. Patient mix: medical, post-cardiac surgery, complex surgical. Vents, CRRT, PA catheters. Strong preceptor program for IEHPs; CNO registration support provided.",
-      requirements: "[DEMO] CNO registration or NCLEX-RN in progress. Min 2 yrs ICU experience. BCLS required; ACLS preferred.",
-      is_active: true,
-      open_to_sponsorship: true,
-      moderation_status: "approved",
-      positions_available: 3,
-      benefits: ["HOOPP Pension", "Health & dental", "Relocation allowance up to $3,000", "Paid orientation weeks"],
-    },
-    {
-      employer_id: hrId,
-      title: "[DEMO] Emergency Department RN — Full Time",
-      profession: "Registered Nurse",
-      specialty: "Emergency",
-      city: "Toronto",
-      employment_type: "full_time",
-      description: "[DEMO DATA] Fast-paced 32-bed ED with 85,000+ annual visits. Triage, resus bays, trauma, and fast-track. Strong collaborative team culture.",
-      requirements: "[DEMO] CNO registration required. Min 1 yr ED or acute-care experience. BCLS/ACLS/TNCC preferred.",
-      is_active: true,
-      open_to_sponsorship: false,
-      moderation_status: "approved",
-      positions_available: 2,
-      benefits: ["HOOPP Pension", "Health & dental", "Shift premiums"],
-    },
-    {
-      employer_id: hrId,
-      title: "[DEMO] Medical-Surgical RN — Part Time",
-      profession: "Registered Nurse",
-      specialty: "Medical-Surgical",
-      city: "Mississauga",
-      employment_type: "part_time",
-      description: "[DEMO DATA] 36-bed med-surg unit at our Mississauga satellite site. Excellent mentorship for internationally educated nurses transitioning to Ontario practice.",
-      requirements: "[DEMO] CNO registration required or in final stages. General med-surg experience preferred.",
-      is_active: true,
-      open_to_sponsorship: true,
-      moderation_status: "approved",
-      positions_available: 4,
-      benefits: ["HOOPP Pension", "Health & dental"],
-    },
-  ]).select("id");
+  const { data: jobData } = await supabaseAdmin
+    .from("job_postings")
+    .insert([
+      {
+        employer_id: hrId,
+        title: "[DEMO] ICU Registered Nurse — Full Time",
+        profession: "Registered Nurse",
+        specialty: "Intensive Care",
+        city: "Toronto",
+        employment_type: "full_time",
+        description:
+          "[DEMO DATA] Join our 24-bed MSICU at Lakeshore Regional. Patient mix: medical, post-cardiac surgery, complex surgical. Vents, CRRT, PA catheters. Strong preceptor program for IEHPs; CNO registration support provided.",
+        requirements:
+          "[DEMO] CNO registration or NCLEX-RN in progress. Min 2 yrs ICU experience. BCLS required; ACLS preferred.",
+        is_active: true,
+        open_to_sponsorship: true,
+        moderation_status: "approved",
+        positions_available: 3,
+        benefits: [
+          "HOOPP Pension",
+          "Health & dental",
+          "Relocation allowance up to $3,000",
+          "Paid orientation weeks",
+        ],
+      },
+      {
+        employer_id: hrId,
+        title: "[DEMO] Emergency Department RN — Full Time",
+        profession: "Registered Nurse",
+        specialty: "Emergency",
+        city: "Toronto",
+        employment_type: "full_time",
+        description:
+          "[DEMO DATA] Fast-paced 32-bed ED with 85,000+ annual visits. Triage, resus bays, trauma, and fast-track. Strong collaborative team culture.",
+        requirements:
+          "[DEMO] CNO registration required. Min 1 yr ED or acute-care experience. BCLS/ACLS/TNCC preferred.",
+        is_active: true,
+        open_to_sponsorship: false,
+        moderation_status: "approved",
+        positions_available: 2,
+        benefits: ["HOOPP Pension", "Health & dental", "Shift premiums"],
+      },
+      {
+        employer_id: hrId,
+        title: "[DEMO] Medical-Surgical RN — Part Time",
+        profession: "Registered Nurse",
+        specialty: "Medical-Surgical",
+        city: "Mississauga",
+        employment_type: "part_time",
+        description:
+          "[DEMO DATA] 36-bed med-surg unit at our Mississauga satellite site. Excellent mentorship for internationally educated nurses transitioning to Ontario practice.",
+        requirements:
+          "[DEMO] CNO registration required or in final stages. General med-surg experience preferred.",
+        is_active: true,
+        open_to_sponsorship: true,
+        moderation_status: "approved",
+        positions_available: 4,
+        benefits: ["HOOPP Pension", "Health & dental"],
+      },
+    ])
+    .select("id");
 
   const jobIds = jobData?.map((j) => j.id) ?? [];
 
@@ -211,7 +339,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
   await supabaseAdmin.from("ai_search_sessions").insert([
     {
       employer_user_id: hrId,
-      query_text: "ICU nurse with NNAS completed, NCLEX booked, available within 3 months, Hindi or Punjabi speaker",
+      query_text:
+        "ICU nurse with NNAS completed, NCLEX booked, available within 3 months, Hindi or Punjabi speaker",
       results_returned: 4,
       candidate_pool_size: 23,
       model_used: "gpt-4o",
@@ -220,7 +349,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     },
     {
       employer_user_id: hrId,
-      query_text: "Registered nurse cardiac care post-op experience, Toronto or Mississauga preferred",
+      query_text:
+        "Registered nurse cardiac care post-op experience, Toronto or Mississauga preferred",
       results_returned: 6,
       candidate_pool_size: 41,
       model_used: "gpt-4o",
@@ -257,7 +387,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     employer_user_id: hrId,
     professional_user_id: iehpId,
     list_name: "ICU Candidates",
-    notes: "[DEMO] Strong ICU background, NCLEX exam booked Aug 2026. Priority candidate — follow up after exam.",
+    notes:
+      "[DEMO] Strong ICU background, NCLEX exam booked Aug 2026. Priority candidate — follow up after exam.",
   });
 
   // Application: Priya applied to Alex's ICU job

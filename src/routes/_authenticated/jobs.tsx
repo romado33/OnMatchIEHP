@@ -26,15 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import {
-  Plus,
-  Pencil,
-  MapPin,
-  Briefcase,
-  Clock,
-  DollarSign,
-  Filter,
-} from "lucide-react";
+import { Plus, Pencil, MapPin, Briefcase, Clock, DollarSign, Filter } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/jobs")({
   head: () => ({ meta: [{ title: "Job Postings — Ontario IEHP Workforce Integration Registry" }] }),
@@ -71,17 +63,28 @@ type RefProfession = { id: string; display_name: string };
 type RefSpecialty = { id: string; profession_id: string; display_name: string };
 type RefRegion = { id: string; display_name: string };
 
-const EMPLOYMENT_TYPES = [
-  "Full-time", "Part-time", "Locum", "Contract", "Casual / Per diem",
-];
+const EMPLOYMENT_TYPES = ["Full-time", "Part-time", "Locum", "Contract", "Casual / Per diem"];
 
 const emptyJob: Omit<JobPosting, "id" | "employer_id" | "created_at" | "application_count"> = {
-  title: "", profession: "", specialty: null, city: null, employment_type: null,
-  description: null, requirements: null, is_active: true, salary_min: null,
-  salary_max: null, salary_period: null, open_to_sponsorship: false,
-  requires_current_registration: true, application_deadline: null,
-  positions_available: 1, remote_possible: false,
-  profession_id: null, specialty_id: null, region_id: null,
+  title: "",
+  profession: "",
+  specialty: null,
+  city: null,
+  employment_type: null,
+  description: null,
+  requirements: null,
+  is_active: true,
+  salary_min: null,
+  salary_max: null,
+  salary_period: null,
+  open_to_sponsorship: false,
+  requires_current_registration: true,
+  application_deadline: null,
+  positions_available: 1,
+  remote_possible: false,
+  profession_id: null,
+  specialty_id: null,
+  region_id: null,
 };
 
 function JobsPage() {
@@ -105,18 +108,19 @@ function JobsPage() {
     });
   }, []);
 
-  if (loading) return (
-    <div className="min-h-screen bg-background">
-      <AppHeader />
-      <main className="mx-auto max-w-5xl px-6 py-10">
-        <div className="space-y-4">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-32 animate-pulse rounded-xl bg-muted" />
-          ))}
-        </div>
-      </main>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="min-h-screen bg-background">
+        <AppHeader />
+        <main className="mx-auto max-w-5xl px-6 py-10">
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-32 animate-pulse rounded-xl bg-muted" />
+            ))}
+          </div>
+        </main>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-background">
@@ -181,14 +185,15 @@ function EmployerJobsView({ userId }: { userId: string }) {
       .from("job_postings")
       .update({ is_active: !job.is_active })
       .eq("id", job.id);
-    if (error) { toast.error(error.message); return; }
-    setJobs((prev) => prev.map((j) => j.id === job.id ? { ...j, is_active: !j.is_active } : j));
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, is_active: !j.is_active } : j)));
     toast.success(job.is_active ? "Posting archived" : "Posting activated");
   }
 
-  async function handleSave(
-    form: typeof emptyJob & { id?: string },
-  ) {
+  async function handleSave(form: typeof emptyJob & { id?: string }) {
     const isNew = !form.id;
     const payload = { ...form, employer_id: userId };
 
@@ -206,17 +211,27 @@ function EmployerJobsView({ userId }: { userId: string }) {
         .single();
       error = res.error;
       if (!error && res.data)
-        setJobs((prev) => prev.map((j) => j.id === form.id ? res.data as JobPosting : j));
+        setJobs((prev) => prev.map((j) => (j.id === form.id ? (res.data as JobPosting) : j)));
     }
 
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(isNew ? "Job posting created" : "Job posting updated");
     setDialogOpen(false);
   }
 
   const visible = jobs.filter((j) => showArchived || j.is_active);
 
-  if (loading) return <div className="space-y-4">{[...Array(3)].map((_, i) => <div key={i} className="h-32 animate-pulse rounded-xl bg-muted" />)}</div>;
+  if (loading)
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="h-32 animate-pulse rounded-xl bg-muted" />
+        ))}
+      </div>
+    );
 
   return (
     <div className="space-y-6">
@@ -225,7 +240,8 @@ function EmployerJobsView({ userId }: { userId: string }) {
           <h1 className="text-3xl font-bold">Job postings</h1>
           <p className="mt-1 text-muted-foreground">
             {jobs.filter((j) => j.is_active).length} active{" "}
-            {jobs.filter((j) => !j.is_active).length > 0 && `· ${jobs.filter((j) => !j.is_active).length} archived`}
+            {jobs.filter((j) => !j.is_active).length > 0 &&
+              `· ${jobs.filter((j) => !j.is_active).length} archived`}
           </p>
         </div>
         <Button onClick={openNew} className="gap-1.5">
@@ -236,7 +252,9 @@ function EmployerJobsView({ userId }: { userId: string }) {
       {jobs.filter((j) => !j.is_active).length > 0 && (
         <div className="flex items-center gap-2">
           <Switch id="show-archived" checked={showArchived} onCheckedChange={setShowArchived} />
-          <Label htmlFor="show-archived" className="cursor-pointer text-sm">Show archived postings</Label>
+          <Label htmlFor="show-archived" className="cursor-pointer text-sm">
+            Show archived postings
+          </Label>
         </div>
       )}
 
@@ -245,7 +263,8 @@ function EmployerJobsView({ userId }: { userId: string }) {
           <Briefcase className="h-10 w-10 text-muted-foreground" />
           <h2 className="text-xl font-semibold">No job postings yet</h2>
           <p className="max-w-sm text-muted-foreground">
-            Create your first posting to let professionals know about open roles at your organization.
+            Create your first posting to let professionals know about open roles at your
+            organization.
           </p>
           <Button onClick={openNew} className="gap-1.5">
             <Plus className="h-4 w-4" /> Create first posting
@@ -300,8 +319,18 @@ function EmployerJobCard({
             <CardDescription className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
               <span>{job.profession}</span>
               {job.specialty && <span>· {job.specialty}</span>}
-              {job.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{job.city}</span>}
-              {job.employment_type && <span className="inline-flex items-center gap-1"><Briefcase className="h-3 w-3" />{job.employment_type}</span>}
+              {job.city && (
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  {job.city}
+                </span>
+              )}
+              {job.employment_type && (
+                <span className="inline-flex items-center gap-1">
+                  <Briefcase className="h-3 w-3" />
+                  {job.employment_type}
+                </span>
+              )}
               {job.salary_min && (
                 <span className="inline-flex items-center gap-1">
                   <DollarSign className="h-3 w-3" />
@@ -330,8 +359,16 @@ function EmployerJobCard({
       <CardContent>
         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
           <span>{job.application_count ?? 0} applications</span>
-          {job.open_to_sponsorship && <Badge variant="outline" className="text-xs">Open to sponsorship</Badge>}
-          {job.remote_possible && <Badge variant="outline" className="text-xs">Remote possible</Badge>}
+          {job.open_to_sponsorship && (
+            <Badge variant="outline" className="text-xs">
+              Open to sponsorship
+            </Badge>
+          )}
+          {job.remote_possible && (
+            <Badge variant="outline" className="text-xs">
+              Remote possible
+            </Badge>
+          )}
           {job.application_deadline && (
             <span className="inline-flex items-center gap-1">
               <Clock className="h-3 w-3" />
@@ -400,8 +437,14 @@ function JobFormDialog({
   }
 
   async function submit() {
-    if (!form.title.trim()) { toast.error("Job title is required."); return; }
-    if (!form.profession.trim()) { toast.error("Profession is required."); return; }
+    if (!form.title.trim()) {
+      toast.error("Job title is required.");
+      return;
+    }
+    if (!form.profession.trim()) {
+      toast.error("Profession is required.");
+      return;
+    }
     setSaving(true);
     await onSave(form as typeof emptyJob & { id?: string });
     setSaving(false);
@@ -415,42 +458,73 @@ function JobFormDialog({
         <DialogHeader>
           <DialogTitle>{initial ? "Edit job posting" : "New job posting"}</DialogTitle>
           <DialogDescription>
-            Fields marked with * are required. Postings are visible to all professionals once active.
+            Fields marked with * are required. Postings are visible to all professionals once
+            active.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <FField label="Job title *">
-            <Input value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="e.g. Registered Nurse — ICU" />
+            <Input
+              value={form.title}
+              onChange={(e) => set("title", e.target.value)}
+              placeholder="e.g. Registered Nurse — ICU"
+            />
           </FField>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <FField label="Profession *">
               {professions.length > 0 ? (
-                <Select value={form.profession_id ?? ""} onValueChange={(v) => {
-                  const p = professions.find((x) => x.id === v);
-                  set("profession_id", v);
-                  set("profession", p?.display_name ?? "");
-                  set("specialty_id", null);
-                  set("specialty", null);
-                }}>
-                  <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
-                  <SelectContent>{professions.map((p) => <SelectItem key={p.id} value={p.id}>{p.display_name}</SelectItem>)}</SelectContent>
+                <Select
+                  value={form.profession_id ?? ""}
+                  onValueChange={(v) => {
+                    const p = professions.find((x) => x.id === v);
+                    set("profession_id", v);
+                    set("profession", p?.display_name ?? "");
+                    set("specialty_id", null);
+                    set("specialty", null);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {professions.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.display_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               ) : (
-                <Input value={form.profession} onChange={(e) => set("profession", e.target.value)} placeholder="e.g. Registered Nurse" />
+                <Input
+                  value={form.profession}
+                  onChange={(e) => set("profession", e.target.value)}
+                  placeholder="e.g. Registered Nurse"
+                />
               )}
             </FField>
 
             {filteredSpecs.length > 0 && (
               <FField label="Specialty">
-                <Select value={form.specialty_id ?? ""} onValueChange={(v) => {
-                  const s = specialties.find((x) => x.id === v);
-                  set("specialty_id", v);
-                  set("specialty", s?.display_name ?? null);
-                }}>
-                  <SelectTrigger><SelectValue placeholder="Any specialty" /></SelectTrigger>
-                  <SelectContent>{filteredSpecs.map((s) => <SelectItem key={s.id} value={s.id}>{s.display_name}</SelectItem>)}</SelectContent>
+                <Select
+                  value={form.specialty_id ?? ""}
+                  onValueChange={(v) => {
+                    const s = specialties.find((x) => x.id === v);
+                    set("specialty_id", v);
+                    set("specialty", s?.display_name ?? null);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Any specialty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredSpecs.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.display_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </FField>
             )}
@@ -459,37 +533,78 @@ function JobFormDialog({
           <div className="grid gap-4 sm:grid-cols-2">
             <FField label="Region / city">
               {regions.length > 0 ? (
-                <Select value={form.region_id ?? ""} onValueChange={(v) => {
-                  const r = regions.find((x) => x.id === v);
-                  set("region_id", v);
-                  set("city", r?.display_name ?? null);
-                }}>
-                  <SelectTrigger><SelectValue placeholder="Select region…" /></SelectTrigger>
-                  <SelectContent>{regions.map((r) => <SelectItem key={r.id} value={r.id}>{r.display_name}</SelectItem>)}</SelectContent>
+                <Select
+                  value={form.region_id ?? ""}
+                  onValueChange={(v) => {
+                    const r = regions.find((x) => x.id === v);
+                    set("region_id", v);
+                    set("city", r?.display_name ?? null);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select region…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {regions.map((r) => (
+                      <SelectItem key={r.id} value={r.id}>
+                        {r.display_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               ) : (
-                <Input value={form.city ?? ""} onChange={(e) => set("city", e.target.value || null)} placeholder="e.g. Toronto" />
+                <Input
+                  value={form.city ?? ""}
+                  onChange={(e) => set("city", e.target.value || null)}
+                  placeholder="e.g. Toronto"
+                />
               )}
             </FField>
 
             <FField label="Employment type">
-              <Select value={form.employment_type ?? ""} onValueChange={(v) => set("employment_type", v || null)}>
-                <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
-                <SelectContent>{EMPLOYMENT_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+              <Select
+                value={form.employment_type ?? ""}
+                onValueChange={(v) => set("employment_type", v || null)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EMPLOYMENT_TYPES.map((t) => (
+                    <SelectItem key={t} value={t}>
+                      {t}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </FField>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             <FField label="Salary minimum">
-              <Input type="number" value={form.salary_min ?? ""} onChange={(e) => set("salary_min", e.target.value ? Number(e.target.value) : null)} placeholder="e.g. 80000" />
+              <Input
+                type="number"
+                value={form.salary_min ?? ""}
+                onChange={(e) => set("salary_min", e.target.value ? Number(e.target.value) : null)}
+                placeholder="e.g. 80000"
+              />
             </FField>
             <FField label="Salary maximum">
-              <Input type="number" value={form.salary_max ?? ""} onChange={(e) => set("salary_max", e.target.value ? Number(e.target.value) : null)} placeholder="e.g. 100000" />
+              <Input
+                type="number"
+                value={form.salary_max ?? ""}
+                onChange={(e) => set("salary_max", e.target.value ? Number(e.target.value) : null)}
+                placeholder="e.g. 100000"
+              />
             </FField>
             <FField label="Period">
-              <Select value={form.salary_period ?? ""} onValueChange={(v) => set("salary_period", v || null)}>
-                <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
+              <Select
+                value={form.salary_period ?? ""}
+                onValueChange={(v) => set("salary_period", v || null)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select…" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="annual">Annual</SelectItem>
                   <SelectItem value="hourly">Hourly</SelectItem>
@@ -500,19 +615,38 @@ function JobFormDialog({
 
           <div className="grid gap-4 sm:grid-cols-2">
             <FField label="Application deadline">
-              <Input type="date" value={form.application_deadline ?? ""} onChange={(e) => set("application_deadline", e.target.value || null)} />
+              <Input
+                type="date"
+                value={form.application_deadline ?? ""}
+                onChange={(e) => set("application_deadline", e.target.value || null)}
+              />
             </FField>
             <FField label="Positions available">
-              <Input type="number" min={1} value={form.positions_available} onChange={(e) => set("positions_available", Number(e.target.value) || 1)} />
+              <Input
+                type="number"
+                min={1}
+                value={form.positions_available}
+                onChange={(e) => set("positions_available", Number(e.target.value) || 1)}
+              />
             </FField>
           </div>
 
           <FField label="Job description">
-            <Textarea rows={4} value={form.description ?? ""} onChange={(e) => set("description", e.target.value || null)} placeholder="Describe the role, responsibilities, and work environment…" />
+            <Textarea
+              rows={4}
+              value={form.description ?? ""}
+              onChange={(e) => set("description", e.target.value || null)}
+              placeholder="Describe the role, responsibilities, and work environment…"
+            />
           </FField>
 
           <FField label="Requirements">
-            <Textarea rows={3} value={form.requirements ?? ""} onChange={(e) => set("requirements", e.target.value || null)} placeholder="Required qualifications, certifications, experience…" />
+            <Textarea
+              rows={3}
+              value={form.requirements ?? ""}
+              onChange={(e) => set("requirements", e.target.value || null)}
+              placeholder="Required qualifications, certifications, experience…"
+            />
           </FField>
 
           <Separator />
@@ -544,8 +678,12 @@ function JobFormDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={submit} disabled={saving}>{saving ? "Saving…" : "Save posting"}</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button onClick={submit} disabled={saving}>
+            {saving ? "Saving…" : "Save posting"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -588,18 +726,22 @@ function ProfessionalJobsView() {
     return true;
   });
 
-  if (loading) return (
-    <div className="space-y-4">
-      {[...Array(4)].map((_, i) => <div key={i} className="h-36 animate-pulse rounded-xl bg-muted" />)}
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="space-y-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-36 animate-pulse rounded-xl bg-muted" />
+        ))}
+      </div>
+    );
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Available positions</h1>
         <p className="mt-1 text-muted-foreground">
-          {filtered.length} active posting{filtered.length !== 1 ? "s" : ""} from verified Ontario employers.
+          {filtered.length} active posting{filtered.length !== 1 ? "s" : ""} from verified Ontario
+          employers.
         </p>
       </div>
 
@@ -614,7 +756,11 @@ function ProfessionalJobsView() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All professions</SelectItem>
-                {professions.map((p) => <SelectItem key={p.id} value={p.id}>{p.display_name}</SelectItem>)}
+                {professions.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    {p.display_name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           )}
@@ -625,12 +771,24 @@ function ProfessionalJobsView() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All regions</SelectItem>
-                {regions.map((r) => <SelectItem key={r.id} value={r.id}>{r.display_name}</SelectItem>)}
+                {regions.map((r) => (
+                  <SelectItem key={r.id} value={r.id}>
+                    {r.display_name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           )}
           {(filterProfId || filterRegionId) && (
-            <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => { setFilterProfId(""); setFilterRegionId(""); }}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 text-xs"
+              onClick={() => {
+                setFilterProfId("");
+                setFilterRegionId("");
+              }}
+            >
               Clear filters
             </Button>
           )}
@@ -645,7 +803,9 @@ function ProfessionalJobsView() {
         </div>
       ) : (
         <div className="space-y-4">
-          {filtered.map((job) => <ProfessionalJobCard key={job.id} job={job} />)}
+          {filtered.map((job) => (
+            <ProfessionalJobCard key={job.id} job={job} />
+          ))}
         </div>
       )}
     </div>
@@ -659,8 +819,13 @@ function ProfessionalJobCard({ job }: { job: JobPosting }) {
 
   async function apply() {
     setApplying(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setApplying(false); return; }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setApplying(false);
+      return;
+    }
     const { error } = await supabase
       .from("applications")
       .insert({ job_posting_id: job.id, applicant_user_id: user.id });
@@ -670,7 +835,10 @@ function ProfessionalJobCard({ job }: { job: JobPosting }) {
       setApplied(true);
       return;
     }
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setApplied(true);
     toast.success("Application submitted!");
   }
@@ -682,13 +850,27 @@ function ProfessionalJobCard({ job }: { job: JobPosting }) {
           <div>
             <CardTitle className="text-base">{job.title}</CardTitle>
             <CardDescription className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-              <span>{job.profession}{job.specialty ? ` · ${job.specialty}` : ""}</span>
-              {job.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{job.city}</span>}
-              {job.employment_type && <span className="inline-flex items-center gap-1"><Briefcase className="h-3 w-3" />{job.employment_type}</span>}
+              <span>
+                {job.profession}
+                {job.specialty ? ` · ${job.specialty}` : ""}
+              </span>
+              {job.city && (
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  {job.city}
+                </span>
+              )}
+              {job.employment_type && (
+                <span className="inline-flex items-center gap-1">
+                  <Briefcase className="h-3 w-3" />
+                  {job.employment_type}
+                </span>
+              )}
               {job.salary_min && (
                 <span className="inline-flex items-center gap-1">
-                  <DollarSign className="h-3 w-3" />
-                  ${job.salary_min.toLocaleString()}{job.salary_max ? `–$${job.salary_max.toLocaleString()}` : "+"} {job.salary_period === "hourly" ? "/hr" : "/yr"}
+                  <DollarSign className="h-3 w-3" />${job.salary_min.toLocaleString()}
+                  {job.salary_max ? `–$${job.salary_max.toLocaleString()}` : "+"}{" "}
+                  {job.salary_period === "hourly" ? "/hr" : "/yr"}
                 </span>
               )}
             </CardDescription>
@@ -706,9 +888,21 @@ function ProfessionalJobCard({ job }: { job: JobPosting }) {
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-2">
-          {job.open_to_sponsorship && <Badge variant="outline" className="text-xs border-emerald-200 text-emerald-700">Open to sponsorship</Badge>}
-          {!job.requires_current_registration && <Badge variant="outline" className="text-xs">Registration in progress accepted</Badge>}
-          {job.remote_possible && <Badge variant="outline" className="text-xs">Remote possible</Badge>}
+          {job.open_to_sponsorship && (
+            <Badge variant="outline" className="text-xs border-emerald-200 text-emerald-700">
+              Open to sponsorship
+            </Badge>
+          )}
+          {!job.requires_current_registration && (
+            <Badge variant="outline" className="text-xs">
+              Registration in progress accepted
+            </Badge>
+          )}
+          {job.remote_possible && (
+            <Badge variant="outline" className="text-xs">
+              Remote possible
+            </Badge>
+          )}
           {job.application_deadline && (
             <Badge variant="outline" className="text-xs">
               <Clock className="mr-1 h-3 w-3" />

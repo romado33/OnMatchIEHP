@@ -18,7 +18,9 @@ export const Route = createFileRoute("/_authenticated")({
 
       // If the consent_records table is not yet available (migration pending), allow through.
       if (!consentError) {
-        const given = new Set((consents ?? []).map((c: { consent_type: string }) => c.consent_type));
+        const given = new Set(
+          (consents ?? []).map((c: { consent_type: string }) => c.consent_type),
+        );
         const hasAll =
           given.has("terms_of_service") &&
           given.has("privacy_policy") &&

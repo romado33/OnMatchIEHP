@@ -4,13 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { getCandidateProfile, getEmployerProfile } from "@/lib/candidate.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -53,7 +47,9 @@ function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
       setUserId(user.id);
 
@@ -77,9 +73,7 @@ function Dashboard() {
     <div className="min-h-screen bg-background">
       <AppHeader />
       <main className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-3xl font-bold">
-          Welcome{firstName ? `, ${firstName}` : ""}.
-        </h1>
+        <h1 className="text-3xl font-bold">Welcome{firstName ? `, ${firstName}` : ""}.</h1>
         {accountType === "professional" ? (
           <ProDashboard userId={userId} />
         ) : (
@@ -190,9 +184,7 @@ function ProDashboard({ userId }: { userId: string }) {
           .from("professional_credentials")
           .select("id, step_id, custom_step_name, status, started_at, completed_at, notes")
           .eq("user_id", userId),
-        supabase
-          .from("ref_credential_steps")
-          .select("id, step_name, step_order, governing_body"),
+        supabase.from("ref_credential_steps").select("id, step_name, step_order, governing_body"),
         supabase
           .from("applications")
           .select("id, status, submitted_at, job_posting_id")
@@ -201,7 +193,9 @@ function ProDashboard({ userId }: { userId: string }) {
       ]);
 
       const stepMap: Record<string, RefStep> = {};
-      (refStepsRes.data ?? []).forEach((s) => { stepMap[s.id] = s; });
+      (refStepsRes.data ?? []).forEach((s) => {
+        stepMap[s.id] = s;
+      });
       setRefSteps(stepMap);
 
       const credList = (credListRes.data ?? []) as CredentialRow[];
@@ -222,10 +216,14 @@ function ProDashboard({ userId }: { userId: string }) {
           .select("id, title, city, employer_id")
           .in("id", jobIds);
         const jobMap: Record<string, { title: string; city: string; employer_id: string }> = {};
-        (jobs ?? []).forEach((j) => { jobMap[j.id] = { title: j.title, city: j.city, employer_id: j.employer_id }; });
+        (jobs ?? []).forEach((j) => {
+          jobMap[j.id] = { title: j.title, city: j.city ?? "", employer_id: j.employer_id ?? "" };
+        });
 
         // Look up org names via server function (bypasses RLS)
-        const uniqueEmployerIds = [...new Set((jobs ?? []).map((j) => j.employer_id).filter(Boolean))];
+        const uniqueEmployerIds = [
+          ...new Set((jobs ?? []).map((j) => j.employer_id).filter((id): id is string => !!id)),
+        ];
         const orgMap: Record<string, string> = {};
         await Promise.all(
           uniqueEmployerIds.map(async (eid) => {
@@ -243,7 +241,9 @@ function ProDashboard({ userId }: { userId: string }) {
           a.jobTitle = job?.title ?? "Unknown role";
           a.jobCity = job?.city ?? "";
           a.employerUserId = job?.employer_id;
-          a.orgName = job?.employer_id ? (orgMap[job.employer_id] ?? "Healthcare Employer") : undefined;
+          a.orgName = job?.employer_id
+            ? (orgMap[job.employer_id] ?? "Healthcare Employer")
+            : undefined;
         });
       }
       setApplications(apps);
@@ -258,6 +258,7 @@ function ProDashboard({ userId }: { userId: string }) {
       setLoading(false);
     }
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   async function toggleSearchable() {
@@ -269,7 +270,10 @@ function ProDashboard({ userId }: { userId: string }) {
       .update({ is_searchable: newVal })
       .eq("user_id", userId);
     setTogglingSearch(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setStats((s) => s && { ...s, is_searchable: newVal });
     toast.success(newVal ? "Profile is now visible to employers" : "Profile is now hidden");
   }
@@ -286,10 +290,13 @@ function ProDashboard({ userId }: { userId: string }) {
 
   const score = stats?.completeness_score ?? 0;
   const nextStep =
-    score < 40 ? "Complete your profile to appear in searches"
-    : score < 70 ? "Add your credential progress to improve matches"
-    : score < 90 ? "Add a bio and availability date to finish your profile"
-    : null;
+    score < 40
+      ? "Complete your profile to appear in searches"
+      : score < 70
+        ? "Add your credential progress to improve matches"
+        : score < 90
+          ? "Add a bio and availability date to finish your profile"
+          : null;
 
   return (
     <div className="mt-6 space-y-8">
@@ -299,7 +306,9 @@ function ProDashboard({ userId }: { userId: string }) {
           icon={<TrendingUp className="h-5 w-5 text-primary" />}
           label="Profile completeness"
           value={`${score}%`}
-          sub={score < 40 ? "Below search threshold" : score >= 90 ? "Excellent" : "Good — keep going"}
+          sub={
+            score < 40 ? "Below search threshold" : score >= 90 ? "Excellent" : "Good — keep going"
+          }
           highlight={score < 40 ? "destructive" : score >= 70 ? "success" : "warn"}
         />
         <StatCard
@@ -320,7 +329,10 @@ function ProDashboard({ userId }: { userId: string }) {
             Searchable by employers
           </div>
           <div className="flex items-center justify-between gap-2">
-            <Label className="text-xs text-muted-foreground cursor-pointer" htmlFor="searchable-toggle">
+            <Label
+              className="text-xs text-muted-foreground cursor-pointer"
+              htmlFor="searchable-toggle"
+            >
               {stats?.is_searchable ? "Your profile is visible" : "Your profile is hidden"}
             </Label>
             <Switch
@@ -392,7 +404,9 @@ function ProDashboard({ userId }: { userId: string }) {
                     {/* Content */}
                     <div className={`pb-5 flex-1 ${isLast ? "" : ""}`}>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className={`text-sm font-medium ${cred.status === "completed" || cred.status === "waived" ? "text-muted-foreground line-through-none" : "text-foreground"}`}>
+                        <span
+                          className={`text-sm font-medium ${cred.status === "completed" || cred.status === "waived" ? "text-muted-foreground line-through-none" : "text-foreground"}`}
+                        >
                           {stepName}
                         </span>
                         <CredStatusBadge status={cred.status} />
@@ -403,15 +417,17 @@ function ProDashboard({ userId }: { userId: string }) {
                         )}
                       </div>
                       {cred.notes && (
-                        <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">{cred.notes}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
+                          {cred.notes}
+                        </p>
                       )}
                       {(cred.started_at || cred.completed_at) && (
                         <p className="mt-0.5 text-xs text-muted-foreground/70">
                           {cred.completed_at
                             ? `Completed ${formatDate(cred.completed_at)}`
                             : cred.started_at
-                            ? `Started ${formatDate(cred.started_at)}`
-                            : ""}
+                              ? `Started ${formatDate(cred.started_at)}`
+                              : ""}
                         </p>
                       )}
                     </div>
@@ -431,7 +447,9 @@ function ProDashboard({ userId }: { userId: string }) {
               <FileText className="h-4 w-4 text-primary" />
               My Applications
             </CardTitle>
-            <CardDescription>{applications.length} job application{applications.length !== 1 ? "s" : ""} submitted</CardDescription>
+            <CardDescription>
+              {applications.length} job application{applications.length !== 1 ? "s" : ""} submitted
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="divide-y divide-border">
@@ -443,7 +461,9 @@ function ProDashboard({ userId }: { userId: string }) {
                   className="py-3 flex items-start justify-between gap-4 hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors"
                 >
                   <div>
-                    <p className="text-sm font-medium text-foreground leading-snug">{app.jobTitle}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug">
+                      {app.jobTitle}
+                    </p>
                     {app.orgName && (
                       <p className="text-xs text-primary font-medium mt-0.5">{app.orgName}</p>
                     )}
@@ -513,41 +533,44 @@ function EmployerDashboard({ userId }: { userId: string }) {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
 
-      const [empRes, searchesTodayRes, shortlistCountRes, postingsRes, recentSearchRes, shortlistRes] =
-        await Promise.all([
-          supabase
-            .from("employer_profiles")
-            .select("verification_status")
-            .eq("user_id", userId)
-            .maybeSingle(),
-          supabase
-            .from("ai_search_sessions")
-            .select("id", { count: "exact" })
-            .eq("employer_user_id", userId)
-            .gte("created_at", todayStart.toISOString()),
-          supabase
-            .from("shortlists")
-            .select("id", { count: "exact" })
-            .eq("employer_user_id", userId),
-          supabase
-            .from("job_postings")
-            .select("id, title, specialty, city, employment_type, positions_available")
-            .eq("employer_id", userId)
-            .eq("is_active", true)
-            .order("created_at", { ascending: false }),
-          supabase
-            .from("ai_search_sessions")
-            .select("id, query_text, results_returned, candidate_pool_size, created_at")
-            .eq("employer_user_id", userId)
-            .order("created_at", { ascending: false })
-            .limit(4),
-          supabase
-            .from("shortlists")
-            .select("id, professional_user_id, list_name, notes, created_at")
-            .eq("employer_user_id", userId)
-            .order("created_at", { ascending: false })
-            .limit(5),
-        ]);
+      const [
+        empRes,
+        searchesTodayRes,
+        shortlistCountRes,
+        postingsRes,
+        recentSearchRes,
+        shortlistRes,
+      ] = await Promise.all([
+        supabase
+          .from("employer_profiles")
+          .select("verification_status")
+          .eq("user_id", userId)
+          .maybeSingle(),
+        supabase
+          .from("ai_search_sessions")
+          .select("id", { count: "exact" })
+          .eq("employer_user_id", userId)
+          .gte("created_at", todayStart.toISOString()),
+        supabase.from("shortlists").select("id", { count: "exact" }).eq("employer_user_id", userId),
+        supabase
+          .from("job_postings")
+          .select("id, title, specialty, city, employment_type, positions_available")
+          .eq("employer_id", userId)
+          .eq("is_active", true)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("ai_search_sessions")
+          .select("id, query_text, results_returned, candidate_pool_size, created_at")
+          .eq("employer_user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(4),
+        supabase
+          .from("shortlists")
+          .select("id, professional_user_id, list_name, notes, created_at")
+          .eq("employer_user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(5),
+      ]);
 
       // Enrich job postings with application counts
       const jobs = (postingsRes.data ?? []) as Omit<JobPosting, "appCount">[];
@@ -594,6 +617,7 @@ function EmployerDashboard({ userId }: { userId: string }) {
       setLoading(false);
     }
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   if (loading) {
@@ -637,15 +661,16 @@ function EmployerDashboard({ userId }: { userId: string }) {
           icon={<CheckCircle2 className="h-5 w-5 text-primary" />}
           label="Account status"
           value={
-            verStatus === "verified" ? "Verified"
-            : verStatus === "under_review" ? "Under review"
-            : verStatus === "rejected" ? "Rejected"
-            : "Pending"
+            verStatus === "verified"
+              ? "Verified"
+              : verStatus === "under_review"
+                ? "Under review"
+                : verStatus === "rejected"
+                  ? "Rejected"
+                  : "Pending"
           }
           highlight={
-            verStatus === "verified" ? "success"
-            : verStatus === "rejected" ? "destructive"
-            : "warn"
+            verStatus === "verified" ? "success" : verStatus === "rejected" ? "destructive" : "warn"
           }
           sub=""
         />
@@ -661,7 +686,10 @@ function EmployerDashboard({ userId }: { userId: string }) {
                   <Briefcase className="h-4 w-4 text-primary" />
                   Active Job Postings
                 </CardTitle>
-                <CardDescription>{jobPostings.length} active role{jobPostings.length !== 1 ? "s" : ""} visible to professionals</CardDescription>
+                <CardDescription>
+                  {jobPostings.length} active role{jobPostings.length !== 1 ? "s" : ""} visible to
+                  professionals
+                </CardDescription>
               </div>
               <Link to="/jobs">
                 <Button variant="outline" size="sm" className="gap-1 text-xs">
@@ -675,23 +703,33 @@ function EmployerDashboard({ userId }: { userId: string }) {
               {jobPostings.map((job) => (
                 <div key={job.id} className="py-3 flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground leading-snug truncate">{job.title}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug truncate">
+                      {job.title}
+                    </p>
                     <div className="mt-1 flex flex-wrap gap-1.5 items-center">
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />{job.city}
+                        <MapPin className="h-3 w-3" />
+                        {job.city}
                       </span>
                       <Badge variant="secondary" className="text-xs px-1.5 py-0">
                         {job.employment_type.replace("_", " ")}
                       </Badge>
                       {job.specialty && (
-                        <Badge variant="outline" className="text-xs px-1.5 py-0">{job.specialty}</Badge>
+                        <Badge variant="outline" className="text-xs px-1.5 py-0">
+                          {job.specialty}
+                        </Badge>
                       )}
                     </div>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-sm font-semibold text-foreground">{job.appCount}</p>
-                    <p className="text-xs text-muted-foreground">applicant{job.appCount !== 1 ? "s" : ""}</p>
-                    <p className="text-xs text-muted-foreground">{job.positions_available} position{(job.positions_available ?? 0) !== 1 ? "s" : ""}</p>
+                    <p className="text-xs text-muted-foreground">
+                      applicant{job.appCount !== 1 ? "s" : ""}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {job.positions_available} position
+                      {(job.positions_available ?? 0) !== 1 ? "s" : ""}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -710,7 +748,9 @@ function EmployerDashboard({ userId }: { userId: string }) {
                   <Star className="h-4 w-4 text-primary" />
                   Shortlisted Candidates
                 </CardTitle>
-                <CardDescription>{shortlist.length} candidate{shortlist.length !== 1 ? "s" : ""} saved</CardDescription>
+                <CardDescription>
+                  {shortlist.length} candidate{shortlist.length !== 1 ? "s" : ""} saved
+                </CardDescription>
               </div>
               <Link to="/search">
                 <Button variant="outline" size="sm" className="gap-1 text-xs">
@@ -733,9 +773,13 @@ function EmployerDashboard({ userId }: { userId: string }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium">{entry.name}</p>
-                    <p className="text-xs text-muted-foreground">{entry.list_name} · Saved {formatDate(entry.created_at)}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {entry.list_name} · Saved {formatDate(entry.created_at)}
+                    </p>
                     {entry.notes && (
-                      <p className="mt-0.5 text-xs text-muted-foreground italic truncate">{entry.notes}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground italic truncate">
+                        {entry.notes}
+                      </p>
                     )}
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 self-center" />
@@ -773,7 +817,8 @@ function EmployerDashboard({ userId }: { userId: string }) {
                   <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Users className="h-3 w-3" />
-                      {s.results_returned ?? 0} result{(s.results_returned ?? 0) !== 1 ? "s" : ""} from {s.candidate_pool_size ?? 0} candidates
+                      {s.results_returned ?? 0} result{(s.results_returned ?? 0) !== 1 ? "s" : ""}{" "}
+                      from {s.candidate_pool_size ?? 0} candidates
                     </span>
                     <span className="flex items-center gap-1">
                       <CalendarDays className="h-3 w-3" />
@@ -831,7 +876,10 @@ function VerificationBanner({ status }: { status: string }) {
         <Clock className="h-5 w-5 shrink-0 text-amber-600" />
         <div className="text-sm text-amber-800">
           <p className="font-medium">Verification in progress</p>
-          <p>Your account is under review. Candidate search will unlock once verified — typically within 1 business day.</p>
+          <p>
+            Your account is under review. Candidate search will unlock once verified — typically
+            within 1 business day.
+          </p>
         </div>
       </div>
     );
@@ -853,7 +901,9 @@ function VerificationBanner({ status }: { status: string }) {
         <AlertCircle className="h-5 w-5 shrink-0 text-muted-foreground" />
         <div className="text-sm">
           <p className="font-medium">Complete your org profile to unlock search</p>
-          <p className="text-muted-foreground">Fill in your organization details to submit for verification.</p>
+          <p className="text-muted-foreground">
+            Fill in your organization details to submit for verification.
+          </p>
         </div>
       </div>
       <Link to="/profile">
@@ -864,7 +914,11 @@ function VerificationBanner({ status }: { status: string }) {
 }
 
 function StatCard({
-  icon, label, value, sub, highlight,
+  icon,
+  label,
+  value,
+  sub,
+  highlight,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -873,10 +927,13 @@ function StatCard({
   highlight?: "success" | "warn" | "destructive";
 }) {
   const valueColor =
-    highlight === "success" ? "text-emerald-600"
-    : highlight === "warn" ? "text-amber-600"
-    : highlight === "destructive" ? "text-destructive"
-    : "text-foreground";
+    highlight === "success"
+      ? "text-emerald-600"
+      : highlight === "warn"
+        ? "text-amber-600"
+        : highlight === "destructive"
+          ? "text-destructive"
+          : "text-foreground";
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-2">
@@ -891,7 +948,13 @@ function StatCard({
 }
 
 function ActionCard({
-  icon, title, body, to, cta, disabled, disabledReason,
+  icon,
+  title,
+  body,
+  to,
+  cta,
+  disabled,
+  disabledReason,
 }: {
   icon: React.ReactNode;
   title: string;
@@ -912,7 +975,9 @@ function ActionCard({
       </CardHeader>
       <CardContent>
         {disabled ? (
-          <Button disabled className="w-full sm:w-auto">{disabledReason ?? cta}</Button>
+          <Button disabled className="w-full sm:w-auto">
+            {disabledReason ?? cta}
+          </Button>
         ) : (
           <Link to={to}>
             <Button className="w-full sm:w-auto">{cta}</Button>
@@ -928,24 +993,31 @@ function CredStatusIcon({ status }: { status: string }) {
     return <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />;
   if (status === "in_progress" || status === "submitted")
     return <Clock className="h-5 w-5 text-primary shrink-0" />;
-  if (status === "failed")
-    return <XCircle className="h-5 w-5 text-destructive shrink-0" />;
+  if (status === "failed") return <XCircle className="h-5 w-5 text-destructive shrink-0" />;
   return <Circle className="h-5 w-5 text-muted-foreground/40 shrink-0" />;
 }
 
 function CredStatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; className: string }> = {
-    completed:   { label: "Done",        className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-    waived:      { label: "Waived",      className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-    in_progress: { label: "In progress", className: "bg-primary/10 text-primary border-primary/20" },
-    submitted:   { label: "Submitted",   className: "bg-primary/10 text-primary border-primary/20" },
-    failed:      { label: "Failed",      className: "bg-destructive/10 text-destructive border-destructive/20" },
-    not_started: { label: "Pending",     className: "bg-muted text-muted-foreground border-border" },
-    na:          { label: "N/A",         className: "bg-muted text-muted-foreground border-border" },
+    completed: { label: "Done", className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+    waived: { label: "Waived", className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+    in_progress: {
+      label: "In progress",
+      className: "bg-primary/10 text-primary border-primary/20",
+    },
+    submitted: { label: "Submitted", className: "bg-primary/10 text-primary border-primary/20" },
+    failed: {
+      label: "Failed",
+      className: "bg-destructive/10 text-destructive border-destructive/20",
+    },
+    not_started: { label: "Pending", className: "bg-muted text-muted-foreground border-border" },
+    na: { label: "N/A", className: "bg-muted text-muted-foreground border-border" },
   };
   const cfg = map[status] ?? map.not_started;
   return (
-    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.className}`}>
+    <span
+      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.className}`}
+    >
       {cfg.label}
     </span>
   );
@@ -953,16 +1025,27 @@ function CredStatusBadge({ status }: { status: string }) {
 
 function AppStatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; className: string }> = {
-    submitted:    { label: "Submitted",    className: "bg-muted text-muted-foreground border-border" },
-    under_review: { label: "Under review", className: "bg-primary/10 text-primary border-primary/20" },
-    shortlisted:  { label: "Shortlisted",  className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-    interviewed:  { label: "Interview",    className: "bg-amber-100 text-amber-800 border-amber-200" },
-    offered:      { label: "Offer!",       className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-    rejected:     { label: "Not selected", className: "bg-destructive/10 text-destructive border-destructive/20" },
+    submitted: { label: "Submitted", className: "bg-muted text-muted-foreground border-border" },
+    under_review: {
+      label: "Under review",
+      className: "bg-primary/10 text-primary border-primary/20",
+    },
+    shortlisted: {
+      label: "Shortlisted",
+      className: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    },
+    interviewed: { label: "Interview", className: "bg-amber-100 text-amber-800 border-amber-200" },
+    offered: { label: "Offer!", className: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+    rejected: {
+      label: "Not selected",
+      className: "bg-destructive/10 text-destructive border-destructive/20",
+    },
   };
   const cfg = map[status] ?? map.submitted;
   return (
-    <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.className}`}>
+    <span
+      className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.className}`}
+    >
       {cfg.label}
     </span>
   );
@@ -975,5 +1058,9 @@ function formatDate(iso: string): string {
   if (diffDays === 0) return "today";
   if (diffDays === 1) return "yesterday";
   if (diffDays < 7) return `${diffDays} days ago`;
-  return d.toLocaleDateString("en-CA", { month: "short", day: "numeric", year: diffDays > 365 ? "numeric" : undefined });
+  return d.toLocaleDateString("en-CA", {
+    month: "short",
+    day: "numeric",
+    year: diffDays > 365 ? "numeric" : undefined,
+  });
 }

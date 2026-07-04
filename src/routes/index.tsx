@@ -21,7 +21,10 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Ontario IEHP Workforce Integration Registry — Ontario's match for internationally educated health professionals" },
+      {
+        title:
+          "Ontario IEHP Workforce Integration Registry — Ontario's match for internationally educated health professionals",
+      },
       {
         name: "description",
         content:
@@ -30,7 +33,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Ontario IEHP Workforce Integration Registry" },
       {
         property: "og:description",
-        content: "AI-powered matching for internationally educated health professionals and Ontario healthcare employers.",
+        content:
+          "AI-powered matching for internationally educated health professionals and Ontario healthcare employers.",
       },
     ],
   }),
@@ -51,7 +55,10 @@ function Index() {
             <span className="lg:hidden">OIWIR</span>
           </Link>
           <div className="flex items-center gap-3">
-            <Link to="/demo" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
+            <Link
+              to="/demo"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline"
+            >
               Try a demo →
             </Link>
             <Link to="/auth">
@@ -81,8 +88,8 @@ function Index() {
             {/* Subtitle */}
             <p className="mt-6 text-lg text-muted-foreground">
               Ontario's workforce integration registry connects internationally educated health
-              professionals with verified healthcare employers — giving both sides what they need
-              to plan ahead, not just fill vacancies.
+              professionals with verified healthcare employers — giving both sides what they need to
+              plan ahead, not just fill vacancies.
             </p>
 
             {/* Problem context */}
@@ -113,10 +120,19 @@ function Index() {
 
             {/* Trust signals — distinct icons, positive wording */}
             <div className="mt-8 flex flex-wrap gap-4">
-              <TrustPill icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified employers only" />
-              <TrustPill icon={<EyeOff className="h-3.5 w-3.5" />} text="Your immigration status stays private" />
+              <TrustPill
+                icon={<ShieldCheck className="h-3.5 w-3.5" />}
+                text="Verified employers only"
+              />
+              <TrustPill
+                icon={<EyeOff className="h-3.5 w-3.5" />}
+                text="Your immigration status stays private"
+              />
               <TrustPill icon={<Scale className="h-3.5 w-3.5" />} text="PIPEDA-compliant" />
-              <TrustPill icon={<CalendarClock className="h-3.5 w-3.5" />} text="Visible to employers mid-licensing" />
+              <TrustPill
+                icon={<CalendarClock className="h-3.5 w-3.5" />}
+                text="Visible to employers mid-licensing"
+              />
             </div>
           </div>
 
@@ -150,7 +166,8 @@ function Index() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="text-3xl font-bold">How it works</h2>
         <p className="mt-2 text-muted-foreground">
-          Ontario IEHP Workforce Integration Registry is built for both sides of the hiring relationship.
+          Ontario IEHP Workforce Integration Registry is built for both sides of the hiring
+          relationship.
         </p>
 
         {/* Tab switcher */}
@@ -223,7 +240,9 @@ function Index() {
           </div>
         ) : (
           <div className="mt-12">
-            <h3 className="text-2xl font-semibold mb-10">Plan your workforce, not just your vacancies</h3>
+            <h3 className="text-2xl font-semibold mb-10">
+              Plan your workforce, not just your vacancies
+            </h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <Step
                 number="1"
@@ -272,8 +291,8 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <h2 className="text-2xl font-bold">Built with compliance in mind</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Healthcare hiring in Ontario involves real legal and ethical obligations. Ontario IEHP Workforce Integration Registry is
-            designed around them.
+            Healthcare hiring in Ontario involves real legal and ethical obligations. Ontario IEHP
+            Workforce Integration Registry is designed around them.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             <ComplianceItem
@@ -293,7 +312,10 @@ function Index() {
             />
           </div>
           <div className="mt-8">
-            <Link to="/privacy" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
+            <Link
+              to="/privacy"
+              className="text-sm text-primary hover:underline inline-flex items-center gap-1"
+            >
               See our full privacy and compliance approach <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -310,18 +332,23 @@ function Index() {
               <span className="sm:hidden">OIWIR</span>
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
+              <Link to="/privacy" className="hover:text-foreground">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="hover:text-foreground">
+                Terms of Service
+              </Link>
               <a href="mailto:support@oiwir.ca" className="hover:text-foreground">
                 support@oiwir.ca
               </a>
             </div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Ontario IEHP Workforce Integration Registry. Designed for Ontario, Canada.
-            Ontario IEHP Workforce Integration Registry does not verify credentials or regulatory registration. All credential information
-            is self-reported. Employers must confirm registration with the relevant Ontario regulatory college
-            before making an offer.
+            © {new Date().getFullYear()} Ontario IEHP Workforce Integration Registry. Designed for
+            Ontario, Canada. Ontario IEHP Workforce Integration Registry does not verify credentials
+            or regulatory registration. All credential information is self-reported. Employers must
+            confirm registration with the relevant Ontario regulatory college before making an
+            offer.
           </p>
         </div>
       </footer>
@@ -331,7 +358,17 @@ function Index() {
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
-function Feature({ image, imageAlt, title, body }: { image: string; imageAlt: string; title: string; body: string }) {
+function Feature({
+  image,
+  imageAlt,
+  title,
+  body,
+}: {
+  image: string;
+  imageAlt: string;
+  title: string;
+  body: string;
+}) {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
       <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-center" />
@@ -343,7 +380,19 @@ function Feature({ image, imageAlt, title, body }: { image: string; imageAlt: st
   );
 }
 
-function Step({ number, image, imageAlt, title, body }: { number: string; image: string; imageAlt: string; title: string; body: string }) {
+function Step({
+  number,
+  image,
+  imageAlt,
+  title,
+  body,
+}: {
+  number: string;
+  image: string;
+  imageAlt: string;
+  title: string;
+  body: string;
+}) {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
       <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-top" />

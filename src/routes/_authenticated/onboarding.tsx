@@ -16,7 +16,9 @@ import { Stethoscope, Building2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
-  head: () => ({ meta: [{ title: "Getting started — Ontario IEHP Workforce Integration Registry" }] }),
+  head: () => ({
+    meta: [{ title: "Getting started — Ontario IEHP Workforce Integration Registry" }],
+  }),
   component: Onboarding,
 });
 
@@ -153,10 +155,7 @@ function Onboarding() {
               </CardContent>
             </Card>
 
-            <Card
-              className="cursor-pointer transition hover:border-primary"
-              onClick={pickEmployer}
-            >
+            <Card className="cursor-pointer transition hover:border-primary" onClick={pickEmployer}>
               <CardHeader>
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Building2 className="h-6 w-6" />
@@ -201,9 +200,7 @@ function Onboarding() {
                 <Label>Organization name *</Label>
                 <Input
                   value={employerForm.org_name}
-                  onChange={(e) =>
-                    setEmployerForm((s) => ({ ...s, org_name: e.target.value }))
-                  }
+                  onChange={(e) => setEmployerForm((s) => ({ ...s, org_name: e.target.value }))}
                   placeholder="e.g. Sunnybrook Health Sciences Centre"
                 />
               </div>
@@ -258,8 +255,8 @@ function Onboarding() {
               </div>
 
               <div className="rounded-lg border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-                By submitting, you confirm your organization is a legitimate Ontario healthcare employer and
-                agree to use the platform in compliance with the{" "}
+                By submitting, you confirm your organization is a legitimate Ontario healthcare
+                employer and agree to use the platform in compliance with the{" "}
                 <em>Ontario Human Rights Code</em> and applicable employment law.
               </div>
 
@@ -296,8 +293,8 @@ function Onboarding() {
         </div>
         <h1 className="mt-6 text-2xl font-bold">Verification submitted</h1>
         <p className="mt-3 text-muted-foreground">
-          Thank you — your organization has been submitted for verification. We'll notify you by email
-          once approved, typically within 1 business day.
+          Thank you — your organization has been submitted for verification. We'll notify you by
+          email once approved, typically within 1 business day.
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
           In the meantime, you can post job listings and complete your organization profile.

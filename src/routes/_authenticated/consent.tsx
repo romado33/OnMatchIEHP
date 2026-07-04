@@ -38,9 +38,24 @@ function ConsentPage() {
     }
 
     const records = [
-      { user_id: user.id, consent_type: "terms_of_service", version: CONSENT_VERSION, consented: true },
-      { user_id: user.id, consent_type: "privacy_policy", version: CONSENT_VERSION, consented: true },
-      { user_id: user.id, consent_type: "ai_processing", version: CONSENT_VERSION, consented: true },
+      {
+        user_id: user.id,
+        consent_type: "terms_of_service",
+        version: CONSENT_VERSION,
+        consented: true,
+      },
+      {
+        user_id: user.id,
+        consent_type: "privacy_policy",
+        version: CONSENT_VERSION,
+        consented: true,
+      },
+      {
+        user_id: user.id,
+        consent_type: "ai_processing",
+        version: CONSENT_VERSION,
+        consented: true,
+      },
     ];
 
     const { error } = await supabase.from("consent_records").insert(records);
@@ -76,8 +91,8 @@ function ConsentPage() {
               <CardTitle>Before you continue</CardTitle>
             </div>
             <CardDescription>
-              Please review and agree to the following. You can withdraw consent at any time from your account
-              settings.
+              Please review and agree to the following. You can withdraw consent at any time from
+              your account settings.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -88,7 +103,11 @@ function ConsentPage() {
               label={
                 <>
                   I agree to the{" "}
-                  <Link to="/terms" className="text-primary underline underline-offset-2" target="_blank">
+                  <Link
+                    to="/terms"
+                    className="text-primary underline underline-offset-2"
+                    target="_blank"
+                  >
                     Terms of Service
                   </Link>
                 </>
@@ -103,7 +122,11 @@ function ConsentPage() {
               label={
                 <>
                   I agree to the{" "}
-                  <Link to="/privacy" className="text-primary underline underline-offset-2" target="_blank">
+                  <Link
+                    to="/privacy"
+                    className="text-primary underline underline-offset-2"
+                    target="_blank"
+                  >
                     Privacy Policy
                   </Link>
                 </>
@@ -120,9 +143,9 @@ function ConsentPage() {
             />
 
             <div className="rounded-lg border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-              Ontario IEHP Workforce Integration Registry is designed for use by healthcare professionals and employers in Ontario, Canada. By
-              continuing, you confirm that your use of this platform complies with applicable employment and
-              privacy laws.
+              Ontario IEHP Workforce Integration Registry is designed for use by healthcare
+              professionals and employers in Ontario, Canada. By continuing, you confirm that your
+              use of this platform complies with applicable employment and privacy laws.
             </div>
 
             <Button onClick={handleSubmit} disabled={!allChecked || loading} className="w-full">
