@@ -89,7 +89,7 @@ function DemoPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <DemoCard
-            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=260&fit=crop&crop=center"
+            image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=280&fit=crop&crop=top"
             imageAlt="Indian woman healthcare professional"
             icon={<Stethoscope className="h-5 w-5 text-primary" />}
             title="IEHP Candidate"
@@ -101,8 +101,8 @@ function DemoPage() {
             onSignIn={() => setupAndSignIn("iehp")}
           />
           <DemoCard
-            image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=240&fit=crop&crop=top"
-            imageAlt="Diverse HR team including women in a meeting"
+            image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=280&fit=crop&crop=top"
+            imageAlt="Diverse HR team including women in a business meeting"
             icon={<Building2 className="h-5 w-5 text-primary" />}
             title="HR / Employer"
             subtitle="Lakeshore Regional Health (verified)"
@@ -183,7 +183,7 @@ function DemoCard({
 }) {
   return (
     <Card className="flex flex-col overflow-hidden p-0">
-      <img src={image} alt={imageAlt} className="w-full h-48 object-cover" />
+      <img src={image} alt={imageAlt} className="w-full h-56 object-cover object-top" />
       <CardHeader className="pt-5">
         <div className="flex items-center gap-2">
           {icon}
