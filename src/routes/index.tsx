@@ -175,8 +175,8 @@ function Index() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Step
                 number="1"
-                image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=240&fit=crop&crop=top"
-                imageAlt="Healthcare professional completing an online profile"
+                image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=240&fit=crop&crop=center"
+                imageAlt="Person typing on a laptop building a profile"
                 title="Build your profile"
                 body="Enter your profession, country of training, credential progress, languages, and location preferences. The more you add, the better your AI match score."
               />
